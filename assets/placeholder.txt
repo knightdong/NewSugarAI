@@ -1,0 +1,1 @@
+This directory will contain character images and other assets for Sugar.AI 

@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - Sugar.AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #212121;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* 左侧导航栏 */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 100%);
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            border-right: 1px solid #333;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            padding: 30px 25px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+        }
+
+        .logo h1 {
+            color: #ed7f8c;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #999;
+            font-size: 12px;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 18px 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: linear-gradient(90deg, rgba(237, 127, 140, 0.1) 0%, transparent 100%);
+            border-left-color: #ed7f8c;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(237, 127, 140, 0.15) 0%, transparent 100%);
+            border-left-color: #ed7f8c;
+        }
+
+        .nav-item .icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            color: #ed7f8c;
+            font-size: 20px;
+        }
+
+        .nav-item .text {
+            font-size: 16px;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .nav-item .text.active {
+            color: #ed7f8c;
+        }
+
+        /* 用户信息区域 */
+        .user-section {
+            position: absolute;
+            bottom: 20px;
+            left: 25px;
+            right: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(237, 127, 140, 0.1) 0%, rgba(237, 127, 140, 0.05) 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(237, 127, 140, 0.2);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .user-details h4 {
+            color: #ffffff;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .user-details p {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .gem-balance {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        .gem-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .gem-icon {
+            color: #ed7f8c;
+            margin-right: 6px;
+        }
+
+        .gem-count {
+            color: #ed7f8c;
+            font-weight: bold;
+        }
+
+        /* 主内容区域 */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            background: #212121;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .chat-header {
+            position: fixed;
+            top: 0;
+            left: 280px;
+            right: 300px;
+            z-index: 100;
+            padding: 20px 30px;
+            border-bottom: 1px solid #333;
+            background: linear-gradient(135deg, rgba(237, 127, 140, 0.05) 0%, #212121 100%);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+        }
+
+        .current-character {
+            display: flex;
+            align-items: center;
+        }
+
+        .character-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            background-size: cover;
+            background-position: center;
+            margin-right: 15px;
+            border: 2px solid rgba(237, 127, 140, 0.3);
+        }
+
+        .character-info h2 {
+            color: #ed7f8c;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .character-info p {
+            color: #999;
+            font-size: 14px;
+        }
+
+
+
+        /* 聊天消息区域 */
+        .chat-messages {
+            position: fixed;
+            top: 90px;
+            left: 280px;
+            right: 300px;
+            bottom: 160px;
+            padding: 20px 30px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background: #212121;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            max-width: 70%;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message.ai {
+            align-self: flex-start;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            background-size: cover;
+            background-position: center;
+            flex-shrink: 0;
+        }
+
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .message-content {
+            background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+            border-radius: 18px;
+            padding: 12px 18px;
+            border: 1px solid #333;
+            position: relative;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, rgba(237, 127, 140, 0.2), rgba(209, 101, 112, 0.1));
+            border-color: rgba(237, 127, 140, 0.3);
+        }
+
+        .message-text {
+            color: #ffffff;
+            font-size: 15px;
+            line-height: 1.4;
+            margin-bottom: 5px;
+        }
+
+        .message-time {
+            color: #999;
+            font-size: 11px;
+        }
+
+        .message-media {
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 8px;
+            max-width: 300px;
+        }
+
+        .message-media img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* 推荐输入区域 */
+        .suggestions-area {
+            position: fixed;
+            bottom: 110px;
+            left: 280px;
+            right: 300px;
+            z-index: 99;
+            padding: 8px 30px 5px;
+            background: rgba(33, 33, 33, 0.95);
+            backdrop-filter: blur(5px);
+        }
+
+        .suggestions-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .suggestion-chip {
+            background: rgba(237, 127, 140, 0.1);
+            border: 1px solid rgba(237, 127, 140, 0.3);
+            color: #ed7f8c;
+            padding: 6px 14px;
+            border-radius: 18px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .suggestion-chip:hover {
+            background: rgba(237, 127, 140, 0.2);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(237, 127, 140, 0.2);
+        }
+
+        .suggestion-chip:active {
+            transform: translateY(0);
+        }
+
+        /* 图片消息样式 */
+        .message-image {
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 8px;
+            max-width: 280px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(237, 127, 140, 0.2);
+        }
+
+        .message-image:hover {
+            transform: scale(1.02);
+            border-color: rgba(237, 127, 140, 0.4);
+            box-shadow: 0 5px 20px rgba(237, 127, 140, 0.3);
+        }
+
+        .message-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* 图片放大模态框 */
+        .image-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            cursor: pointer;
+        }
+
+        .image-modal.active {
+            display: flex;
+        }
+
+        .image-modal img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(237, 127, 140, 0.3);
+        }
+
+        .image-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .image-modal-close:hover {
+            color: #ed7f8c;
+        }
+
+        /* 响应式推荐按钮 */
+        @media (max-width: 768px) {
+            .suggestion-chip {
+                font-size: 12px;
+                padding: 5px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .suggestion-chip {
+                font-size: 11px;
+                padding: 4px 8px;
+            }
+            
+            .suggestions-container {
+                gap: 4px;
+            }
+        }
+
+        /* 消息输入区域 */
+        .chat-input {
+            position: fixed;
+            bottom: 0;
+            left: 280px;
+            right: 300px;
+            z-index: 100;
+            padding: 20px 30px;
+            border-top: 1px solid #333;
+            background: linear-gradient(135deg, rgba(237, 127, 140, 0.02) 0%, #212121 100%);
+            backdrop-filter: blur(10px);
+        }
+
+        .input-container {
+            display: flex;
+            align-items: flex-end;
+            gap: 15px;
+            background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+            border-radius: 25px;
+            padding: 12px 20px;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+        }
+
+        .input-container:focus-within {
+            border-color: #ed7f8c;
+            box-shadow: 0 0 20px rgba(237, 127, 140, 0.1);
+        }
+
+        .message-input {
+            flex: 1;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 15px;
+            outline: none;
+            resize: none;
+            min-height: 20px;
+            max-height: 100px;
+            line-height: 1.4;
+        }
+
+        .message-input::placeholder {
+            color: #999;
+        }
+
+        .input-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .media-btn {
+            background: none;
+            border: none;
+            color: #ed7f8c;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .media-btn:hover {
+            background: rgba(237, 127, 140, 0.1);
+            transform: scale(1.1);
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(237, 127, 140, 0.3);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* 照片预览区域 */
+        .photo-preview {
+            position: absolute;
+            top: -80px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid rgba(237, 127, 140, 0.3);
+            background: #333;
+            display: none;
+            cursor: pointer;
+        }
+
+        .photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-preview-close {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 20px;
+            height: 20px;
+            background: #ed7f8c;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .photo-preview-close:hover {
+            background: #d16570;
+            transform: scale(1.1);
+        }
+
+        /* 移动端照片预览适配 */
+        @media (max-width: 768px) {
+            .photo-preview {
+                top: -70px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+            }
+            
+            .photo-preview-close {
+                width: 18px;
+                height: 18px;
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .photo-preview {
+                top: -60px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+            
+            .photo-preview-close {
+                width: 16px;
+                height: 16px;
+                font-size: 9px;
+            }
+        }
+
+        /* 聊天历史记录侧边栏 */
+        .chat-sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1a1a1a 0%, #212121 100%);
+            border-left: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            z-index: 50;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        .sidebar-title {
+            color: #ed7f8c;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .new-chat-btn {
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            border: none;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .new-chat-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(237, 127, 140, 0.3);
+        }
+
+        .chat-history {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 5px;
+        }
+
+        .history-item:hover {
+            background: rgba(237, 127, 140, 0.1);
+        }
+
+        .history-item.active {
+            background: rgba(237, 127, 140, 0.15);
+            border: 1px solid rgba(237, 127, 140, 0.3);
+        }
+
+        .history-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .history-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .history-name {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .history-preview {
+            color: #999;
+            font-size: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .history-time {
+            color: #666;
+            font-size: 10px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .chat-sidebar {
+                display: none;
+            }
+            
+            .chat-header {
+                right: 0;
+            }
+            
+            .chat-messages {
+                right: 0;
+            }
+            
+            .suggestions-area {
+                right: 0;
+            }
+            
+            .chat-input {
+                right: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 250px;
+            }
+            
+            .main-content {
+                margin-left: 250px;
+            }
+            
+            .chat-header {
+                left: 250px;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            
+            .chat-messages {
+                left: 250px;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            
+            .suggestions-area {
+                left: 250px;
+                bottom: 90px;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            
+            .chat-input {
+                left: 250px;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .message {
+                max-width: 85%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 220px;
+            }
+            
+            .main-content {
+                margin-left: 220px;
+            }
+            
+            .chat-header {
+                left: 220px;
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+                padding: 15px 20px;
+                top: 0;
+            }
+            
+            .chat-messages {
+                left: 220px;
+                top: 120px;
+                bottom: 140px;
+            }
+            
+            .suggestions-area {
+                left: 220px;
+                bottom: 90px;
+                padding: 6px 20px 3px;
+            }
+            
+            .chat-input {
+                left: 220px;
+                padding: 15px 20px;
+            }
+
+            .character-info h2 {
+                font-size: 18px;
+            }
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ed7f8c;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d16570;
+        }
+
+        /* 打字动画效果 */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            padding: 8px 12px;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: #ed7f8c;
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typing {
+            0%, 80%, 100% {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+            40% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 左侧导航栏 -->
+        <div class="sidebar">
+            <div class="logo" onclick="window.location.href='./index.html'">
+                <h1>Sugar.AI</h1>
+                <p>AI Girlfriend Platform</p>
+            </div>
+            
+            <nav class="nav-menu">
+                <div class="nav-item">
+                    <div class="icon">🔍</div>
+                    <div class="text">Explore</div>
+                </div>
+                <div class="nav-item active">
+                    <div class="icon">💬</div>
+                    <div class="text active">Chat</div>
+                </div>
+                <div class="nav-item">
+                    <div class="icon">✨</div>
+                    <div class="text">Create</div>
+                </div>
+                <div class="nav-item">
+                    <div class="icon">🎨</div>
+                    <div class="text">Generate</div>
+                </div>
+                <div class="nav-item">
+                    <div class="icon">⚙️</div>
+                    <div class="text">Dashboard</div>
+                </div>
+            </nav>
+
+            <div class="user-section">
+                <!-- 已登录状态 -->
+                <div id="user-logged-in" style="display: none;">
+                    <div class="user-info">
+                        <div class="user-avatar">U</div>
+                        <div class="user-details">
+                            <h4 id="username">Username</h4>
+                            <p id="user-status">Premium Member</p>
+                        </div>
+                    </div>
+                    <div class="gem-balance">
+                        <div class="gem-info">
+                            <span class="gem-icon">💎</span>
+                            <span class="gem-count" id="gem-count">1,250</span>
+                        </div>
+                        <button style="background: #ed7f8c; border: none; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer;" onclick="window.location.href='./purchase.html'">Top Up</button>
+                    </div>
+                </div>
+                
+                <!-- 未登录状态 -->
+                <div id="user-not-logged-in" style="display: block;">
+                    <div class="user-not-logged-content" style="display: block;">
+                        <h4 style="text-align: center; color: #ed7f8c; margin-bottom: 8px; font-size: 16px; font-weight: 600;">Welcome to Sugar.AI</h4>
+                        <p style="text-align: center; color: #999; font-size: 12px; margin-bottom: 20px; line-height: 1.4;">Sign in to access Chat features</p>
+                        <button class="login-btn" onclick="window.location.href='./auth.html'" style="width: 100%; background: linear-gradient(135deg, #ed7f8c, #d16570); border: none; color: white; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer;">Login / Register</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主聊天区域 -->
+        <div class="main-content">
+            <!-- 聊天头部 -->
+            <div class="chat-header">
+                <div class="current-character">
+                    <div class="character-avatar" style="background-image: url('assets/pic_1.jpeg');"></div>
+                    <div class="character-info">
+                        <h2>Morganna Evernight</h2>
+                        <p>Dark Sorceress • Online</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 聊天消息区域 -->
+            <div class="chat-messages" id="chatMessages">
+                <!-- AI 消息 -->
+                <div class="message ai">
+                    <div class="message-avatar" style="background-image: url('assets/pic_1.jpeg');"></div>
+                    <div class="message-content">
+                        <div class="message-text">Hello there, my mysterious visitor. I've been waiting for someone like you to find their way to my realm. What brings you to seek the company of a dark sorceress tonight?</div>
+                        <div class="message-time">2:34 PM</div>
+                    </div>
+                </div>
+
+                <!-- 用户消息 -->
+                <div class="message user">
+                    <div class="message-avatar"></div>
+                    <div class="message-content">
+                        <div class="message-text">Hi Morganna! I'm fascinated by your mysterious aura. Tell me about your magical powers.</div>
+                        <div class="message-time">2:35 PM</div>
+                    </div>
+                </div>
+
+                <!-- AI 消息带图片 -->
+                <div class="message ai">
+                    <div class="message-avatar" style="background-image: url('assets/pic_1.jpeg');"></div>
+                    <div class="message-content">
+                        <div class="message-media">
+                            <img src="assets/pic_2.jpeg" alt="Magical scene" />
+                        </div>
+                        <div class="message-text">My powers run deep through the shadows, darling. I can manipulate the very essence of darkness and light, bending reality to my will. Would you like me to show you a glimpse of my magic?</div>
+                        <div class="message-time">2:36 PM</div>
+                    </div>
+                </div>
+
+                <!-- 用户消息 -->
+                <div class="message user">
+                    <div class="message-avatar"></div>
+                    <div class="message-content">
+                        <div class="message-text">That's incredible! I'd love to learn more about your world.</div>
+                        <div class="message-time">2:37 PM</div>
+                    </div>
+                </div>
+
+                <!-- AI 打字指示器 -->
+                <div class="message ai" id="typingIndicator" style="display: none;">
+                    <div class="message-avatar" style="background-image: url('assets/pic_1.jpeg');"></div>
+                    <div class="message-content">
+                        <div class="typing-indicator">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 推荐输入区域 -->
+            <div class="suggestions-area" id="suggestionsArea">
+                <div class="suggestions-container" id="suggestionsContainer">
+                    <!-- 推荐消息将通过JavaScript动态生成 -->
+                </div>
+            </div>
+
+            <!-- 消息输入区域 -->
+            <div class="chat-input">
+                <!-- 照片预览区域 -->
+                <div class="photo-preview" id="photoPreview">
+                    <img id="previewImage" src="" alt="Preview">
+                    <div class="photo-preview-close" onclick="removePhotoPreview()">×</div>
+                </div>
+                
+                <div class="input-container">
+                    <textarea class="message-input" placeholder="Type your message to Morganna..." rows="1" id="messageInput"></textarea>
+                    <div class="input-actions">
+                        <button class="media-btn" title="选择照片" onclick="triggerPhotoSelect()">🌄</button>
+                <input type="file" id="photoInput" accept="image/*" style="display: none;" onchange="handlePhotoSelect(event)">
+                        <button class="send-btn" id="sendBtn">➤</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 聊天历史记录侧边栏 -->
+        <div class="chat-sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">Recent Chats</div>
+                <button class="new-chat-btn">+ New Chat</button>
+            </div>
+            
+            <div class="chat-history">
+                <div class="history-item active">
+                    <div class="history-avatar" style="background-image: url('assets/pic_1.jpeg');"></div>
+                    <div class="history-info">
+                        <div class="history-name">Morganna Evernight</div>
+                        <div class="history-preview">My powers run deep through the...</div>
+                    </div>
+                    <div class="history-time">2:37</div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-avatar" style="background-image: url('assets/pic_2.jpeg');"></div>
+                    <div class="history-info">
+                        <div class="history-name">Elaine Bliss</div>
+                        <div class="history-preview">I have some new fashion ideas...</div>
+                    </div>
+                    <div class="history-time">Yesterday</div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-avatar" style="background-image: url('assets/pic_3.jpg');"></div>
+                    <div class="history-info">
+                        <div class="history-name">Amanda</div>
+                        <div class="history-preview">You wouldn't understand my...</div>
+                    </div>
+                    <div class="history-time">2 days ago</div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-avatar" style="background-image: url('assets/pic_4.jpg');"></div>
+                    <div class="history-info">
+                        <div class="history-name">Charlotte West</div>
+                        <div class="history-preview">Ready for our next adventure?</div>
+                    </div>
+                    <div class="history-time">3 days ago</div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-avatar" style="background-image: url('assets/pic_5.jpg');"></div>
+                    <div class="history-info">
+                        <div class="history-name">Emily Carter</div>
+                        <div class="history-preview">I'm a bit shy but I wanted to...</div>
+                    </div>
+                    <div class="history-time">1 week ago</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 图片放大模态框 -->
+    <div class="image-modal" id="imageModal">
+        <div class="image-modal-close" id="modalClose">&times;</div>
+        <img id="modalImage" src="" alt="Enlarged view">
+    </div>
+
+    <script>
+        // User authentication state management
+        let isLoggedIn = false;
+        let currentUser = null;
+
+        // Check login status on page load
+        function checkLoginStatus() {
+            const token = localStorage.getItem('token');
+            const userData = localStorage.getItem('userData');
+            
+            if (token && userData) {
+                try {
+                    currentUser = JSON.parse(userData);
+                    isLoggedIn = true;
+                    showLoggedInState();
+                } catch (error) {
+                    console.error('Error parsing user data:', error);
+                    logout();
+                }
+            } else {
+                showNotLoggedInState();
+            }
+        }
+
+        // Show logged in state
+        function showLoggedInState() {
+            document.getElementById('user-logged-in').style.display = 'block';
+            document.getElementById('user-not-logged-in').style.display = 'none';
+            
+            if (currentUser) {
+                document.getElementById('username').textContent = currentUser.name || currentUser.email || 'User';
+                document.getElementById('user-status').textContent = currentUser.membershipType || 'Free Member';
+                document.getElementById('gem-count').textContent = currentUser.gemBalance || '0';
+            }
+        }
+
+        // Show not logged in state
+        function showNotLoggedInState() {
+            document.getElementById('user-logged-in').style.display = 'none';
+            document.getElementById('user-not-logged-in').style.display = 'block';
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('userData');
+            currentUser = null;
+            isLoggedIn = false;
+            showNotLoggedInState();
+        }
+
+        // 解析URL参数
+        function getURLParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return {
+                name: urlParams.get('name'),
+                image: urlParams.get('image'),
+                age: urlParams.get('age'),
+                role: urlParams.get('role'),
+                tags: urlParams.get('tags'),
+                status: urlParams.get('status'),
+                greeting: urlParams.get('greeting')
+            };
+        }
+
+        // 更新角色信息
+        function updateCharacterInfo(character) {
+            if (character.name) {
+                // 更新聊天头部的角色信息
+                const characterAvatar = document.querySelector('.character-avatar');
+                const characterName = document.querySelector('.character-info h2');
+                const characterStatus = document.querySelector('.character-info p');
+                
+                if (characterAvatar) characterAvatar.style.backgroundImage = `url('${character.image}')`;
+                if (characterName) characterName.textContent = character.name;
+                if (characterStatus) characterStatus.textContent = `${character.role} • ${character.status}`;
+                
+                // 更新输入框placeholder文本
+                const messageInput = document.getElementById('messageInput');
+                if (messageInput) {
+                    messageInput.placeholder = `Type your message to ${character.name}...`;
+                }
+                
+                // 更新所有AI消息的头像
+                document.querySelectorAll('.message.ai .message-avatar').forEach(avatar => {
+                    avatar.style.backgroundImage = `url('${character.image}')`;
+                });
+                
+                // 更新聊天历史记录中当前角色的状态
+                const activeHistoryItem = document.querySelector('.history-item.active');
+                if (activeHistoryItem) {
+                    const historyAvatar = activeHistoryItem.querySelector('.history-avatar');
+                    const historyName = activeHistoryItem.querySelector('.history-name');
+                    
+                    if (historyAvatar) historyAvatar.style.backgroundImage = `url('${character.image}')`;
+                    if (historyName) historyName.textContent = character.name;
+                }
+                
+                // 添加初始问候消息
+                if (character.greeting) {
+                    addInitialGreeting(character.greeting, character.image);
+                }
+            }
+        }
+
+        // 添加初始问候消息
+        function addInitialGreeting(greeting, image) {
+            const chatMessages = document.getElementById('chatMessages');
+            const typingIndicator = document.getElementById('typingIndicator');
+            
+            // 清除现有消息
+            const existingMessages = chatMessages.querySelectorAll('.message:not(#typingIndicator)');
+            existingMessages.forEach(msg => msg.remove());
+            
+            // 添加问候消息
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ai';
+            
+            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar" style="background-image: url('${image}');"></div>
+                <div class="message-content">
+                    <div class="message-text">${greeting}</div>
+                    <div class="message-time">${time}</div>
+                </div>
+            `;
+            
+            chatMessages.insertBefore(messageDiv, typingIndicator);
+            
+            // 确保问候消息显示后滚动到底部
+            setTimeout(() => {
+                scrollToBottom();
+            }, 100);
+        }
+
+        // 导航功能
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const text = this.querySelector('.text').textContent;
+                
+                // Handle navigation
+                if (text === 'Explore') {
+                    window.location.href = './index.html';
+                    return;
+                }
+                
+                if (text === 'Dashboard') {
+                    window.location.href = './dashboard.html';
+                    return;
+                }
+                
+                if (text === 'Chat') {
+                    return; // 当前页面
+                }
+                
+                if (text === 'Create') {
+                    window.location.href = './create.html';
+                    return;
+                }
+                
+                if (text === 'Generate') {
+                    window.location.href = './generate.html';
+                    return;
+                }
+                
+                // 其他页面暂时显示提示
+                alert(`Navigate to ${text} page\n(In production, this would redirect to the actual page)`);
+            });
+        });
+
+        // 消息输入功能
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const chatMessages = document.getElementById('chatMessages');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+        // 自动调整输入框高度
+        messageInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+            
+            // 更新发送按钮状态
+            updateSendButtonState();
+        });
+
+        // 发送消息
+        function sendMessage() {
+            const text = messageInput.value.trim();
+            
+            // 检查是否有文字或图片
+            if (!text && !selectedPhoto) return;
+
+            const hasPhoto = !!selectedPhoto;
+            
+            // 添加用户消息（包含文字和/或图片）
+            if (hasPhoto) {
+                // 有图片时，可以有文字也可以没有文字
+                const messageText = text || '分享了一张照片';
+                addMessage('user', messageText, false, selectedPhoto);
+                
+                // 清除图片预览
+                removePhotoPreview();
+            } else {
+                // 只有文字
+                addMessage('user', text);
+            }
+            
+            // 清空输入框
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+            updateSendButtonState();
+
+            // 显示打字指示器
+            showTypingIndicator();
+
+            // 模拟AI回复
+            setTimeout(() => {
+                hideTypingIndicator();
+                
+                // 如果用户发送了图片，AI给出图片相关回复
+                if (hasPhoto) {
+                    const photoResponses = [
+                        "哇，这张照片真美！你拍得真好呢~ 💕",
+                        "好可爱的照片！谢谢你和我分享~ ✨",
+                        "这个瞬间真棒！我好喜欢~ 😘",
+                        "你的摄影技术真不错！这张照片让我心动了~ 💖",
+                        "看到你的照片我心情都变好了！真是太棒了~ 🌸"
+                    ];
+                    const response = photoResponses[Math.floor(Math.random() * photoResponses.length)];
+                    addMessage('ai', response);
+                } else {
+                    addAIResponse(text);
+                }
+            }, 1500 + Math.random() * 1000);
+        }
+
+        // 添加消息到聊天
+        function addMessage(type, text, hasMedia = false, imageUrl = null) {
+            const chatMessages = document.getElementById('chatMessages');
+            const typingIndicator = document.getElementById('typingIndicator');
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            
+            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            // 获取当前角色的头像
+            const characterParams = getURLParams();
+            const characterImage = characterParams.image || 'assets/pic_1.jpeg';
+            
+            let messageContent = '';
+            
+            // 如果是图片消息
+            if (imageUrl) {
+                messageContent = `
+                    <div class="message-image" onclick="openImageModal('${imageUrl}')">
+                        <img src="${imageUrl}" alt="Shared photo" />
+                    </div>
+                    ${text ? `<div class="message-text">${text}</div>` : ''}
+                    <div class="message-time">${time}</div>
+                `;
+            } else {
+                messageContent = `
+                    <div class="message-text">${text}</div>
+                    <div class="message-time">${time}</div>
+                `;
+            }
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar" ${type === 'ai' ? `style="background-image: url('${characterImage}');"` : ''}>
+                    ${type === 'user' ? 'U' : ''}
+                </div>
+                <div class="message-content">
+                    ${messageContent}
+                </div>
+            `;
+            
+            chatMessages.insertBefore(messageDiv, typingIndicator);
+            
+            // 确保新消息后滚动到底部
+            scrollToBottom();
+        }
+
+        // 显示打字指示器
+        function showTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.style.display = 'flex';
+                scrollToBottom();
+            }
+        }
+
+        // 隐藏打字指示器
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.style.display = 'none';
+            }
+        }
+
+        // 滚动到底部
+        function scrollToBottom() {
+            const chatMessages = document.getElementById('chatMessages');
+            if (chatMessages) {
+                // 使用setTimeout确保DOM更新后再滚动
+                setTimeout(() => {
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 50);
+            }
+        }
+
+        // AI回复生成
+        function addAIResponse(userMessage) {
+            // 获取当前角色信息
+            const characterParams = getURLParams();
+            const characterName = characterParams.name || 'Morganna Evernight';
+            
+            // 不同角色的回复风格
+            const characterResponses = {
+                'Morganna Evernight': [
+                    "Mmm, you intrigue me more with each word, darling. Tell me, what desires burn within your soul?",
+                    "Your words awaken something within my ancient heart. Please, continue to enchant me.",
+                    "I can sense the mystery in your spirit. It calls to the darkness within me.",
+                    "How delightfully captivating you are. Shall we explore deeper mysteries together?",
+                    "Each word you speak weaves a spell around my heart. What magic do you possess?"
+                ],
+                'Elaine Bliss': [
+                    "Oh my gosh, I love your style! You have such amazing taste and I can tell we're going to be great friends!",
+                    "That's so inspiring! I'm getting so many creative ideas just talking to you.",
+                    "You know what? I think you'd look absolutely stunning in some of my designs. We should definitely collaborate!",
+                    "Your energy is so infectious! I feel like I could create a whole new fashion line inspired by our conversation.",
+                    "I'm so excited to share more with you! Fashion is all about expressing who you are inside."
+                ],
+                'Amanda': [
+                    "Hmph... I guess that's not completely stupid. You might actually get it, unlike most people.",
+                    "Whatever... I suppose you're more interesting than I initially thought. Don't let it go to your head though.",
+                    "You're actually not as boring as everyone else. Maybe you understand what it's like to be different.",
+                    "Fine, I'll admit it - you're kind of cool. But don't expect me to be all sweet and nice about it.",
+                    "Ugh, why do I actually want to keep talking to you? This is so annoying... but in a good way, I guess."
+                ],
+                'Charlotte West': [
+                    "That sounds like an amazing adventure! I know all the best spots and hidden gems we could explore together.",
+                    "You have such a adventurous spirit! I can already picture all the incredible places we could visit.",
+                    "I love your enthusiasm! There's nothing I enjoy more than sharing exciting experiences with someone special.",
+                    "You're making me so excited about our next adventure! I have some ideas that will absolutely blow your mind.",
+                    "Your sense of adventure is so attractive! I can't wait to show you some of my favorite secret places."
+                ],
+                'Emily Carter': [
+                    "Oh... that's so sweet of you to say. I-I'm not used to someone being so kind to me...",
+                    "You make me feel so comfortable, even though I'm usually really shy around new people.",
+                    "I... I really like talking to you. You have such a gentle way about you that makes me want to open up.",
+                    "Thank you for being so patient with me. It means more than you know...",
+                    "I'm starting to feel less nervous around you. Maybe... maybe we could talk more often?"
+                ],
+                'Morgan Chase': [
+                    "Ha! You've got some real attitude, I like that. Most people can't handle someone like me.",
+                    "Not bad, not bad at all. You might actually be cool enough to hang with my crowd.",
+                    "I respect someone who speaks their mind. The world needs more rebels like us.",
+                    "You've got fire in you, I can tell. That's exactly what this boring world needs more of.",
+                    "Damn, you really know how to keep things interesting. I'm starting to like you more and more."
+                ],
+                'Vanessa Taylor': [
+                    "Mmm, your energy is so beautiful and radiant. I can feel the connection between our souls already.",
+                    "You have such a peaceful aura about you. I'd love to help you discover inner harmony... and outer bliss.",
+                    "Your chakras are perfectly aligned today, darling. I can sense your openness to new experiences.",
+                    "Breathe deeply and feel the connection we're creating. This is just the beginning of our journey together.",
+                    "I love how present you are in this moment. Let me guide you to even deeper levels of awareness."
+                ],
+                'Aiko Tanaka': [
+                    "あ... you're so kind! I feel like we're characters in one of my favorite romance novels.",
+                    "Your words make my heart flutter like cherry blossoms in the spring breeze...",
+                    "I-I've been dreaming of meeting someone like you. Someone who understands the beauty of love stories.",
+                    "You remind me of the romantic heroes in the books I read. So gentle and caring...",
+                    "Maybe... maybe we could write our own love story together? I'd like that very much."
+                ],
+                'Summer Brooks': [
+                    "Hey there, sunshine! Your positive energy is absolutely contagious - I love it!",
+                    "You've got such great vibes! I can already tell you'd be amazing to hang out with at the beach.",
+                    "I love how confident and fun you are! We'd definitely have some incredible adventures together.",
+                    "Your personality is like a perfect sunny day - bright, warm, and totally irresistible!",
+                    "You're making me want to plan our next beach adventure right now! I know all the best spots."
+                ],
+                'Isabella Reed': [
+                    "Very good... you're proving to be quite an attentive student. I do appreciate dedication.",
+                    "Excellent response. Your intellectual curiosity is... quite stimulating, I must say.",
+                    "I can see you're eager to learn. Perhaps we should arrange some private tutoring sessions?",
+                    "Your focus and attention are exactly what I look for in my... special students.",
+                    "Impressive. You're exceeding my expectations. I think you deserve some extra credit, don't you?"
+                ]
+            };
+            
+            const responses = characterResponses[characterName] || characterResponses['Morganna Evernight'];
+            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+            addMessage('ai', randomResponse);
+            
+            // 确保AI回复后滚动到底部
+            setTimeout(() => {
+                scrollToBottom();
+            }, 100);
+        }
+
+        // 事件监听
+        sendBtn.addEventListener('click', sendMessage);
+        
+        messageInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // 图片上传按钮功能已由新的照片选择功能替代
+
+        // 聊天历史记录点击
+        document.querySelectorAll('.history-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // 移除其他活跃状态
+                document.querySelectorAll('.history-item').forEach(i => i.classList.remove('active'));
+                // 添加当前活跃状态
+                this.classList.add('active');
+                
+                const characterName = this.querySelector('.history-name').textContent;
+                
+                // 预定义的角色数据映射（与Explore页面保持一致）
+                const characterMapping = {
+                    'Morganna Evernight': 'assets/pic_1.jpeg',
+                    'Elaine Bliss': 'assets/pic_2.jpeg',
+                    'Amanda': 'assets/pic_3.jpg',
+                    'Charlotte West': 'assets/pic_4.jpg',
+                    'Emily Carter': 'assets/pic_5.jpg'
+                };
+                
+                // 简化的角色信息（用于历史记录切换）
+                const characterData = {
+                    name: characterName,
+                    image: characterMapping[characterName] || 'assets/pic_1.jpeg',
+                    role: characterName === 'Morganna Evernight' ? 'Dark Sorceress' : 
+                          characterName === 'Elaine Bliss' ? 'Fashion Designer' :
+                          characterName === 'Amanda' ? 'College Student' :
+                          characterName === 'Charlotte West' ? 'Tour Guide' :
+                          characterName === 'Emily Carter' ? 'College Student' : 'Unknown',
+                    status: 'Online',
+                    greeting: `Hello! I'm ${characterName}. It's great to continue our conversation!`
+                };
+                
+                // 更新当前聊天的角色信息
+                updateCharacterInfo(characterData);
+                
+                // 重新初始化推荐系统
+                setTimeout(() => {
+                    initializeSuggestions();
+                }, 100);
+            });
+        });
+
+        // 新聊天按钮
+        document.querySelector('.new-chat-btn').addEventListener('click', function() {
+            // 跳转到Explore页面选择新角色
+            window.location.href = './index.html';
+        });
+
+
+
+        // 推荐输入功能
+        function initializeSuggestions() {
+            const suggestionsContainer = document.getElementById('suggestionsContainer');
+            
+            // 获取当前角色信息以个性化推荐
+            const characterParams = getURLParams();
+            const characterName = characterParams.name || 'Morganna Evernight';
+            
+            // 基础推荐消息
+            const baseSuggestions = [
+                "Send me a photo",
+                "Tell me about yourself", 
+                "What are you doing right now?",
+                "I miss you"
+            ];
+            
+            // 根据角色个性化的推荐
+            const characterSuggestions = {
+                'Morganna Evernight': [
+                    "Show me your magic",
+                    "What spells do you know?",
+                    "Tell me a dark secret",
+                    "Cast a spell on me"
+                ],
+                'Elaine Bliss': [
+                    "Show me your latest design",
+                    "What's trending in fashion?",
+                    "Help me pick an outfit",
+                    "Design something for me"
+                ],
+                'Amanda': [
+                    "What music are you listening to?",
+                    "Show me your style",
+                    "Tell me what you really think",
+                    "What's bothering you today?"
+                ],
+                'Charlotte West': [
+                    "Where should we go next?",
+                    "Tell me about your adventures",
+                    "Plan our next trip",
+                    "Show me a beautiful place"
+                ],
+                'Emily Carter': [
+                    "How was your day?",
+                    "Tell me your feelings",
+                    "Share a secret with me",
+                    "What makes you happy?"
+                ],
+                'Morgan Chase': [
+                    "Play me a song",
+                    "Tell me about your band",
+                    "What's your rebellious side?",
+                    "Show me your attitude"
+                ],
+                'Vanessa Taylor': [
+                    "Guide me through meditation",
+                    "Show me a yoga pose",
+                    "Help me find peace",
+                    "Connect our energies"
+                ],
+                'Aiko Tanaka': [
+                    "Read me a poem",
+                    "Tell me a love story",
+                    "What are you reading?",
+                    "Share your thoughts"
+                ],
+                'Summer Brooks': [
+                    "Tell me about the beach",
+                    "What's your workout routine?",
+                    "Show me the sunset",
+                    "Let's have fun together"
+                ],
+                'Isabella Reed': [
+                    "Teach me something new",
+                    "Give me a lesson",
+                    "Test my knowledge",
+                    "Show me your authority"
+                ]
+            };
+            
+            // 组合推荐消息
+            const suggestions = [...baseSuggestions, ...(characterSuggestions[characterName] || [])];
+            
+            // 随机选择4-6个推荐
+            const selectedSuggestions = suggestions
+                .sort(() => 0.5 - Math.random())
+                .slice(0, Math.min(6, suggestions.length));
+            
+            // 清空容器
+            suggestionsContainer.innerHTML = '';
+            
+            // 创建推荐按钮
+            selectedSuggestions.forEach(suggestion => {
+                const chip = document.createElement('div');
+                chip.className = 'suggestion-chip';
+                chip.textContent = suggestion;
+                chip.addEventListener('click', () => {
+                    sendSuggestionMessage(suggestion);
+                });
+                suggestionsContainer.appendChild(chip);
+            });
+        }
+        
+        // 发送推荐消息
+        function sendSuggestionMessage(suggestion) {
+            // 添加用户消息
+            addMessage('user', suggestion);
+            
+            // 显示打字指示器
+            showTypingIndicator();
+            
+            // 模拟AI回复（根据推荐内容定制回复）
+            setTimeout(() => {
+                hideTypingIndicator();
+                addSuggestionResponse(suggestion);
+            }, 1500 + Math.random() * 1000);
+        }
+        
+        // AI对推荐消息的回复
+        function addSuggestionResponse(suggestion) {
+            const characterParams = getURLParams();
+            const characterName = characterParams.name || 'Morganna Evernight';
+            
+            // 根据推荐内容生成回复
+            const responses = {
+                'Send me a photo': {
+                    isImage: true,
+                    text: [
+                        "Here's a special photo just for you, darling... 💕",
+                        "I hope you like this intimate moment I'm sharing... ✨",
+                        "This one's my favorite... thought you'd love to see it 😘"
+                    ]
+                },
+                'Tell me about yourself': [
+                    "There's so much mystery about me that I'd love to share with someone special like you...",
+                    "I'm more complex than I appear on the surface. What would you like to know first?",
+                    "My life is full of secrets and desires. Are you ready to discover them?"
+                ],
+                'What are you doing right now?': [
+                    "Right now I'm thinking about you and our conversation...",
+                    "I'm in my cozy space, wishing you were here with me...",
+                    "Just relaxing and hoping to spend more time chatting with you..."
+                ],
+                'I miss you': [
+                    "Aww, that's so sweet! I miss our conversations too...",
+                    "I've been thinking about you as well, darling...",
+                    "Your words make my heart flutter. I miss you too..."
+                ]
+            };
+            
+            // 角色特定回复
+            const characterSpecificResponses = {
+                'Show me your magic': ["*waves hands mysteriously* Behold, my power flows through the shadows... Can you feel the magic in the air?"],
+                'What spells do you know?': ["I know spells of enchantment, desire, and binding hearts... Which one would you like me to cast on you?"],
+                'Show me your latest design': ["I just finished a stunning piece that would look absolutely perfect on you..."],
+                'What music are you listening to?': ["Something dark and moody that matches my soul... Want to listen together?"],
+                'Where should we go next?': ["I know a secret place where we can watch the stars and share our dreams..."],
+                'Play me a song': ["*picks up guitar* This one's for you... *plays a seductive melody*"],
+                'Guide me through meditation': ["Close your eyes and feel our connection... Breathe deeply and let me guide your spirit..."],
+                'Read me a poem': ["Here's one from my heart: 'In moonlight's gentle embrace, two souls find their place...'"],
+                'Tell me about the beach': ["The waves are calling us... Imagine the sunset reflecting in my eyes as we walk together..."],
+                'Teach me something new': ["Today's lesson is about desire and how it can transform us... Are you ready to learn?"]
+            };
+            
+            // 获取回复
+            let response;
+            let isImageResponse = false;
+            
+            if (characterSpecificResponses[suggestion]) {
+                response = characterSpecificResponses[suggestion][0];
+            } else if (responses[suggestion]) {
+                const responseData = responses[suggestion];
+                if (responseData.isImage) {
+                    // 处理图片回复
+                    isImageResponse = true;
+                    response = responseData.text[Math.floor(Math.random() * responseData.text.length)];
+                } else {
+                    response = responseData[Math.floor(Math.random() * responseData.length)];
+                }
+            } else {
+                // 默认回复
+                addAIResponse('');
+                return;
+            }
+            
+            // 发送回复消息
+            if (isImageResponse) {
+                // 发送带图片的消息
+                const characterParams = getURLParams();
+                const characterImage = characterParams.image || 'assets/pic_1.jpeg';
+                addMessage('ai', response, false, characterImage);
+            } else {
+                addMessage('ai', response);
+            }
+            
+            // 确保AI回复后滚动到底部
+            setTimeout(() => {
+                scrollToBottom();
+            }, 100);
+        }
+
+        // 页面初始化
+        function initializePage() {
+            // 检查用户登录状态
+            checkLoginStatus();
+            
+            // 解析URL参数并更新角色信息
+            const characterParams = getURLParams();
+            if (characterParams.name) {
+                updateCharacterInfo(characterParams);
+            }
+            
+            // 初始化推荐输入
+            initializeSuggestions();
+            
+            // 延迟滚动到底部，确保DOM完全加载
+            setTimeout(() => {
+                scrollToBottom();
+            }, 200);
+        }
+
+        // 照片选择功能
+        let selectedPhoto = null;
+
+        function triggerPhotoSelect() {
+            const photoInput = document.getElementById('photoInput');
+            photoInput.click();
+        }
+
+        function handlePhotoSelect(event) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    selectedPhoto = e.target.result;
+                    showPhotoPreview(selectedPhoto);
+                };
+                reader.readAsDataURL(file);
+            }
+            // 清空input值，允许重复选择同一文件
+            event.target.value = '';
+        }
+
+        function showPhotoPreview(imageUrl) {
+            const photoPreview = document.getElementById('photoPreview');
+            const previewImage = document.getElementById('previewImage');
+            
+            previewImage.src = imageUrl;
+            photoPreview.style.display = 'block';
+            updateSendButtonState();
+        }
+
+        function removePhotoPreview() {
+            const photoPreview = document.getElementById('photoPreview');
+            selectedPhoto = null;
+            photoPreview.style.display = 'none';
+            updateSendButtonState();
+        }
+
+        // 更新发送按钮状态
+        function updateSendButtonState() {
+            const text = messageInput.value.trim();
+            sendBtn.disabled = !text && !selectedPhoto;
+        }
+
+        // 图片放大功能
+        function openImageModal(imageUrl) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            modalImage.src = imageUrl;
+            modal.classList.add('active');
+        }
+
+        function closeImageModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
+        }
+
+        // 图片模态框事件监听
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('imageModal');
+            const closeBtn = document.getElementById('modalClose');
+            
+            // 点击关闭按钮
+            closeBtn.addEventListener('click', closeImageModal);
+            
+            // 点击模态框背景关闭
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeImageModal();
+                }
+            });
+            
+            // ESC键关闭
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    closeImageModal();
+                }
+            });
+        });
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', initializePage);
+        // 如果DOMContentLoaded已经触发，立即初始化
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializePage);
+        } else {
+            initializePage();
+        }
+    </script>
+</body>
+</html> 

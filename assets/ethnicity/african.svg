@@ -1,0 +1,27 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景圆 -->
+  <circle cx="100" cy="100" r="100" fill="#f5f5f5"/>
+  
+  <!-- 面部轮廓 -->
+  <ellipse cx="100" cy="110" rx="60" ry="70" fill="#8d5524"/>
+  
+  <!-- 眼睛 -->
+  <ellipse cx="85" cy="95" rx="9" ry="7" fill="#654321"/>
+  <ellipse cx="115" cy="95" rx="9" ry="7" fill="#654321"/>
+  
+  <!-- 眉毛 -->
+  <path d="M 76 83 Q 85 78 94 83" stroke="#2d1b0e" stroke-width="2" fill="none"/>
+  <path d="M 106 83 Q 115 78 124 83" stroke="#2d1b0e" stroke-width="2" fill="none"/>
+  
+  <!-- 鼻子 -->
+  <ellipse cx="100" cy="105" rx="5" ry="7" fill="#7a4c1f"/>
+  
+  <!-- 嘴巴 -->
+  <path d="M 93 125 Q 100 132 107 125" stroke="#cc6666" stroke-width="2" fill="none"/>
+  
+  <!-- 头发 -->
+  <path d="M 40 70 Q 50 30 100 35 Q 150 30 160 70 Q 155 50 100 45 Q 45 50 40 70" fill="#1c1c1c"/>
+  
+  <!-- 标识文字 -->
+  <text x="100" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#666">African</text>
+</svg> 

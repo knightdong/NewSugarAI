@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Purchase - Sugar.AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #212121 0%, #1a1a1a 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* 左侧导航栏 */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 100%);
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            border-right: 1px solid #333;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            padding: 30px 25px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+        }
+
+        .logo h1 {
+            color: #ed7f8c;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #999;
+            font-size: 12px;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 18px 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: linear-gradient(90deg, rgba(237, 127, 140, 0.1) 0%, transparent 100%);
+            border-left-color: #ed7f8c;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(237, 127, 140, 0.15) 0%, transparent 100%);
+            border-left-color: #ed7f8c;
+        }
+
+        .nav-item .icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            color: #ed7f8c;
+            font-size: 20px;
+        }
+
+        .nav-item .text {
+            font-size: 16px;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .nav-item .text.active {
+            color: #ed7f8c;
+        }
+
+        /* 用户信息区域 */
+        .user-section {
+            position: absolute;
+            bottom: 20px;
+            left: 25px;
+            right: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(237, 127, 140, 0.1) 0%, rgba(237, 127, 140, 0.05) 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(237, 127, 140, 0.2);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .user-details h4 {
+            color: #ffffff;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .user-details p {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .gem-balance {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        .gem-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .gem-icon {
+            color: #ed7f8c;
+            margin-right: 6px;
+        }
+
+        .gem-count {
+            color: #ed7f8c;
+            font-weight: bold;
+        }
+
+        /* 主内容区域 */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 30px;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .content-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .content-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #ed7f8c;
+            margin-bottom: 10px;
+        }
+
+        .content-subtitle {
+            font-size: 18px;
+            color: #999;
+            margin-bottom: 20px;
+        }
+
+        .premium-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        /* 卡片布局 */
+        .cards-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .benefits-card {
+            background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+            border: 1px solid #333;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ed7f8c;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .benefits-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .benefit-item:last-child {
+            border-bottom: none;
+        }
+
+        .benefit-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            color: #ed7f8c;
+            font-size: 20px;
+        }
+
+        .benefit-text {
+            flex: 1;
+            font-size: 16px;
+            color: #ffffff;
+            line-height: 1.4;
+        }
+
+        .benefit-highlight {
+            color: #ed7f8c;
+            font-weight: 600;
+        }
+
+        /* 充值卡片 */
+        .purchase-card {
+            background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+            border: 1px solid #333;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .gem-packages {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .gem-package {
+            background: linear-gradient(145deg, #333, #2a2a2a);
+            border: 2px solid #444;
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .gem-package:hover {
+            border-color: #ed7f8c;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(237, 127, 140, 0.3);
+        }
+
+        .gem-package.selected {
+            border-color: #ed7f8c;
+            box-shadow: 0 8px 25px rgba(237, 127, 140, 0.3);
+        }
+
+        .gem-package.selected .gem-info-row {
+            padding-right: 35px;
+        }
+
+        .gem-package.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 22px;
+            height: 22px;
+            background: #ed7f8c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        .gem-package.popular {
+            border-color: #666;
+            background: linear-gradient(145deg, rgba(237, 127, 140, 0.05), rgba(237, 127, 140, 0.02));
+        }
+
+        .gem-package.popular:hover:not(.selected) {
+            border-color: #999;
+        }
+
+        .gem-package.popular.selected {
+            border-color: #ed7f8c;
+            background: linear-gradient(145deg, rgba(237, 127, 140, 0.1), rgba(237, 127, 140, 0.05));
+        }
+
+        .gem-package.popular::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #ed7f8c;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .gem-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .gem-amount {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .gem-count-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ed7f8c;
+        }
+
+        .gem-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .gem-bonus {
+            font-size: 12px;
+            color: #4CAF50;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .purchase-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+        }
+
+        .purchase-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(237, 127, 140, 0.4);
+        }
+
+        .purchase-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* 支付方式 */
+        .payment-methods {
+            margin-top: 30px;
+        }
+
+        .payment-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ed7f8c;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .payment-options {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .payment-option {
+            padding: 8px 12px;
+            background: #333;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #999;
+            border: 1px solid #444;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .cards-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                width: 100vw;
+                padding: 20px;
+            }
+            
+            .sidebar {
+                margin-left: -280px;
+                transition: margin-left 0.3s ease;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content-title {
+                font-size: 28px;
+            }
+            
+            .cards-container {
+                gap: 15px;
+            }
+            
+            .benefits-card, .purchase-card {
+                padding: 20px;
+            }
+            
+            .gem-package {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 左侧导航栏 -->
+        <div class="sidebar">
+            <div class="logo" onclick="window.location.href='./index.html'">
+                <h1>Sugar.AI</h1>
+                <p>AI Girlfriend Platform</p>
+            </div>
+            
+            <nav class="nav-menu">
+                <div class="nav-item">
+                    <div class="icon">🔍</div>
+                    <div class="text">Explore</div>
+                </div>
+                <div class="nav-item" style="display: none;">
+                    <div class="icon">💬</div>
+                    <div class="text">Chat</div>
+                </div>
+                <div class="nav-item">
+                    <div class="icon">✨</div>
+                    <div class="text">Create</div>
+                </div>
+                <div class="nav-item">
+                    <div class="icon">🎨</div>
+                    <div class="text">Generate</div>
+                </div>
+                <div class="nav-item">
+                    <div class="icon">⚙️</div>
+                    <div class="text">Dashboard</div>
+                </div>
+            </nav>
+
+            <div class="user-section">
+                <div class="user-info">
+                    <div class="user-avatar">U</div>
+                    <div class="user-details">
+                        <h4>Username</h4>
+                        <p>Free Member</p>
+                    </div>
+                </div>
+                <div class="gem-balance">
+                    <div class="gem-info">
+                        <span class="gem-icon">💎</span>
+                        <span class="gem-count">50</span>
+                    </div>
+                    <button style="background: #ed7f8c; border: none; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer;" onclick="window.location.href='./purchase.html'">Top Up</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="main-content">
+            <div class="content-header">
+                <h1 class="content-title">Upgrade to Premium</h1>
+                <p class="content-subtitle">Unlock unlimited possibilities with your AI companion</p>
+                <div class="premium-badge">💎 Premium Membership</div>
+            </div>
+
+            <div class="cards-container">
+                <!-- Premium Benefits Card -->
+                <div class="benefits-card">
+                    <h2 class="card-title">Premium Benefits</h2>
+                    <ul class="benefits-list">
+                        <li class="benefit-item">
+                            <span class="benefit-icon">✨</span>
+                            <span class="benefit-text">Create your own <span class="benefit-highlight">AI Girlfriend(s)</span></span>
+                        </li>
+                        <li class="benefit-item">
+                            <span class="benefit-icon">💬</span>
+                            <span class="benefit-text"><span class="benefit-highlight">Unlimited</span> text messages</span>
+                        </li>
+                        <li class="benefit-item">
+                            <span class="benefit-icon">🖼️</span>
+                            <span class="benefit-text">Remove image blur & <span class="benefit-highlight">HD quality</span></span>
+                        </li>
+                        <li class="benefit-item">
+                            <span class="benefit-icon">🎨</span>
+                            <span class="benefit-text">Generate <span class="benefit-highlight">custom images</span></span>
+                        </li>
+                        <li class="benefit-item">
+                            <span class="benefit-icon">🎬</span>
+                            <span class="benefit-text">Generate <span class="benefit-highlight">videos</span></span>
+                        </li>
+                        <li class="benefit-item">
+                            <span class="benefit-icon">⚡</span>
+                            <span class="benefit-text"><span class="benefit-highlight">Fast</span> response time</span>
+                        </li>
+                        <li class="benefit-item">
+                            <span class="benefit-icon">🔄</span>
+                            <span class="benefit-text">Priority support & <span class="benefit-highlight">early access</span></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Purchase Card -->
+                <div class="purchase-card">
+                    <h2 class="card-title">Get Gems</h2>
+                    <div class="gem-packages">
+                        <div class="gem-package" onclick="selectPackage('starter', this)">
+                            <div class="gem-info-row">
+                                <div class="gem-amount">
+                                    <span class="gem-icon">💎</span>
+                                    <span class="gem-count-text">100 Gems</span>
+                                </div>
+                                <div class="gem-price">$4.99</div>
+                            </div>
+                        </div>
+
+                        <div class="gem-package popular selected" onclick="selectPackage('popular', this)">
+                            <div class="gem-info-row">
+                                <div class="gem-amount">
+                                    <span class="gem-icon">💎</span>
+                                    <span class="gem-count-text">250 Gems</span>
+                                </div>
+                                <div class="gem-price">$9.99</div>
+                            </div>
+                            <div class="gem-bonus">+50 Bonus Gems</div>
+                        </div>
+
+                        <div class="gem-package" onclick="selectPackage('premium', this)">
+                            <div class="gem-info-row">
+                                <div class="gem-amount">
+                                    <span class="gem-icon">💎</span>
+                                    <span class="gem-count-text">500 Gems</span>
+                                </div>
+                                <div class="gem-price">$19.99</div>
+                            </div>
+                            <div class="gem-bonus">+100 Bonus Gems</div>
+                        </div>
+
+                        <div class="gem-package" onclick="selectPackage('ultimate', this)">
+                            <div class="gem-info-row">
+                                <div class="gem-amount">
+                                    <span class="gem-icon">💎</span>
+                                    <span class="gem-count-text">1000 Gems</span>
+                                </div>
+                                <div class="gem-price">$39.99</div>
+                            </div>
+                            <div class="gem-bonus">+200 Bonus Gems</div>
+                        </div>
+                    </div>
+
+                    <button class="purchase-button" id="purchaseBtn" onclick="purchaseGems()">
+                        Select a Package
+                    </button>
+
+                    <div class="payment-methods">
+                        <div class="payment-title">Secure Payment Methods</div>
+                        <div class="payment-options">
+                            <div class="payment-option">💳 Credit Card</div>
+                            <div class="payment-option">📱 PayPal</div>
+                            <div class="payment-option">🍎 Apple Pay</div>
+                            <div class="payment-option">🤖 Google Pay</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedPackage = 'popular';
+        
+        const packages = {
+            starter: { gems: 100, price: 4.99, bonus: 0 },
+            popular: { gems: 250, price: 9.99, bonus: 50 },
+            premium: { gems: 500, price: 19.99, bonus: 100 },
+            ultimate: { gems: 1000, price: 39.99, bonus: 200 }
+        };
+
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 默认选中250 Gems包
+            const pkg = packages['popular'];
+            const totalGems = pkg.gems + pkg.bonus;
+            document.getElementById('purchaseBtn').textContent = 
+                `Purchase ${totalGems} Gems for $${pkg.price}`;
+        });
+
+        function selectPackage(packageId, element) {
+            // 移除之前的选中状态
+            document.querySelectorAll('.gem-package').forEach(pkg => {
+                pkg.classList.remove('selected');
+            });
+            
+            // 选中当前包
+            element.classList.add('selected');
+            selectedPackage = packageId;
+            
+            // 更新购买按钮
+            const pkg = packages[packageId];
+            const totalGems = pkg.gems + pkg.bonus;
+            document.getElementById('purchaseBtn').textContent = 
+                `Purchase ${totalGems} Gems for $${pkg.price}`;
+        }
+
+        function purchaseGems() {
+            if (!selectedPackage) {
+                alert('Please select a gem package first!');
+                return;
+            }
+            
+            const pkg = packages[selectedPackage];
+            const totalGems = pkg.gems + pkg.bonus;
+            
+            // 这里可以集成真实的支付处理
+            if (confirm(`Confirm purchase of ${totalGems} gems for $${pkg.price}?`)) {
+                // 模拟支付成功
+                alert('Payment successful! Your gems have been added to your account.');
+                
+                // 可以在这里跳转回主页面或刷新gem余额
+                window.location.href = './index.html';
+            }
+        }
+
+        // 导航功能
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const text = this.querySelector('.text').textContent;
+                
+                if (text === 'Explore') {
+                    window.location.href = './index.html';
+                } else if (text === 'Chat') {
+                    alert('Chat feature is temporarily unavailable. Please try other features!');
+                } else if (text === 'Create') {
+                    window.location.href = './create.html';
+                } else if (text === 'Dashboard') {
+                    window.location.href = './dashboard.html';
+                } else if (text === 'Generate') {
+                    window.location.href = './generate.html';
+                } else {
+                    alert(`Navigate to ${text} page\n(功能开发中)`);
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,3621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate - Sugar.AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #212121;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* 左侧导航栏 */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 100%);
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            border-right: 1px solid #333;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            padding: 30px 25px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+        }
+
+        .logo h1 {
+            color: #ed7f8c;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #999;
+            font-size: 12px;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 18px 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: linear-gradient(90deg, rgba(237, 127, 140, 0.1) 0%, transparent 100%);
+            border-left-color: #ed7f8c;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(237, 127, 140, 0.15) 0%, transparent 100%);
+            border-left-color: #ed7f8c;
+        }
+
+        .nav-item .icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            color: #ed7f8c;
+            font-size: 20px;
+        }
+
+        .nav-item .text {
+            font-size: 16px;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .nav-item .text.active {
+            color: #ed7f8c;
+        }
+
+        /* 用户信息区域 */
+        .user-section {
+            position: absolute;
+            bottom: 20px;
+            left: 25px;
+            right: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(237, 127, 140, 0.1) 0%, rgba(237, 127, 140, 0.05) 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(237, 127, 140, 0.2);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .user-details h4 {
+            color: #ffffff;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .user-details p {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .gem-balance {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        .gem-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .gem-icon {
+            color: #ed7f8c;
+            margin-right: 6px;
+        }
+
+        .gem-count {
+            color: #ed7f8c;
+            font-weight: bold;
+        }
+
+        /* 主内容区域 */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 30px;
+            padding-right: 420px;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .content-header {
+            margin-bottom: 30px;
+        }
+
+        .content-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #ed7f8c;
+            margin-bottom: 10px;
+        }
+
+        .content-subtitle {
+            font-size: 16px;
+            color: #999;
+            margin-bottom: 20px;
+        }
+
+        /* 子导航 */
+        .sub-nav {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #333;
+        }
+
+        .sub-nav-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+            color: #999;
+            font-weight: 500;
+        }
+
+        .sub-nav-item:hover {
+            color: #ed7f8c;
+        }
+
+        .sub-nav-item.active {
+            color: #ed7f8c;
+            border-bottom-color: #ed7f8c;
+        }
+
+        /* 内容区域 */
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .feature-card {
+            background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ed7f8c;
+            margin-bottom: 15px;
+        }
+
+        .feature-description {
+            color: #999;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            color: #ed7f8c;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #ed7f8c;
+            box-shadow: 0 0 0 2px rgba(237, 127, 140, 0.2);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .character-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .character-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #444;
+            border-radius: 12px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .character-card:hover {
+            border-color: #ed7f8c;
+            transform: translateY(-2px);
+        }
+
+        .character-card.selected {
+            border-color: #ed7f8c;
+            background: rgba(237, 127, 140, 0.1);
+        }
+
+        .character-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            margin: 0 auto 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .character-name {
+            font-size: 12px;
+            color: #ffffff;
+        }
+
+        .upload-area {
+            border: 2px dashed #444;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: #ed7f8c;
+            background: rgba(237, 127, 140, 0.05);
+        }
+
+        .upload-area.drag-over {
+            border-color: #ed7f8c;
+            background: rgba(237, 127, 140, 0.1);
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: #ed7f8c;
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            color: #999;
+            font-size: 14px;
+        }
+
+        /* Photo preview styles */
+        .upload-area.has-image {
+            border: 2px solid #ed7f8c;
+            background: rgba(237, 127, 140, 0.05);
+            padding: 20px;
+        }
+
+        .upload-area.has-image .upload-icon,
+        .upload-area.has-image .upload-text {
+            display: none;
+        }
+
+        .upload-preview {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .upload-area.has-image .upload-preview {
+            display: flex;
+        }
+
+        .upload-preview-image {
+            max-width: 100%;
+            max-height: 200px;
+            width: auto;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            object-fit: contain;
+            border: 2px solid rgba(237, 127, 140, 0.3);
+        }
+
+        .upload-preview-info {
+            text-align: center;
+        }
+
+        .upload-preview-name {
+            color: #ed7f8c;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .upload-preview-size {
+            color: #999;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .upload-preview-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .upload-preview-btn {
+            background: rgba(237, 127, 140, 0.1);
+            border: 1px solid #ed7f8c;
+            color: #ed7f8c;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-preview-btn:hover {
+            background: rgba(237, 127, 140, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .upload-preview-btn.danger {
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .upload-preview-btn.danger:hover {
+            background: rgba(255, 107, 107, 0.2);
+        }
+
+        .upload-hint {
+            color: #666;
+            font-size: 12px;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        /* Suggestion tabs */
+        .suggestion-tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(237, 127, 140, 0.2);
+        }
+
+        .suggestion-tab {
+            flex: 1;
+            padding: 12px 16px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: #ccc;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .suggestion-tab:hover {
+            color: #ed7f8c;
+            background: rgba(237, 127, 140, 0.1);
+        }
+
+        .suggestion-tab.active {
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            color: white;
+            box-shadow: 0 4px 15px rgba(237, 127, 140, 0.3);
+        }
+
+        .suggestion-tab span {
+            font-size: 16px;
+        }
+
+        .suggestions {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+            max-width: 100%;
+        }
+
+        .suggestion-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.05));
+            border: 1px solid rgba(237, 127, 140, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            min-height: 140px;
+        }
+
+        .suggestion-card:hover {
+            background: linear-gradient(145deg, rgba(237, 127, 140, 0.15), rgba(237, 127, 140, 0.1));
+            border-color: #ed7f8c;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(237, 127, 140, 0.2);
+        }
+
+        .suggestion-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin-bottom: 12px;
+            border: 2px solid rgba(237, 127, 140, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .suggestion-card:hover .suggestion-image {
+            border-color: #ed7f8c;
+            transform: scale(1.05);
+        }
+
+        .suggestion-card.selected {
+            background: linear-gradient(145deg, rgba(237, 127, 140, 0.3), rgba(237, 127, 140, 0.2));
+            border-color: #ed7f8c;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(237, 127, 140, 0.3);
+        }
+
+        .suggestion-card.selected .suggestion-image {
+            border-color: #ed7f8c;
+            transform: scale(1.05);
+        }
+
+        .suggestion-card.selected .suggestion-text {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .suggestion-text {
+            color: #ed7f8c;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.3;
+            text-align: center;
+        }
+
+        /* Legacy support for old suggestion tags */
+        .suggestion-tag {
+            background: rgba(237, 127, 140, 0.1);
+            border: 1px solid #ed7f8c;
+            color: #ed7f8c;
+            padding: 8px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .suggestion-tag:hover {
+            background: rgba(237, 127, 140, 0.2);
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(237, 127, 140, 0.4);
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* 角色选择弹窗 */
+        .character-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .character-modal.active {
+            display: flex;
+        }
+
+        .character-modal-content {
+            background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 600px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .character-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .character-modal-title {
+            color: #ed7f8c;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .character-modal-close {
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .character-modal-close:hover {
+            color: #ed7f8c;
+            background: rgba(237, 127, 140, 0.1);
+        }
+
+        .character-modal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .character-modal-card {
+            background: linear-gradient(145deg, #333, #2a2a2a);
+            border: 2px solid #444;
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .character-modal-card:hover {
+            border-color: #ed7f8c;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(237, 127, 140, 0.3);
+        }
+
+        .character-modal-card.selected {
+            border-color: #ed7f8c;
+            background: linear-gradient(145deg, rgba(237, 127, 140, 0.1), rgba(237, 127, 140, 0.05));
+        }
+
+        .character-modal-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .character-modal-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .character-modal-info {
+            color: #999;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .character-modal-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            justify-content: center;
+        }
+
+        .character-modal-tag {
+            background: rgba(237, 127, 140, 0.2);
+            color: #ed7f8c;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+
+        /* Upload image option */
+        .character-upload-card {
+            background: linear-gradient(145deg, #333, #2a2a2a);
+            border: 2px dashed #555;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+
+        .character-upload-card:hover {
+            border-color: #ed7f8c;
+            background: linear-gradient(145deg, #3a3a3a, #333);
+        }
+
+        .character-upload-card.selected {
+            border-color: #ed7f8c;
+            background: linear-gradient(145deg, #ed7f8c, #d16570);
+        }
+
+        .character-upload-icon {
+            font-size: 48px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .character-upload-card:hover .character-upload-icon {
+            color: #ed7f8c;
+        }
+
+        .character-upload-card.selected .character-upload-icon {
+            color: white;
+        }
+
+        .character-upload-text {
+            color: #ccc;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .character-upload-card:hover .character-upload-text {
+            color: #ed7f8c;
+        }
+
+        .character-upload-card.selected .character-upload-text {
+            color: white;
+        }
+
+        .character-upload-subtext {
+            color: #888;
+            font-size: 12px;
+        }
+
+        .character-upload-card:hover .character-upload-subtext {
+            color: #ccc;
+        }
+
+        .character-upload-card.selected .character-upload-subtext {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .character-upload-input {
+            display: none;
+        }
+
+        .character-upload-preview {
+            width: 100%;
+            height: 120px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        .character-upload-card.has-image .character-upload-preview {
+            display: block;
+        }
+
+        .character-upload-card.has-image .character-upload-icon {
+            display: none;
+        }
+
+        .character-select-btn {
+            background: rgba(237, 127, 140, 0.1);
+            border: 2px solid #ed7f8c;
+            color: #ed7f8c;
+            padding: 15px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .character-select-btn:hover {
+            background: rgba(237, 127, 140, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .character-select-btn.selected {
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            color: white;
+        }
+
+        .character-select-btn .character-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .character-select-btn .character-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: none;
+        }
+
+        .character-select-btn.selected .character-avatar {
+            display: block;
+        }
+
+        .character-select-btn .character-name {
+            font-weight: 600;
+        }
+
+        /* 右侧结果面板 */
+        .result-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 100vh;
+            background: linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 100%);
+            border-left: 1px solid #333;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .result-panel-header {
+            padding: 30px 25px 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        .result-panel-title {
+            color: #ed7f8c;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .result-panel-subtitle {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .result-panel-content {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+        }
+
+        .result-card {
+            background: linear-gradient(145deg, #333, #2a2a2a);
+            border: 1px solid #444;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .result-card.active {
+            border-color: #ed7f8c;
+            box-shadow: 0 8px 25px rgba(237, 127, 140, 0.3);
+        }
+
+        .result-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .result-card-title {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .result-card-time {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .result-progress {
+            margin-bottom: 20px;
+        }
+
+        .result-progress-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .result-progress-text {
+            color: #ed7f8c;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .result-progress-percentage {
+            color: #ed7f8c;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .result-progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .result-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ed7f8c, #d16570);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .result-preview {
+            margin-top: 20px;
+        }
+
+        .result-preview-image {
+            width: 100%;
+            min-height: 200px;
+            max-height: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 2px dashed #444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-preview-image.has-content {
+            border: 2px solid rgba(237, 127, 140, 0.3);
+            background: transparent;
+            padding: 0;
+        }
+
+        .result-preview-image img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 8px;
+            display: block;
+        }
+
+        .result-preview-image.has-content {
+            height: auto;
+            min-height: 200px;
+            align-items: stretch;
+        }
+
+        .result-preview-image.has-content img {
+            width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: contain;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .result-preview-image.has-content::after {
+            content: '🔍 Click to enlarge';
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .result-preview-image.has-content:hover::after {
+            opacity: 1;
+        }
+
+        .result-preview-image.has-content:hover {
+            transform: scale(1.02);
+            border-color: #ed7f8c;
+        }
+
+        .result-preview-image:not(.has-content):hover {
+            border-color: #ed7f8c;
+            transform: scale(1.02);
+        }
+
+        .result-preview-placeholder {
+            color: #666;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .result-preview-video {
+            width: 100%;
+            height: 200px;
+            border-radius: 10px;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        /* 视频预览特殊样式 */
+        .result-preview-image.has-content[data-result-type="video"] {
+            height: auto;
+            min-height: 200px;
+            max-height: 400px;
+            align-items: stretch;
+        }
+
+        .result-preview-image.has-content[data-result-type="video"] video {
+            width: 100%;
+            height: auto;
+            min-height: 200px;
+            max-height: 400px;
+            object-fit: contain;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .result-preview-image.has-content[data-result-type="video"] video[data-loaded="true"] {
+            opacity: 1;
+        }
+
+        .result-info {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .result-info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .result-info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .result-info-label {
+            color: #999;
+        }
+
+        .result-info-value {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .result-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .result-action-btn {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ed7f8c;
+            background: rgba(237, 127, 140, 0.1);
+            color: #ed7f8c;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .result-action-btn:hover {
+            background: rgba(237, 127, 140, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .result-action-btn.primary {
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            color: white;
+        }
+
+        .result-action-btn.primary:hover {
+            background: linear-gradient(135deg, #d16570, #b85c7a);
+        }
+
+        /* 结果放大模态框 */
+        .result-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            overflow: hidden;
+        }
+
+        .result-modal.active {
+            display: flex;
+        }
+
+        .result-modal-content {
+            max-width: calc(100vw - 80px);
+            max-height: calc(100vh - 80px);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 40px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .result-modal-image {
+            max-width: calc(100vw - 120px);
+            max-height: calc(100vh - 120px);
+            width: auto;
+            height: auto;
+            border-radius: 10px;
+            object-fit: contain;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            transition: opacity 0.3s ease;
+        }
+
+        /* 保险措施：确保图片绝对不会超过视口 */
+        .result-modal-image {
+            max-width: 90vw !important;
+            max-height: 90vh !important;
+        }
+
+        .result-modal-video {
+            max-width: 90vw !important;
+            max-height: 90vh !important;
+        }
+
+        .modal-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 18px;
+            display: none;
+        }
+
+        .modal-loading.show {
+            display: block;
+        }
+
+        .result-modal-video {
+            max-width: calc(100vw - 120px);
+            max-height: calc(100vh - 120px);
+            width: auto;
+            height: auto;
+            border-radius: 10px;
+            object-fit: contain;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            transition: opacity 0.3s ease;
+        }
+
+        .result-modal-close {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 50%;
+            z-index: 10001;
+            transition: all 0.3s ease;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .result-modal-close:hover {
+            color: #ed7f8c;
+            border-color: #ed7f8c;
+            background: rgba(237, 127, 140, 0.2);
+            transform: scale(1.1);
+        }
+
+        /* 空状态 */
+        .result-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+
+        .result-empty-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .result-empty-text {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .result-empty-subtext {
+            font-size: 14px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+                padding-right: 320px;
+            }
+            
+            .sidebar {
+                margin-left: -280px;
+                transition: margin-left 0.3s ease;
+            }
+            
+            .result-panel {
+                width: 300px;
+            }
+            
+            .character-selector {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .suggestions {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 12px;
+            }
+
+            .suggestion-card {
+                padding: 12px;
+                min-height: 130px;
+            }
+
+            .suggestion-image {
+                width: 70px;
+                height: 70px;
+            }
+
+            .suggestion-text {
+                font-size: 11px;
+            }
+
+            .suggestion-tab {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+
+            .suggestion-tab span {
+                font-size: 15px;
+            }
+        }
+
+        /* 顶部导航栏 - 仅在移动端显示 */
+        .top-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 100%);
+            border-bottom: 1px solid #333;
+            z-index: 1001;
+            padding: 0 20px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .top-nav-logo {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .top-nav-logo h1 {
+            color: #ed7f8c;
+            font-size: 20px;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+
+        .top-nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .top-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            min-width: 60px;
+        }
+
+        .top-nav-item:hover {
+            background: rgba(237, 127, 140, 0.1);
+        }
+
+        .top-nav-item.active {
+            background: rgba(237, 127, 140, 0.15);
+        }
+
+        .top-nav-item .icon {
+            font-size: 16px;
+            color: #ed7f8c;
+            margin-bottom: 2px;
+        }
+
+        .top-nav-item .text {
+            font-size: 10px;
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .top-nav-item.active .text {
+            color: #ed7f8c;
+        }
+
+        .top-nav-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .top-nav-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .top-nav-gems {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: #ed7f8c;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .top-nav {
+                display: flex;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding-top: 60px;
+                padding-right: 20px;
+            }
+            
+            .result-panel {
+                position: fixed;
+                bottom: 0;
+                right: 0;
+                top: auto;
+                width: 100%;
+                height: 50vh;
+                transform: translateY(100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .result-panel.active {
+                transform: translateY(0);
+            }
+            
+            .sub-nav {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .sub-nav-item {
+                padding: 12px 15px;
+                font-size: 14px;
+            }
+            
+            .feature-card {
+                padding: 20px;
+            }
+
+            .upload-area {
+                padding: 20px;
+            }
+
+            .upload-area.has-image {
+                padding: 15px;
+            }
+
+            .upload-preview-image {
+                max-height: 150px;
+            }
+
+            .upload-preview-actions {
+                flex-direction: column;
+            }
+
+            .upload-preview-btn {
+                width: 100%;
+            }
+
+            .result-modal-content {
+                max-width: calc(100vw - 40px);
+                max-height: calc(100vh - 40px);
+                margin: 20px;
+            }
+
+            .result-modal-image {
+                max-width: 95vw !important;
+                max-height: 95vh !important;
+            }
+
+            .result-modal-video {
+                max-width: 95vw !important;
+                max-height: 95vh !important;
+            }
+
+            .result-modal-close {
+                top: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+                padding: 8px;
+            }
+
+            .result-preview-image {
+                min-height: 150px;
+                max-height: 300px;
+            }
+
+            .suggestions {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+            }
+
+            .suggestion-card {
+                padding: 10px;
+                min-height: 110px;
+            }
+
+            .suggestion-image {
+                width: 50px;
+                height: 50px;
+                margin-bottom: 8px;
+            }
+
+            .suggestion-text {
+                font-size: 10px;
+                line-height: 1.2;
+            }
+
+            .suggestion-tabs {
+                margin-bottom: 15px;
+            }
+
+            .suggestion-tab {
+                padding: 10px 12px;
+                font-size: 12px;
+                gap: 4px;
+            }
+
+            .suggestion-tab span {
+                font-size: 14px;
+            }
+        }
+
+        /* Video Upload Section Styles */
+        .video-upload-section {
+            margin-top: 15px;
+        }
+
+        .upload-option {
+            margin-bottom: 15px;
+        }
+
+        .upload-btn {
+            background: linear-gradient(135deg, rgba(237, 127, 140, 0.2), rgba(237, 127, 140, 0.1));
+            border: 2px dashed #ed7f8c;
+            border-radius: 12px;
+            color: #ed7f8c;
+            padding: 15px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .upload-btn:hover {
+            background: linear-gradient(135deg, rgba(237, 127, 140, 0.3), rgba(237, 127, 140, 0.2));
+            border-color: #ff9a9e;
+            transform: translateY(-2px);
+        }
+
+        .video-photo-info {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(237, 127, 140, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .video-photo-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 2px solid #ed7f8c;
+        }
+
+        .video-photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-photo-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .video-photo-name {
+            color: #ed7f8c;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            word-break: break-all;
+        }
+
+        .video-photo-size {
+            color: #ccc;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .video-photo-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .photo-action-btn {
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .photo-action-btn:hover {
+            background: linear-gradient(135deg, #d16570, #b85c7a);
+            transform: translateY(-1px);
+        }
+
+        .photo-action-btn.danger {
+            background: linear-gradient(135deg, #dc3545, #b02a37);
+        }
+
+        .photo-action-btn.danger:hover {
+            background: linear-gradient(135deg, #b02a37, #8e1f2b);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部导航栏 - 仅在移动端显示 -->
+        <div class="top-nav">
+            <div class="top-nav-logo" onclick="window.location.href='./index.html'">
+                <h1>Sugar.AI</h1>
+            </div>
+            <div class="top-nav-menu">
+                <div class="top-nav-item" data-nav="explore">
+                    <div class="icon">🔍</div>
+                    <div class="text">Explore</div>
+                </div>
+                <div class="top-nav-item" data-nav="create">
+                    <div class="icon">✨</div>
+                    <div class="text">Create</div>
+                </div>
+                <div class="top-nav-item active" data-nav="generate">
+                    <div class="icon">🎨</div>
+                    <div class="text">Generate</div>
+                </div>
+                <div class="top-nav-item" data-nav="dashboard">
+                    <div class="icon">⚙️</div>
+                    <div class="text">Dashboard</div>
+                </div>
+            </div>
+            <div class="top-nav-user">
+                <div class="top-nav-gems">
+                    <span>💎</span>
+                    <span id="top-nav-gem-count">1,250</span>
+                </div>
+                <div class="top-nav-avatar">U</div>
+            </div>
+        </div>
+        
+        <!-- 左侧导航栏 -->
+        <div class="sidebar">
+            <div class="logo" onclick="window.location.href='./index.html'">
+                <h1>Sugar.AI</h1>
+                <p>AI Girlfriend Platform</p>
+            </div>
+            
+            <nav class="nav-menu">
+                <div class="nav-item" onclick="navigateTo('explore')">
+                    <div class="icon">🔍</div>
+                    <div class="text">Explore</div>
+                </div>
+                        <div class="nav-item" onclick="navigateTo('chat')" style="display: none;">
+                    <div class="icon">💬</div>
+                    <div class="text">Chat</div>
+                </div>
+                <div class="nav-item" onclick="navigateTo('create')">
+                    <div class="icon">✨</div>
+                    <div class="text">Create</div>
+                </div>
+                <div class="nav-item active" onclick="navigateTo('generate')">
+                    <div class="icon">🎨</div>
+                    <div class="text active">Generate</div>
+                </div>
+                <div class="nav-item" onclick="navigateTo('dashboard')">
+                    <div class="icon">⚙️</div>
+                    <div class="text">Dashboard</div>
+                </div>
+            </nav>
+
+            <div class="user-section">
+                <!-- 已登录状态 -->
+                <div id="user-logged-in" style="display: none;">
+                    <div class="user-info">
+                        <div class="user-avatar">U</div>
+                        <div class="user-details">
+                            <h4 id="username">Username</h4>
+                            <p id="user-status">Premium Member</p>
+                        </div>
+                    </div>
+                    <div class="gem-balance">
+                        <div class="gem-info">
+                            <span class="gem-icon">💎</span>
+                            <span class="gem-count" id="gem-count">50</span>
+                        </div>
+                        <button style="background: #ed7f8c; border: none; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer;" onclick="window.location.href='./purchase.html'">Top Up</button>
+                    </div>
+                </div>
+                
+                <!-- 未登录状态 -->
+                <div id="user-not-logged-in" style="display: block;">
+                    <div class="user-not-logged-content" style="display: block;">
+                        <h4 style="text-align: center; color: #ed7f8c; margin-bottom: 8px; font-size: 16px; font-weight: 600;">Welcome to Sugar.AI</h4>
+                        <p style="text-align: center; color: #999; font-size: 12px; margin-bottom: 20px; line-height: 1.4;">Sign in to access Generate features</p>
+                        <button class="login-btn" onclick="window.location.href='./auth.html'" style="width: 100%; background: linear-gradient(135deg, #ed7f8c, #d16570); border: none; color: white; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer;">Login / Register</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="main-content">
+            <div class="content-header">
+                <h1 class="content-title">AI Generate</h1>
+                <p class="content-subtitle">Create stunning images and videos with AI</p>
+            </div>
+
+            <!-- 子导航 -->
+            <div class="sub-nav">
+                <div class="sub-nav-item active" onclick="showSection('text2image')">
+                    <span>📷</span> AI Image
+                </div>
+                <div class="sub-nav-item" onclick="showSection('storyboard')">
+                    <span>🎬</span> Group Photo
+                </div>
+                <div class="sub-nav-item" onclick="showSection('video')">
+                    <span>🎥</span> AI Video
+                </div>
+                <div class="sub-nav-item" onclick="showSection('lipsync')" style="display: none;">
+                    <span>🎤</span> Voice Sync
+                </div>
+            </div>
+
+            <!-- AI Image Section -->
+            <div id="text2image" class="content-section active">
+                <div class="feature-card">
+                    <h2 class="feature-title">AI Image Generation</h2>
+                    <p class="feature-description">Create beautiful images from text descriptions with your favorite AI character</p>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Select Character</label>
+                        <div class="character-select-btn" onclick="openCharacterModal()">
+                            <div class="character-info">
+                                <div class="character-avatar"></div>
+                                <div class="character-name">Click to select character</div>
+                            </div>
+                            <span>▼</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Suggestions</label>
+                        
+                        <!-- 类目选择标签页 -->
+                        <div class="suggestion-tabs">
+                            <div class="suggestion-tab active" onclick="switchSuggestionTab('scenes', this, 'text2image')">
+                                <span>🌅</span> Scenes
+                            </div>
+                            <div class="suggestion-tab" onclick="switchSuggestionTab('poses', this, 'text2image')">
+                                <span>💃</span> Poses
+                            </div>
+                            <div class="suggestion-tab" onclick="switchSuggestionTab('outfits', this, 'text2image')">
+                                <span>👗</span> Outfits
+                            </div>
+                        </div>
+
+                        <!-- 场景选择 -->
+                        <div class="suggestions" id="suggestions-scenes">
+                            <div class="suggestion-card" onclick="addSuggestion('beach sunset scenery', 'scenes')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Beach Sunset</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestion('romantic candlelit dinner', 'scenes')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1551218808-94e220e084d2?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Romantic Dinner</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestion('cozy cafe atmosphere', 'scenes')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Cozy Cafe</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestion('luxury hotel room interior', 'scenes')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Luxury Hotel</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestion('beautiful garden with flowers', 'scenes')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Garden Scene</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestion('city skyline at night', 'scenes')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">City Skyline</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestion('winter wonderland with snow', 'scenes')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Winter Scene</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestion('rooftop city view', 'scenes')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Rooftop View</div>
+                            </div>
+                        </div>
+
+                        <!-- 动作选择 -->
+                        <div class="suggestions" id="suggestions-poses" style="display: none;">
+                            <div class="suggestion-card" onclick="addSuggestion('elegant standing pose', 'poses')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Standing Pose</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestion('sitting gracefully', 'poses')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1509631179647-0177331693ae?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Sitting Grace</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestion('looking over shoulder', 'poses')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Over Shoulder</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestion('hands on hips confident', 'poses')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Hands on Hips</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestion('walking stride confident', 'poses')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Walking Stride</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestion('leaning against wall casual', 'poses')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Wall Lean</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestion('arms crossed strong', 'poses')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Arms Crossed</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestion('gentle hand gesture', 'poses')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Hand Gesture</div>
+                            </div>
+                        </div>
+
+                        <!-- 穿衣搭配 -->
+                        <div class="suggestions" id="suggestions-outfits" style="display: none;">
+                            <div class="suggestion-card" onclick="addSuggestion('elegant evening dress', 'outfits')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Evening Dress</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestion('casual street style outfit', 'outfits')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Street Style</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestion('business professional attire', 'outfits')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Business Attire</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestion('summer bikini swimwear', 'outfits')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Bikini</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestion('fitness workout gear', 'outfits')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1594381898411-846e7d193883?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Workout Gear</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestion('vintage retro style clothing', 'outfits')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Vintage Style</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestion('party nightclub outfit', 'outfits')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1485872299829-c673f5194813?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Party Outfit</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestion('cozy winter clothing', 'outfits')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Winter Clothing</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <div class="description-hint">
+                            <p style="color: #999; font-size: 14px; margin-bottom: 10px;">
+                                Choose one option from each category - new selections will replace previous ones. 
+                                <button onclick="clearAllSelections()" style="background: none; border: none; color: #ed7f8c; cursor: pointer; text-decoration: underline; font-size: 14px; margin-left: 5px;">Clear All</button>
+                            </p>
+                        </div>
+                        <textarea class="form-input form-textarea" placeholder="Describe the image you want to create..."></textarea>
+                    </div>
+
+                    <button class="generate-btn" onclick="generateImage()">
+                        <span>✨</span> Generate Image
+                    </button>
+                </div>
+            </div>
+
+            <!-- Group Photo Section -->
+            <div id="storyboard" class="content-section">
+                <div class="feature-card">
+                    <h2 class="feature-title">Group Photo</h2>
+                    <p class="feature-description">Create stunning photos together with your AI character</p>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Select Character</label>
+                        <div class="character-select-btn" onclick="openCharacterModal()">
+                            <div class="character-info">
+                                <div class="character-avatar"></div>
+                                <div class="character-name">Click to select character</div>
+                            </div>
+                            <span>▼</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Upload Your Photo</label>
+                        <div class="upload-area" id="photoUploadArea" onclick="handlePhotoUploadClick()">
+                            <div class="upload-icon">📸</div>
+                            <div class="upload-text">Click to upload or drag & drop your photo</div>
+                            <div class="upload-preview" id="photoPreview">
+                                <img class="upload-preview-image" id="photoPreviewImage" alt="Uploaded photo">
+                                <div class="upload-preview-info">
+                                    <div class="upload-preview-name" id="photoPreviewName"></div>
+                                    <div class="upload-preview-size" id="photoPreviewSize"></div>
+                                    <div class="upload-preview-actions">
+                                        <button class="upload-preview-btn" onclick="event.stopPropagation(); document.getElementById('photoUpload').click()">
+                                            Change Photo
+                                        </button>
+                                        <button class="upload-preview-btn danger" onclick="event.stopPropagation(); removeUploadedPhoto()">
+                                            Remove
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="file" id="photoUpload" accept="image/*" style="display: none;">
+                        <div class="upload-hint">Supported formats: JPG, PNG, GIF, WEBP (Max 10MB)</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Suggestions</label>
+                        
+                        <!-- 类目选择标签页 -->
+                        <div class="suggestion-tabs">
+                            <div class="suggestion-tab active" onclick="switchSuggestionTab('scenes', this, 'storyboard')">
+                                <span>🌅</span> Scenes
+                            </div>
+                            <div class="suggestion-tab" onclick="switchSuggestionTab('poses', this, 'storyboard')">
+                                <span>💃</span> Poses
+                            </div>
+                            <div class="suggestion-tab" onclick="switchSuggestionTab('outfits', this, 'storyboard')">
+                                <span>👗</span> Outfits
+                            </div>
+                        </div>
+
+                        <!-- 场景选择 -->
+                        <div class="suggestions" id="storyboard-suggestions-scenes">
+                            <div class="suggestion-card" onclick="addSuggestionToSection('beach sunset scenery', 'scenes', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Beach Sunset</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('romantic candlelit dinner', 'scenes', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1551218808-94e220e084d2?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Romantic Dinner</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('cozy cafe atmosphere', 'scenes', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Cozy Cafe</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('luxury hotel room interior', 'scenes', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Luxury Hotel</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('beautiful garden with flowers', 'scenes', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Garden Scene</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('city skyline at night', 'scenes', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">City Skyline</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('winter wonderland with snow', 'scenes', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Winter Scene</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('rooftop city view', 'scenes', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Rooftop View</div>
+                            </div>
+                        </div>
+
+                        <!-- 动作选择 -->
+                        <div class="suggestions" id="storyboard-suggestions-poses" style="display: none;">
+                            <div class="suggestion-card" onclick="addSuggestionToSection('elegant standing pose', 'poses', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Standing Pose</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('sitting gracefully', 'poses', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1509631179647-0177331693ae?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Sitting Grace</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('looking over shoulder', 'poses', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Over Shoulder</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('hands on hips confident', 'poses', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Hands on Hips</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('walking stride confident', 'poses', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Walking Stride</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('leaning against wall casual', 'poses', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Wall Lean</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('arms crossed strong', 'poses', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Arms Crossed</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('gentle hand gesture', 'poses', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Hand Gesture</div>
+                            </div>
+                        </div>
+
+                        <!-- 穿衣搭配 -->
+                        <div class="suggestions" id="storyboard-suggestions-outfits" style="display: none;">
+                            <div class="suggestion-card" onclick="addSuggestionToSection('elegant evening dress', 'outfits', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Evening Dress</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('casual street style outfit', 'outfits', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Street Style</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('business professional attire', 'outfits', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Business Attire</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('summer bikini swimwear', 'outfits', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Bikini</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('fitness workout gear', 'outfits', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1594381898411-846e7d193883?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Workout Gear</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('vintage retro style clothing', 'outfits', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Vintage Style</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('party nightclub outfit', 'outfits', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1485872299829-c673f5194813?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Party Outfit</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('cozy winter clothing', 'outfits', 'storyboard')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Winter Clothing</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Scene Description</label>
+                        <div class="description-hint">
+                            <p style="color: #999; font-size: 14px; margin-bottom: 10px;">
+                                Choose one option from each category - new selections will replace previous ones. 
+                                <button onclick="clearAllSuggestionsForSection('storyboard')" style="background: none; border: none; color: #ed7f8c; cursor: pointer; text-decoration: underline; font-size: 14px; margin-left: 5px;">Clear All</button>
+                            </p>
+                        </div>
+                        <textarea class="form-input form-textarea" placeholder="Describe the scene you want to create together..."></textarea>
+                    </div>
+
+                    <button class="generate-btn" onclick="generateStoryboard()">
+                        <span>🎬</span> Generate Group Photo
+                    </button>
+                </div>
+            </div>
+
+            <!-- AI Video Section -->
+            <div id="video" class="content-section">
+                <div class="feature-card">
+                    <h2 class="feature-title">AI Video Generation</h2>
+                    <p class="feature-description">Create amazing videos with your AI character</p>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Select Character</label>
+                        <div class="character-select-btn" onclick="openCharacterModal()">
+                            <div class="character-info">
+                                <div class="character-avatar"></div>
+                                <div class="character-name">Click to select character</div>
+                            </div>
+                            <span>▼</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Suggestions</label>
+                        
+                        <!-- 类目选择标签页 -->
+                        <div class="suggestion-tabs">
+                            <div class="suggestion-tab active" onclick="switchSuggestionTab('scenes', this, 'video')">
+                                <span>🌅</span> Scenes
+                            </div>
+                            <div class="suggestion-tab" onclick="switchSuggestionTab('poses', this, 'video')">
+                                <span>💃</span> Poses
+                            </div>
+                            <div class="suggestion-tab" onclick="switchSuggestionTab('outfits', this, 'video')">
+                                <span>👗</span> Outfits
+                            </div>
+                        </div>
+
+                        <!-- 场景选择 -->
+                        <div class="suggestions" id="video-suggestions-scenes">
+                            <div class="suggestion-card" onclick="addSuggestionToSection('beach sunset scenery', 'scenes', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Beach Sunset</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('romantic candlelit dinner', 'scenes', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1551218808-94e220e084d2?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Romantic Dinner</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('cozy cafe atmosphere', 'scenes', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Cozy Cafe</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('luxury hotel room interior', 'scenes', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Luxury Hotel</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('beautiful garden with flowers', 'scenes', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Garden Scene</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('city skyline at night', 'scenes', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">City Skyline</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('winter wonderland with snow', 'scenes', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Winter Scene</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('rooftop city view', 'scenes', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Rooftop View</div>
+                            </div>
+                        </div>
+
+                        <!-- 动作选择 -->
+                        <div class="suggestions" id="video-suggestions-poses" style="display: none;">
+                            <div class="suggestion-card" onclick="addSuggestionToSection('elegant standing pose', 'poses', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Standing Pose</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('sitting gracefully', 'poses', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1509631179647-0177331693ae?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Sitting Grace</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('looking over shoulder', 'poses', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Over Shoulder</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('hands on hips confident', 'poses', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Hands on Hips</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('walking stride confident', 'poses', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Walking Stride</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('leaning against wall casual', 'poses', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Wall Lean</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('arms crossed strong', 'poses', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Arms Crossed</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('gentle hand gesture', 'poses', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Hand Gesture</div>
+                            </div>
+                        </div>
+
+                        <!-- 穿衣搭配 -->
+                        <div class="suggestions" id="video-suggestions-outfits" style="display: none;">
+                            <div class="suggestion-card" onclick="addSuggestionToSection('elegant evening dress', 'outfits', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Evening Dress</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('casual street style outfit', 'outfits', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Street Style</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('business professional attire', 'outfits', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Business Attire</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('summer bikini swimwear', 'outfits', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Bikini</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('fitness workout gear', 'outfits', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1594381898411-846e7d193883?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Workout Gear</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('vintage retro style clothing', 'outfits', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Vintage Style</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('party nightclub outfit', 'outfits', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1485872299829-c673f5194813?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Party Outfit</div>
+                            </div>
+                            <div class="suggestion-card" onclick="addSuggestionToSection('cozy winter clothing', 'outfits', 'video')">
+                                <div class="suggestion-image" style="background-image: url('https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=120&h=120&fit=crop&crop=center')"></div>
+                                <div class="suggestion-text">Winter Clothing</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Video Description</label>
+                        <div class="description-hint">
+                            <p style="color: #999; font-size: 14px; margin-bottom: 10px;">
+                                Choose one option from each category - new selections will replace previous ones. 
+                                <button onclick="clearAllSuggestionsForSection('video')" style="background: none; border: none; color: #ed7f8c; cursor: pointer; text-decoration: underline; font-size: 14px; margin-left: 5px;">Clear All</button>
+                            </p>
+                        </div>
+                        <textarea class="form-input form-textarea" placeholder="Describe the video you want to create..."></textarea>
+                    </div>
+
+                    <button class="generate-btn" onclick="generateVideo()">
+                        <span>🎥</span> Generate Video
+                    </button>
+                </div>
+            </div>
+
+            <!-- Voice Sync Section -->
+            <div id="lipsync" class="content-section" style="display: none;">
+                <div class="feature-card">
+                    <h2 class="feature-title">Voice Sync</h2>
+                    <p class="feature-description">Make your AI character speak with perfect lip synchronization</p>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Select Character or Upload Photo</label>
+                        <div class="character-select-btn" onclick="openCharacterModal()">
+                            <div class="character-info">
+                                <div class="character-avatar"></div>
+                                <div class="character-name">Click to select character</div>
+                            </div>
+                            <span>▼</span>
+                        </div>
+                        <input type="file" id="lipsyncPhotoUpload" accept="image/*" style="display: none;">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Script Text</label>
+                        <textarea class="form-input form-textarea" placeholder="Enter the text you want the character to speak..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Voice Selection</label>
+                        <select class="form-input">
+                            <option value="">Select Voice</option>
+                            <option value="voice1">Sweet & Gentle</option>
+                            <option value="voice2">Seductive & Playful</option>
+                            <option value="voice3">Confident & Bold</option>
+                            <option value="voice4">Soft & Romantic</option>
+                        </select>
+                    </div>
+
+                    <button class="generate-btn" onclick="generateLipSync()">
+                        <span>🎤</span> Generate Voice Sync
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 右侧结果面板 -->
+    <div class="result-panel">
+        <div class="result-panel-header">
+            <h2 class="result-panel-title">Generation Results</h2>
+            <p class="result-panel-subtitle">View your AI-generated content</p>
+        </div>
+        <div class="result-panel-content" id="resultPanelContent">
+            <div class="result-empty">
+                <div class="result-empty-icon">🎨</div>
+                <div class="result-empty-text">No results yet</div>
+                <div class="result-empty-subtext">Start generating to see results here</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 结果放大模态框 -->
+    <div class="result-modal" id="resultModal">
+        <div class="result-modal-content">
+            <button class="result-modal-close" onclick="closeResultModal()">×</button>
+            <div class="modal-loading" id="modalLoading">Loading...</div>
+            <img class="result-modal-image" id="resultModalImage" src="" alt="Generated content" style="display: none;">
+            <video class="result-modal-video" id="resultModalVideo" controls style="display: none;">
+                <source src="" type="video/mp4">
+            </video>
+        </div>
+    </div>
+
+    <!-- Character Selection Modal -->
+    <div class="character-modal" id="characterModal">
+        <div class="character-modal-content">
+            <div class="character-modal-header">
+                <h2 class="character-modal-title">Select Your AI Character</h2>
+                <button class="character-modal-close" onclick="closeCharacterModal()">×</button>
+            </div>
+            <div class="character-modal-grid" id="characterGrid">
+                <!-- Character cards will be generated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // User authentication state management
+        let isLoggedIn = false;
+        let currentUser = null;
+
+        // Check login status on page load
+        function checkLoginStatus() {
+            const token = localStorage.getItem('token');
+            const userData = localStorage.getItem('userData');
+            
+            if (token && userData) {
+                try {
+                    currentUser = JSON.parse(userData);
+                    isLoggedIn = true;
+                    showLoggedInState();
+                } catch (error) {
+                    console.error('Error parsing user data:', error);
+                    logout();
+                }
+            } else {
+                showNotLoggedInState();
+            }
+        }
+
+        // Show logged in state
+        function showLoggedInState() {
+            document.getElementById('user-logged-in').style.display = 'block';
+            document.getElementById('user-not-logged-in').style.display = 'none';
+            
+            if (currentUser) {
+                document.getElementById('username').textContent = currentUser.name || currentUser.email || 'User';
+                document.getElementById('user-status').textContent = currentUser.membershipType || 'Free Member';
+                document.getElementById('gem-count').textContent = currentUser.gemBalance || '0';
+            }
+        }
+
+        // Show not logged in state
+        function showNotLoggedInState() {
+            document.getElementById('user-logged-in').style.display = 'none';
+            document.getElementById('user-not-logged-in').style.display = 'block';
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('userData');
+            currentUser = null;
+            isLoggedIn = false;
+            showNotLoggedInState();
+        }
+
+        let selectedCharacter = null;
+        let currentSection = 'text2image';
+        let generationCounter = 0;
+        let currentGeneratingButton = null;
+
+        // Character data from Explore page
+        const charactersData = {
+            'Morganna Evernight': {
+                image: 'assets/pic_1.jpeg',
+                age: '28 years old',
+                role: 'Dark Sorceress',
+                tags: ['Seductive', 'Mysterious', 'Powerful'],
+                status: 'Online',
+                id: 'morganna'
+            },
+            'Elaine Bliss': {
+                image: 'assets/pic_2.jpeg',
+                age: '25 years old',
+                role: 'Fashion Designer',
+                tags: ['Creative', 'Elegant', 'Sophisticated'],
+                status: 'Online',
+                id: 'elaine'
+            },
+            'Amanda': {
+                image: 'assets/pic_3.jpg',
+                age: '20 years old',
+                role: 'College Student',
+                tags: ['Goth', 'Bratty', 'Independent'],
+                status: 'Online',
+                id: 'amanda'
+            },
+            'Charlotte West': {
+                image: 'assets/pic_4.jpg',
+                age: '27 years old',
+                role: 'Tour Guide',
+                tags: ['Adventurous', 'Charismatic', 'Confident'],
+                status: 'Online',
+                id: 'charlotte'
+            },
+            'Emily Carter': {
+                image: 'assets/pic_5.jpg',
+                age: '21 years old',
+                role: 'College Student',
+                tags: ['Curious', 'Romantic', 'Shy'],
+                status: 'Online',
+                id: 'emily'
+            },
+            'Morgan Chase': {
+                image: 'assets/pic_6.jpg',
+                age: '22 years old',
+                role: 'Punk Vocalist',
+                tags: ['Rebellious', 'Charismatic', 'Bold'],
+                status: 'Online',
+                id: 'morgan'
+            },
+            'Vanessa Taylor': {
+                image: 'assets/pic_7.jpeg',
+                age: '28 years old',
+                role: 'Yoga Instructor',
+                tags: ['Seductive', 'Confident', 'Wellness'],
+                status: 'Online',
+                id: 'vanessa'
+            },
+            'Aiko Tanaka': {
+                image: 'assets/pic_8.jpg',
+                age: '21 years old',
+                role: 'Literature Student',
+                tags: ['Shy', 'Romantic', 'Sweet'],
+                status: 'Online',
+                id: 'aiko'
+            },
+            'Summer Brooks': {
+                image: 'assets/pic_9.jpg',
+                age: '24 years old',
+                role: 'Beach Lifeguard',
+                tags: ['Athletic', 'Confident', 'Protective'],
+                status: 'Online',
+                id: 'summer'
+            },
+            'Isabella Reed': {
+                image: 'assets/pic_10.jpeg',
+                age: '29 years old',
+                role: 'Math Teacher',
+                tags: ['Intelligent', 'Seductive', 'Strict'],
+                status: 'Online',
+                id: 'isabella'
+            }
+        };
+
+        function navigateTo(page) {
+            const pages = {
+                'explore': './index.html',
+                'chat': './chat.html',
+                'create': './create.html',
+                'generate': './generate.html',
+                'dashboard': './dashboard.html'
+            };
+            
+            if (pages[page]) {
+                window.location.href = pages[page];
+            }
+        }
+        
+        // 顶部导航栏点击事件
+        document.querySelectorAll('.top-nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const navType = this.getAttribute('data-nav');
+                
+                // Remove active state from other top nav items
+                document.querySelectorAll('.top-nav-item').forEach(nav => {
+                    nav.classList.remove('active');
+                });
+                
+                // Add active state to current item
+                this.classList.add('active');
+                
+                // Handle navigation
+                navigateTo(navType);
+            });
+        });
+
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update navigation
+            document.querySelectorAll('.sub-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Find and activate the correct nav item
+            const navItems = document.querySelectorAll('.sub-nav-item');
+            navItems.forEach(item => {
+                const onclick = item.getAttribute('onclick');
+                if (onclick && onclick.includes(`'${sectionId}'`)) {
+                    item.classList.add('active');
+                }
+            });
+            
+            currentSection = sectionId;
+        }
+
+        function selectCharacter(characterId) {
+            selectedCharacter = characterId;
+        }
+
+        // Modal functions
+        function openCharacterModal() {
+            const modal = document.getElementById('characterModal');
+            const grid = document.getElementById('characterGrid');
+            
+            // Clear existing content
+            grid.innerHTML = '';
+            
+            // Add upload image option first
+            const uploadCard = document.createElement('div');
+            uploadCard.className = 'character-upload-card';
+            uploadCard.innerHTML = `
+                <div class="character-upload-preview" id="uploadPreview"></div>
+                <div class="character-upload-icon">📸</div>
+                <div class="character-upload-text">Upload Image</div>
+                <div class="character-upload-subtext">Upload your own character image</div>
+                <input type="file" class="character-upload-input" id="characterUpload" accept="image/*">
+            `;
+            
+            uploadCard.onclick = (e) => {
+                // If already has an image, select it instead of opening file dialog
+                if (uploadCard.classList.contains('has-image')) {
+                    const previewElement = document.getElementById('uploadPreview');
+                    const backgroundImage = previewElement.style.backgroundImage;
+                    if (backgroundImage) {
+                        const imageUrl = backgroundImage.slice(5, -2); // Remove 'url("' and '")'
+                        selectUploadedImage(imageUrl);
+                    }
+                } else {
+                    document.getElementById('characterUpload').click();
+                }
+            };
+            
+            grid.appendChild(uploadCard);
+            
+            // Generate character cards
+            Object.entries(charactersData).forEach(([name, character]) => {
+                const card = document.createElement('div');
+                card.className = 'character-modal-card';
+                card.onclick = () => selectCharacterFromModal(name, character);
+                
+                // Handle both relative and absolute URLs for character images
+                let imageUrl = character.image;
+                if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('data:')) {
+                    // Ensure relative URLs work correctly
+                    if (!imageUrl.startsWith('./') && !imageUrl.startsWith('/')) {
+                        imageUrl = './' + imageUrl;
+                    }
+                }
+                
+                const tagsHtml = character.tags.map(tag => 
+                    `<span class="character-modal-tag">${tag}</span>`
+                ).join('');
+                
+                card.innerHTML = `
+                    <div class="character-modal-image" style="background-image: url('${imageUrl}');"></div>
+                    <div class="character-modal-name">${name}</div>
+                    <div class="character-modal-info">${character.age} • ${character.role}</div>
+                    <div class="character-modal-tags">${tagsHtml}</div>
+                `;
+                
+                grid.appendChild(card);
+            });
+            
+            modal.classList.add('active');
+            
+            // Handle file upload
+            const fileInput = document.getElementById('characterUpload');
+            const uploadPreview = document.getElementById('uploadPreview');
+            
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        uploadPreview.style.backgroundImage = `url('${e.target.result}')`;
+                        uploadCard.classList.add('has-image');
+                        
+                        // Auto-select the uploaded image
+                        selectUploadedImage(e.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        function closeCharacterModal() {
+            const modal = document.getElementById('characterModal');
+            modal.classList.remove('active');
+        }
+
+        function selectCharacterFromModal(name, character) {
+            selectedCharacter = {
+                id: character.id,
+                name: name,
+                image: character.image
+            };
+            
+            // Update all character select buttons
+            document.querySelectorAll('.character-select-btn').forEach(btn => {
+                const avatar = btn.querySelector('.character-avatar');
+                const nameSpan = btn.querySelector('.character-name');
+                
+                // Handle both relative and absolute URLs
+                let imageUrl = character.image;
+                if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('data:')) {
+                    // Ensure relative URLs work correctly
+                    if (!imageUrl.startsWith('./') && !imageUrl.startsWith('/')) {
+                        imageUrl = './' + imageUrl;
+                    }
+                }
+                
+                avatar.style.backgroundImage = `url('${imageUrl}')`;
+                nameSpan.textContent = name;
+                
+                btn.classList.add('selected');
+            });
+            
+            // Close modal
+            closeCharacterModal();
+        }
+
+        function selectUploadedImage(imageUrl) {
+            // Create a temporary character object for the uploaded image
+            selectedCharacter = {
+                id: 'uploaded',
+                name: 'Uploaded Image',
+                image: imageUrl
+            };
+            
+            // Update all character select buttons
+            document.querySelectorAll('.character-select-btn').forEach(btn => {
+                const avatar = btn.querySelector('.character-avatar');
+                const nameSpan = btn.querySelector('.character-name');
+                
+                avatar.style.backgroundImage = `url('${imageUrl}')`;
+                nameSpan.textContent = 'Uploaded Image';
+                
+                btn.classList.add('selected');
+            });
+            
+            // Close modal
+            closeCharacterModal();
+        }
+
+        // Track current selections for each category and section
+        let selectedSuggestions = {
+            text2image: {
+                scenes: null,
+                poses: null,
+                outfits: null
+            },
+            storyboard: {
+                scenes: null,
+                poses: null,
+                outfits: null
+            },
+            video: {
+                scenes: null,
+                poses: null,
+                outfits: null
+            }
+        };
+
+        function addSuggestion(suggestion, category) {
+            // Update selected suggestion for this category in text2image section
+            if (category && selectedSuggestions.text2image[category] !== suggestion) {
+                selectedSuggestions.text2image[category] = suggestion;
+                
+                // Update UI to show selection
+                updateSuggestionSelection(category, suggestion, 'text2image');
+                
+                // Update textarea with current selections
+                updateTextareaFromSelections('text2image');
+            }
+        }
+
+        function addSuggestionToSection(suggestion, category, section) {
+            // Update selected suggestion for this category in the specified section
+            if (category && selectedSuggestions[section] && selectedSuggestions[section][category] !== suggestion) {
+                selectedSuggestions[section][category] = suggestion;
+                
+                // Update UI to show selection
+                updateSuggestionSelection(category, suggestion, section);
+                
+                // Update textarea with current selections
+                updateTextareaFromSelections(section);
+            }
+        }
+
+        function updateSuggestionSelection(category, selectedSuggestion, section = 'text2image') {
+            // Remove previous selection styling
+            const sectionPrefix = section === 'text2image' ? '' : `${section}-`;
+            document.querySelectorAll(`#${sectionPrefix}suggestions-${category} .suggestion-card`).forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selection styling to current choice
+            document.querySelectorAll(`#${sectionPrefix}suggestions-${category} .suggestion-card`).forEach(card => {
+                const onClick = card.getAttribute('onclick');
+                if (onClick && onClick.includes(selectedSuggestion)) {
+                    card.classList.add('selected');
+                }
+            });
+        }
+
+        function updateTextareaFromSelections(section = 'text2image') {
+            const textarea = document.querySelector(`#${section} .form-textarea`);
+            const parts = [];
+            
+            // Add selections in order: scenes, poses, outfits
+            if (selectedSuggestions[section].scenes) {
+                parts.push(selectedSuggestions[section].scenes);
+            }
+            if (selectedSuggestions[section].poses) {
+                parts.push(selectedSuggestions[section].poses);
+            }
+            if (selectedSuggestions[section].outfits) {
+                parts.push(selectedSuggestions[section].outfits);
+            }
+            
+            textarea.value = parts.join(', ');
+        }
+
+        function clearAllSelections() {
+            // Clear all selections for text2image
+            selectedSuggestions.text2image.scenes = null;
+            selectedSuggestions.text2image.poses = null;
+            selectedSuggestions.text2image.outfits = null;
+            
+            // Remove all visual selections for text2image
+            document.querySelectorAll('#text2image .suggestion-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Clear textarea
+            const textarea = document.querySelector('#text2image .form-textarea');
+            textarea.value = '';
+        }
+
+        function clearAllSuggestionsForSection(section) {
+            // Clear all selections for the specified section
+            selectedSuggestions[section].scenes = null;
+            selectedSuggestions[section].poses = null;
+            selectedSuggestions[section].outfits = null;
+            
+            // Remove all visual selections for the section
+            document.querySelectorAll(`#${section} .suggestion-card`).forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Clear textarea
+            const textarea = document.querySelector(`#${section} .form-textarea`);
+            textarea.value = '';
+        }
+
+        // Initialize textarea event listeners for manual edits
+        document.addEventListener('DOMContentLoaded', function() {
+            const textareas = document.querySelectorAll('.form-textarea');
+            textareas.forEach(textarea => {
+                textarea.addEventListener('input', function() {
+                    // Allow manual editing but show a hint
+                    if (this.value && !this.value.includes('beach sunset') && !this.value.includes('elegant standing') && !this.value.includes('elegant evening')) {
+                        // User is manually editing, keep their content
+                        // Could add logic here to parse and sync with selections if needed
+                    }
+                });
+            });
+        });
+
+        // Switch suggestion tabs
+        function switchSuggestionTab(tabName, element, section = 'text2image') {
+            // Hide all suggestion containers for this section
+            const sectionPrefix = section === 'text2image' ? '' : `${section}-`;
+            document.querySelectorAll(`#${section} .suggestions`).forEach(container => {
+                container.style.display = 'none';
+            });
+            
+            // Show selected container
+            const targetContainer = document.getElementById(`${sectionPrefix}suggestions-${tabName}`);
+            if (targetContainer) {
+                targetContainer.style.display = 'grid';
+            }
+            
+            // Update tab states for this section
+            const parent = element.parentElement;
+            parent.querySelectorAll('.suggestion-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Activate clicked tab
+            element.classList.add('active');
+        }
+
+        function generateImage() {
+            if (!selectedCharacter) {
+                alert('Please select a character first!');
+                return;
+            }
+            
+            const description = document.querySelector('#text2image .form-textarea').value;
+            if (!description.trim()) {
+                alert('Please enter a description!');
+                return;
+            }
+            
+            const btn = event.target;
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳</span> Generating...';
+            
+            // Store current button info for restoration
+            currentGeneratingButton = {
+                element: btn,
+                originalText: '<span>✨</span> Generate Image'
+            };
+            
+            const characterName = selectedCharacter.name || (typeof selectedCharacter === 'string' ? selectedCharacter : 'Unknown');
+            const cardId = createResultCard('Image Generation', description, characterName);
+            
+            // Simulate generation with progress (replace with actual API call)
+            // Using local sample images for demo
+            const sampleImages = [
+                'assets/pic_1.jpeg',
+                'assets/pic_2.jpeg',
+                'assets/pic_3.jpg',
+                'assets/pic_4.jpg',
+                'assets/pic_5.jpg',
+                'assets/pic_6.jpg',
+                'assets/pic_7.jpeg',
+                'assets/pic_8.jpg',
+                'assets/pic_9.jpg',
+                'assets/pic_10.jpeg'
+            ];
+            const randomImage = sampleImages[Math.floor(Math.random() * sampleImages.length)];
+            
+            simulateGeneration(cardId, 8000, 'image', randomImage);
+        }
+
+        function generateStoryboard() {
+            if (!selectedCharacter) {
+                alert('Please select a character first!');
+                return;
+            }
+            
+            if (!uploadedPhoto) {
+                alert('Please upload your photo first!');
+                return;
+            }
+            
+            const description = document.querySelector('#storyboard .form-textarea').value;
+            if (!description.trim()) {
+                alert('Please enter a scene description!');
+                return;
+            }
+            
+            const btn = event.target;
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳</span> Generating...';
+            
+            // Store current button info for restoration
+            currentGeneratingButton = {
+                element: btn,
+                originalText: '<span>🎬</span> Generate Group Photo'
+            };
+            
+            const characterName = selectedCharacter.name || (typeof selectedCharacter === 'string' ? selectedCharacter : 'Unknown');
+            const cardId = createResultCard('Group Photo', description, characterName);
+            
+            // Simulate generation with progress (replace with actual API call)
+            // Using local sample images for demo
+            const sampleImages = [
+                'assets/pic_1.jpeg',
+                'assets/pic_2.jpeg',
+                'assets/pic_3.jpg',
+                'assets/pic_4.jpg',
+                'assets/pic_5.jpg',
+                'assets/pic_6.jpg',
+                'assets/pic_7.jpeg',
+                'assets/pic_8.jpg',
+                'assets/pic_9.jpg',
+                'assets/pic_10.jpeg'
+            ];
+            const randomImage = sampleImages[Math.floor(Math.random() * sampleImages.length)];
+            
+            simulateGeneration(cardId, 10000, 'image', randomImage);
+        }
+
+        function generateVideo() {
+            if (!selectedCharacter) {
+                alert('Please select a character first!');
+                return;
+            }
+            
+            const description = document.querySelector('#video .form-textarea').value;
+            if (!description.trim()) {
+                alert('Please enter a video description!');
+                return;
+            }
+            
+            const btn = event.target;
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳</span> Generating...';
+            
+            // Store current button info for restoration
+            currentGeneratingButton = {
+                element: btn,
+                originalText: '<span>🎥</span> Generate Video'
+            };
+            
+            const characterName = selectedCharacter.name || (typeof selectedCharacter === 'string' ? selectedCharacter : 'Unknown');
+            const cardId = createResultCard('Video Generation', description, characterName);
+            
+            // Simulate generation with progress (replace with actual API call)
+            // Using the video file for demo
+            const videoUrl = 'assets/video_1.mp4';
+            
+            simulateGeneration(cardId, 12000, 'video', videoUrl);
+        }
+
+        function generateLipSync() {
+            if (!selectedCharacter) {
+                alert('Please select a character first!');
+                return;
+            }
+            
+            const script = document.querySelector('#lipsync .form-textarea').value;
+            if (!script.trim()) {
+                alert('Please enter the script text!');
+                return;
+            }
+            
+            const voice = document.querySelector('#lipsync select').value;
+            if (!voice) {
+                alert('Please select a voice!');
+                return;
+            }
+            
+            const btn = event.target;
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳</span> Generating...';
+            
+            // Store current button info for restoration
+            currentGeneratingButton = {
+                element: btn,
+                originalText: '<span>🎤</span> Generate Voice Sync'
+            };
+            
+            const characterName = selectedCharacter.name || (typeof selectedCharacter === 'string' ? selectedCharacter : 'Unknown');
+            const cardId = createResultCard('Voice Sync Video', script, characterName);
+            
+            // Simulate generation with progress (replace with actual API call)
+            // Using the video file for demo
+            const videoUrl = 'assets/video_1.mp4';
+            
+            simulateGeneration(cardId, 15000, 'video', videoUrl);
+        }
+
+        // Result panel management
+        function createResultCard(type, description, characterName) {
+            generationCounter++;
+            const cardId = `result-${generationCounter}`;
+            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            // Remove empty state if exists
+            const emptyState = document.querySelector('.result-empty');
+            if (emptyState) {
+                emptyState.remove();
+            }
+            
+            const resultCard = document.createElement('div');
+            resultCard.className = 'result-card active';
+            resultCard.id = cardId;
+            
+            resultCard.innerHTML = `
+                <div class="result-card-header">
+                    <div class="result-card-title">${type}</div>
+                    <div class="result-card-time">${time}</div>
+                </div>
+                <div class="result-progress">
+                                    <div class="result-progress-label">
+                    <span class="result-progress-text">Generating...</span>
+                    <span class="result-progress-percentage">0%</span>
+                </div>
+                    <div class="result-progress-bar">
+                        <div class="result-progress-fill"></div>
+                    </div>
+                </div>
+                <div class="result-preview" style="display: none;">
+                    <div class="result-preview-image" onclick="openResultModal('${cardId}')">
+                        <div class="result-preview-placeholder">Click to view full size</div>
+                    </div>
+                </div>
+                <div class="result-info" style="display: none;">
+                    <div class="result-info-item">
+                        <span class="result-info-label">Character:</span>
+                        <span class="result-info-value">${characterName || 'Not selected'}</span>
+                    </div>
+                    <div class="result-info-item">
+                        <span class="result-info-label">Description:</span>
+                        <span class="result-info-value">${description || 'No description'}</span>
+                    </div>
+                    <div class="result-info-item">
+                        <span class="result-info-label">Status:</span>
+                        <span class="result-info-value">Completed</span>
+                    </div>
+                </div>
+                <div class="result-actions" style="display: none;">
+                    <button class="result-action-btn" onclick="downloadResult('${cardId}')">Download</button>
+                    <button class="result-action-btn primary" onclick="handlePrimaryAction('${cardId}', '${type}')" id="primary-btn-${cardId}">View</button>
+                </div>
+            `;
+            
+            // Remove active class from other cards
+            document.querySelectorAll('.result-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Add to panel
+            const content = document.getElementById('resultPanelContent');
+            content.insertBefore(resultCard, content.firstChild);
+            
+            return cardId;
+        }
+
+        function updateProgress(cardId, percentage) {
+            const card = document.getElementById(cardId);
+            if (!card) return;
+            
+            const progressFill = card.querySelector('.result-progress-fill');
+            const progressText = card.querySelector('.result-progress-percentage');
+            
+            progressFill.style.width = percentage + '%';
+            progressText.textContent = percentage + '%';
+            
+            if (percentage < 100) {
+                const progressLabel = card.querySelector('.result-progress-text');
+                const messages = [
+                    'Initializing...',
+                    'Processing...',
+                    'Generating...',
+                    'Optimizing...',
+                    'Finalizing...'
+                ];
+                const messageIndex = Math.floor(percentage / 20);
+                progressLabel.textContent = messages[Math.min(messageIndex, messages.length - 1)];
+            }
+        }
+
+        function completeGeneration(cardId, resultType, resultData) {
+            const card = document.getElementById(cardId);
+            if (!card) return;
+            
+            // Hide progress
+            const progress = card.querySelector('.result-progress');
+            progress.style.display = 'none';
+            
+            // Show preview
+            const preview = card.querySelector('.result-preview');
+            const previewImage = card.querySelector('.result-preview-image');
+            preview.style.display = 'block';
+            
+            if (resultType === 'image') {
+                previewImage.innerHTML = `<img src="${resultData.url}" alt="Generated image" loading="lazy" onload="this.style.opacity='1'" onerror="this.style.opacity='0.5'; this.alt='Failed to load image';">`;
+                previewImage.classList.add('has-content');
+                card.setAttribute('data-result-url', resultData.url);
+                card.setAttribute('data-result-type', 'image');
+            } else if (resultType === 'video') {
+                previewImage.innerHTML = `
+                    <div style="position: relative; width: 100%; min-height: 200px; background: transparent; border-radius: 8px; overflow: hidden;">
+                        <video style="width: 100%; height: auto; min-height: 200px; max-height: 400px; object-fit: contain; display: block;" 
+                               muted preload="metadata" 
+                               onloadedmetadata="this.style.height='auto'; this.parentElement.style.height='auto'; this.setAttribute('data-loaded', 'true');"
+                               oncanplay="this.setAttribute('data-loaded', 'true');"
+                               onerror="console.error('Video failed to load:', this.src)">
+                        <source src="${resultData.url}" type="video/mp4">
+                            Your browser does not support the video tag.
+                    </video>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                                    width: 60px; height: 60px; background: rgba(0, 0, 0, 0.7); 
+                                    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                                    color: white; font-size: 24px; cursor: pointer; transition: all 0.3s ease;
+                                    z-index: 10;"
+                             onmouseover="this.style.background='rgba(237, 127, 140, 0.9)'"
+                             onmouseout="this.style.background='rgba(0, 0, 0, 0.7)'"
+                             onclick="openResultModal('${cardId}')">
+                            ▶
+                        </div>
+                    </div>
+                `;
+                previewImage.classList.add('has-content');
+                previewImage.setAttribute('data-result-type', 'video');
+                card.setAttribute('data-result-url', resultData.url);
+                card.setAttribute('data-result-type', 'video');
+            }
+            
+            // Show info and actions
+            card.querySelector('.result-info').style.display = 'block';
+            card.querySelector('.result-actions').style.display = 'flex';
+            
+            // Update primary button text based on result type
+            const primaryBtn = card.querySelector(`#primary-btn-${cardId}`);
+            const cardType = card.querySelector('.result-card-title').textContent;
+            
+            if (resultType === 'video') {
+                // For video results, hide the primary button (only show Download)
+                primaryBtn.style.display = 'none';
+            } else if (resultType === 'image' && (cardType === 'Image Generation' || cardType === 'Group Photo')) {
+                primaryBtn.textContent = 'Generate Video';
+                primaryBtn.innerHTML = '<span>🎥</span> Generate Video';
+                primaryBtn.style.display = 'block';
+            } else {
+                primaryBtn.textContent = 'View';
+                primaryBtn.style.display = 'block';
+            }
+            
+            // Restore generate button state
+            if (currentGeneratingButton) {
+                currentGeneratingButton.element.disabled = false;
+                currentGeneratingButton.element.innerHTML = currentGeneratingButton.originalText;
+                currentGeneratingButton = null;
+            }
+        }
+
+        // Handle primary action button click
+        function handlePrimaryAction(cardId, cardType) {
+            const card = document.getElementById(cardId);
+            if (!card) return;
+            
+            const resultType = card.getAttribute('data-result-type');
+            
+            // If it's an image from Image Generation or Group Photo, generate video
+            if (resultType === 'image' && (cardType === 'Image Generation' || cardType === 'Group Photo')) {
+                generateVideoFromImage(cardId);
+            } else {
+                // Otherwise, just open the modal to view
+                openResultModal(cardId);
+            }
+        }
+
+        // Generate video from an existing image
+        function generateVideoFromImage(cardId) {
+            const card = document.getElementById(cardId);
+            if (!card) return;
+            
+            const imageUrl = card.getAttribute('data-result-url');
+            if (!imageUrl) return;
+            
+            // Switch to video section
+            showSection('video');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Set the generated image as selected character
+            setTimeout(() => {
+                // Create a character object for the generated image
+                const generatedCharacter = {
+                    id: 'generated-image',
+                    name: 'Generated Image',
+                    image: imageUrl
+                };
+                
+                // Select this image as character
+                selectCharacterFromModal('Generated Image', generatedCharacter);
+            }, 500);
+        }
+
+        function openResultModal(cardId) {
+            const card = document.getElementById(cardId);
+            if (!card) return;
+            
+            const resultUrl = card.getAttribute('data-result-url');
+            const resultType = card.getAttribute('data-result-type');
+            
+            if (!resultUrl) return;
+            
+            const modal = document.getElementById('resultModal');
+            const modalImage = document.getElementById('resultModalImage');
+            const modalVideo = document.getElementById('resultModalVideo');
+            const modalLoading = document.getElementById('modalLoading');
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Show loading indicator
+            modalLoading.classList.add('show');
+            modalImage.style.display = 'none';
+            modalVideo.style.display = 'none';
+            
+            if (resultType === 'image') {
+                modalImage.onload = () => {
+                    modalLoading.classList.remove('show');
+                    modalImage.style.display = 'block';
+                    modalImage.style.opacity = '1';
+                    
+                    // 额外检查和限制图片尺寸
+                    const maxWidth = window.innerWidth * 0.9;
+                    const maxHeight = window.innerHeight * 0.9;
+                    
+                    if (modalImage.naturalWidth > maxWidth || modalImage.naturalHeight > maxHeight) {
+                        modalImage.style.maxWidth = maxWidth + 'px';
+                        modalImage.style.maxHeight = maxHeight + 'px';
+                    }
+                };
+                modalImage.onerror = () => {
+                    modalLoading.classList.remove('show');
+                    modalLoading.textContent = 'Failed to load image';
+                    modalLoading.classList.add('show');
+                };
+                modalImage.style.opacity = '0';
+                modalImage.src = resultUrl;
+            } else if (resultType === 'video') {
+                modalVideo.oncanplay = () => {
+                    modalLoading.classList.remove('show');
+                    modalVideo.style.display = 'block';
+                    modalVideo.style.opacity = '1';
+                    
+                    // 额外检查和限制视频尺寸
+                    const maxWidth = window.innerWidth * 0.9;
+                    const maxHeight = window.innerHeight * 0.9;
+                    
+                    modalVideo.style.maxWidth = maxWidth + 'px';
+                    modalVideo.style.maxHeight = maxHeight + 'px';
+                };
+                modalVideo.onerror = () => {
+                    modalLoading.classList.remove('show');
+                    modalLoading.textContent = 'Failed to load video';
+                    modalLoading.classList.add('show');
+                };
+                modalVideo.style.opacity = '0';
+                modalVideo.querySelector('source').src = resultUrl;
+                modalVideo.load();
+            }
+            
+            // Add keyboard event listener
+            document.addEventListener('keydown', handleModalKeydown);
+        }
+
+        function closeResultModal() {
+            const modal = document.getElementById('resultModal');
+            const modalLoading = document.getElementById('modalLoading');
+            
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            // Hide loading indicator
+            modalLoading.classList.remove('show');
+            
+            // Pause video if playing
+            const modalVideo = document.getElementById('resultModalVideo');
+            modalVideo.pause();
+            
+            // Remove keyboard event listener
+            document.removeEventListener('keydown', handleModalKeydown);
+        }
+
+        function handleModalKeydown(e) {
+            if (e.key === 'Escape') {
+                closeResultModal();
+            }
+        }
+
+        // 窗口大小改变时重新调整模态框中的图片/视频尺寸
+        function handleWindowResize() {
+            const modal = document.getElementById('resultModal');
+            if (modal.classList.contains('active')) {
+                const modalImage = document.getElementById('resultModalImage');
+                const modalVideo = document.getElementById('resultModalVideo');
+                
+                const maxWidth = window.innerWidth * 0.9;
+                const maxHeight = window.innerHeight * 0.9;
+                
+                if (modalImage.style.display === 'block') {
+                    modalImage.style.maxWidth = maxWidth + 'px';
+                    modalImage.style.maxHeight = maxHeight + 'px';
+                }
+                
+                if (modalVideo.style.display === 'block') {
+                    modalVideo.style.maxWidth = maxWidth + 'px';
+                    modalVideo.style.maxHeight = maxHeight + 'px';
+                }
+            }
+        }
+
+        // 添加窗口大小改变监听器
+        window.addEventListener('resize', handleWindowResize);
+
+        async function downloadResult(cardId) {
+            const card = document.getElementById(cardId);
+            if (!card) return;
+            
+            const resultUrl = card.getAttribute('data-result-url');
+            if (!resultUrl) return;
+            
+            const resultType = card.getAttribute('data-result-type');
+            const fileExtension = resultType === 'video' ? 'mp4' : 'jpg';
+            const fileName = `sugar-ai-generation-${cardId}.${fileExtension}`;
+            
+            try {
+                // Fetch the image/video as blob
+                const response = await fetch(resultUrl);
+                const blob = await response.blob();
+                
+                // Create download link
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = fileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // Clean up the object URL
+                URL.revokeObjectURL(link.href);
+            } catch (error) {
+                console.error('Download failed:', error);
+                // Fallback to direct link download
+                const link = document.createElement('a');
+                link.href = resultUrl;
+                link.download = fileName;
+                link.target = '_blank';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        // Simulate generation with progress
+        function simulateGeneration(cardId, duration, resultType, resultUrl) {
+            let progress = 0;
+            const interval = 100; // Update every 100ms
+            const increment = (100 / duration) * interval;
+            
+            const progressInterval = setInterval(() => {
+                progress += increment;
+                if (progress >= 100) {
+                    progress = 100;
+                    updateProgress(cardId, Math.floor(progress));
+                    clearInterval(progressInterval);
+                    
+                    // Complete generation
+                    setTimeout(() => {
+                        completeGeneration(cardId, resultType, { url: resultUrl });
+                    }, 500);
+                } else {
+                    updateProgress(cardId, Math.floor(progress));
+                }
+            }, interval);
+        }
+
+        // Photo upload functionality
+        let uploadedPhoto = null;
+
+        function handlePhotoUploadClick() {
+            // If no photo is uploaded, open file dialog
+            if (!uploadedPhoto) {
+                document.getElementById('photoUpload').click();
+            }
+        }
+
+        function removeUploadedPhoto() {
+            uploadedPhoto = null;
+            const uploadArea = document.getElementById('photoUploadArea');
+            uploadArea.classList.remove('has-image');
+            
+            // Reset file input
+            document.getElementById('photoUpload').value = '';
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function getImageDimensions(file) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = function() {
+                    resolve({ width: this.width, height: this.height });
+                };
+                img.src = URL.createObjectURL(file);
+            });
+        }
+
+        // Function to handle URL parameters and auto-select character
+        function handleURLParameters() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const characterParam = urlParams.get('character');
+            const mode = urlParams.get('mode');
+            
+            if (characterParam) {
+                try {
+                    // Try to parse as JSON (from create.html)
+                    const characterData = JSON.parse(decodeURIComponent(characterParam));
+                    
+                    // Create a new character entry for the created character
+                    const characterName = characterData.name;
+                    const newCharacter = {
+                        image: characterData.image || 'assets/pic_1.jpeg', // Use the generated image or fallback
+                        age: `${characterData.age} years old`,
+                        role: 'Custom Character',
+                        tags: [characterData.outfit, characterData.background],
+                        status: 'Online',
+                        id: characterName.toLowerCase().replace(/\s+/g, '_'),
+                        isCustom: true,
+                        customData: characterData
+                    };
+                    
+                    // Add to charactersData
+                    charactersData[characterName] = newCharacter;
+                    
+                    // Auto-select the character
+                    selectCharacterFromModal(characterName, newCharacter);
+                    
+                    // Switch to appropriate section based on mode
+                    if (mode === 'image') {
+                        showSection('text2image');
+                    } else if (mode === 'video') {
+                        showSection('video');
+                    }
+                    
+                } catch (error) {
+                    // Fallback to original character name lookup
+                    if (charactersData[characterParam]) {
+                        const character = charactersData[characterParam];
+                        selectCharacterFromModal(characterParam, character);
+                    }
+                }
+                
+                // Clean up URL by removing the parameters
+                const newUrl = window.location.pathname;
+                window.history.replaceState({}, document.title, newUrl);
+            }
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查用户登录状态
+            checkLoginStatus();
+            
+            // Handle URL parameters for auto-selecting character
+            handleURLParameters();
+            
+            const modal = document.getElementById('characterModal');
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeCharacterModal();
+                }
+            });
+            
+            const resultModal = document.getElementById('resultModal');
+            resultModal.addEventListener('click', function(e) {
+                if (e.target === resultModal) {
+                    closeResultModal();
+                }
+            });
+
+            // Initialize photo upload functionality
+            const photoUpload = document.getElementById('photoUpload');
+            const uploadArea = document.getElementById('photoUploadArea');
+            
+            // Handle file selection
+            photoUpload.addEventListener('change', async function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    await processUploadedFile(file);
+                }
+            });
+
+            // Handle drag and drop
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                uploadArea.classList.add('drag-over');
+            });
+
+            uploadArea.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                uploadArea.classList.remove('drag-over');
+            });
+
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                uploadArea.classList.remove('drag-over');
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    processUploadedFile(files[0]);
+                }
+            });
+
+
+        });
+
+        // Process uploaded file function
+        async function processUploadedFile(file) {
+            try {
+                // Validate file type
+                if (!file.type.startsWith('image/')) {
+                    alert('Please select a valid image file.');
+                    return;
+                }
+
+                // Validate file size (max 10MB)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('File size must be less than 10MB.');
+                    return;
+                }
+
+                // Get image dimensions
+                const dimensions = await getImageDimensions(file);
+                
+                // Create preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedPhoto = {
+                        file: file,
+                        dataUrl: e.target.result,
+                        name: file.name,
+                        size: file.size,
+                        dimensions: dimensions
+                    };
+                    
+                    // Update UI
+                    const uploadArea = document.getElementById('photoUploadArea');
+                    const previewImage = document.getElementById('photoPreviewImage');
+                    const previewName = document.getElementById('photoPreviewName');
+                    const previewSize = document.getElementById('photoPreviewSize');
+                    
+                    uploadArea.classList.add('has-image');
+                    previewImage.src = e.target.result;
+                    previewName.textContent = file.name;
+                    previewSize.textContent = `${formatFileSize(file.size)} • ${dimensions.width}×${dimensions.height}`;
+                };
+                reader.readAsDataURL(file);
+            } catch (error) {
+                console.error('Error processing image:', error);
+                alert('Error processing image. Please try again.');
+            }
+        }
+
+
+
+
+    </script>
+</body>
+</html>
