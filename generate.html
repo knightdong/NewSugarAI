@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #212121;
+            background: #0a0a0a;
             color: #ffffff;
             overflow-x: hidden;
         }
@@ -26,7 +26,7 @@
         /* 左侧导航栏 */
         .sidebar {
             width: 280px;
-            background: linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 100%);
+            background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
             position: fixed;
             height: 100vh;
             left: 0;
@@ -229,7 +229,7 @@
         }
 
         .feature-card {
-            background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
             border: 1px solid #333;
             border-radius: 15px;
             padding: 30px;
@@ -623,7 +623,7 @@
         }
 
         .character-modal-content {
-            background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
             border-radius: 20px;
             padding: 30px;
             max-width: 800px;
@@ -674,7 +674,7 @@
         }
 
         .character-modal-card {
-            background: linear-gradient(145deg, #333, #2a2a2a);
+            background: linear-gradient(145deg, #333, #1a1a1a);
             border: 2px solid #444;
             border-radius: 15px;
             padding: 20px;
@@ -734,7 +734,7 @@
 
         /* Upload image option */
         .character-upload-card {
-            background: linear-gradient(145deg, #333, #2a2a2a);
+            background: linear-gradient(145deg, #333, #1a1a1a);
             border: 2px dashed #555;
             border-radius: 15px;
             padding: 20px;
@@ -878,7 +878,7 @@
             right: 0;
             width: 400px;
             height: 100vh;
-            background: linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 100%);
+            background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
             border-left: 1px solid #333;
             z-index: 100;
             display: flex;
@@ -909,7 +909,7 @@
         }
 
         .result-card {
-            background: linear-gradient(145deg, #333, #2a2a2a);
+            background: linear-gradient(145deg, #333, #1a1a1a);
             border: 1px solid #444;
             border-radius: 15px;
             padding: 20px;
@@ -997,37 +997,46 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            margin: 0;
+            padding: 0;
         }
-
         .result-preview-image.has-content {
             border: 2px solid rgba(237, 127, 140, 0.3);
             background: transparent;
             padding: 0;
-        }
-
-        .result-preview-image img {
-            max-width: 100%;
-            max-height: 100%;
-            width: auto;
-            height: auto;
-            object-fit: contain;
-            border-radius: 8px;
-            display: block;
-        }
-
-        .result-preview-image.has-content {
-            height: auto;
             min-height: 200px;
             align-items: stretch;
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-
         .result-preview-image.has-content img {
             width: 100%;
-            height: auto;
+            height: 100%;
+            max-width: 100%;
             max-height: 400px;
-            object-fit: contain;
+            object-fit: cover;
             transition: opacity 0.3s ease;
             opacity: 0;
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+        }
+        .result-preview-image.has-content[data-result-type="video"] video {
+            width: 100% !important;
+            height: 100% !important;
+            min-height: 200px;
+            max-height: 400px;
+            object-fit: cover !important;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+            background: #000;
         }
 
         .result-preview-image.has-content::after {
@@ -1341,10 +1350,10 @@
             left: 0;
             right: 0;
             height: 60px;
-            background: linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 100%);
+            background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
             border-bottom: 1px solid #333;
             z-index: 1001;
-            padding: 0 20px;
+            padding: 0 15px;
             align-items: center;
             justify-content: space-between;
         }
@@ -1365,18 +1374,21 @@
         .top-nav-menu {
             display: flex;
             align-items: center;
-            gap: 5px;
+            flex: 1;
+            justify-content: space-between;
+            gap: 2px;
         }
 
         .top-nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 8px 10px;
+            padding: 8px 4px;
             cursor: pointer;
             transition: all 0.3s ease;
             border-radius: 8px;
-            min-width: 60px;
+            flex: 1;
+            min-width: 0;
         }
 
         .top-nav-item:hover {
@@ -1406,7 +1418,8 @@
         .top-nav-user {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            flex-shrink: 0;
         }
 
         .top-nav-avatar {
@@ -1439,77 +1452,122 @@
                 display: flex;
             }
             
+            .top-nav-logo {
+                display: none;
+            }
+            
+            .top-nav-menu {
+                gap: 2px;
+            }
+            
+            .top-nav-item {
+                padding: 6px 2px;
+                min-width: 0;
+            }
+            
+            .top-nav-item .icon {
+                font-size: 15px;
+            }
+            
+            .top-nav-item .text {
+                font-size: 10px;
+            }
+            
             .main-content {
                 margin-left: 0;
                 padding-top: 60px;
                 padding-right: 20px;
+                padding-bottom: 90px;
             }
             
             .result-panel {
                 position: fixed;
-                bottom: 0;
+                left: 0;
                 right: 0;
-                top: auto;
-                width: 100%;
-                height: 50vh;
-                transform: translateY(100%);
-                transition: transform 0.3s ease;
+                bottom: 0;
+                width: 100vw;
+                max-width: 100vw;
+                z-index: 2000;
+                box-shadow: 0 -4px 24px rgba(0,0,0,0.4);
+                background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
+                border-top: 1px solid #333;
+                transition: transform 0.35s cubic-bezier(.4,1.3,.5,1), height 0.35s cubic-bezier(.4,1.3,.5,1);
+                will-change: transform, height;
+                height: 80px;
+                transform: translateY(0);
+                overflow: hidden;
+                top: unset !important;
             }
             
             .result-panel.active {
+                height: 75vh;
+                max-height: 75vh;
                 transform: translateY(0);
+                box-shadow: 0 -8px 32px rgba(0,0,0,0.5);
             }
             
-            .sub-nav {
-                flex-wrap: wrap;
-                gap: 10px;
+            .result-panel-header {
+                padding: 0 15px;
+                height: 80px;
+                display: flex;
+                align-items: center;
+                border-bottom: 1px solid #333;
+                position: relative;
+                background: transparent;
+                cursor: pointer;
+                user-select: none;
             }
             
-            .sub-nav-item {
-                padding: 12px 15px;
-                font-size: 14px;
+            .result-panel-title {
+                font-size: 18px;
+                font-weight: 700;
+                color: #ed7f8c;
+                flex: 1;
             }
             
-            .feature-card {
-                padding: 20px;
+            .result-panel-close-btn {
+                position: absolute;
+                top: 50%;
+                right: 16px;
+                transform: translateY(-50%);
+                background: none;
+                border: none;
+                color: #ed7f8c;
+                font-size: 22px;
+                font-weight: bold;
+                cursor: pointer;
+                z-index: 10;
+                display: block;
             }
-
-            .upload-area {
-                padding: 20px;
+            
+            .result-panel-subtitle {
+                display: none;
             }
-
-            .upload-area.has-image {
-                padding: 15px;
+            
+            .result-panel-content {
+                padding: 12px 10px;
+                height: calc(75vh - 80px);
+                max-height: calc(75vh - 80px);
+                overflow-y: auto;
+                background: transparent;
             }
-
-            .upload-preview-image {
-                max-height: 150px;
-            }
-
-            .upload-preview-actions {
-                flex-direction: column;
-            }
-
-            .upload-preview-btn {
-                width: 100%;
-            }
-
+            
             .result-modal-content {
                 max-width: calc(100vw - 40px);
                 max-height: calc(100vh - 40px);
                 margin: 20px;
             }
-
+            
             .result-modal-image {
                 max-width: 95vw !important;
                 max-height: 95vh !important;
             }
-
+            
             .result-modal-video {
                 max-width: 95vw !important;
                 max-height: 95vh !important;
             }
-
+            
             .result-modal-close {
                 top: 10px;
                 right: 10px;
@@ -1518,45 +1576,55 @@
                 font-size: 20px;
                 padding: 8px;
             }
-
+            
             .result-preview-image {
                 min-height: 150px;
                 max-height: 300px;
             }
-
+            
             .suggestions {
                 grid-template-columns: repeat(4, 1fr);
                 gap: 8px;
             }
-
+            
             .suggestion-card {
                 padding: 10px;
                 min-height: 110px;
             }
-
+            
             .suggestion-image {
                 width: 50px;
                 height: 50px;
                 margin-bottom: 8px;
             }
-
+            
             .suggestion-text {
                 font-size: 10px;
                 line-height: 1.2;
             }
-
+            
             .suggestion-tabs {
                 margin-bottom: 15px;
             }
-
+            
             .suggestion-tab {
                 padding: 10px 12px;
                 font-size: 12px;
                 gap: 4px;
             }
-
+            
             .suggestion-tab span {
                 font-size: 14px;
+            }
+
+            .sub-nav-item {
+                flex: 0 0 auto;
+                min-width: 90px;
+                padding: 10px 6px;
+                font-size: 12px;
+                line-height: 1.1;
+                text-align: center;
+                white-space: nowrap;
             }
         }
 
@@ -1666,6 +1734,50 @@
         .photo-action-btn.danger:hover {
             background: linear-gradient(135deg, #b02a37, #8e1f2b);
         }
+
+        .result-panel-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        .result-panel-content::-webkit-scrollbar-thumb {
+            background: #222;
+            border-radius: 4px;
+        }
+        .result-panel-content::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        @media (max-width: 480px) {
+            .top-nav {
+                padding: 0 8px;
+            }
+            
+            .top-nav-menu {
+                gap: 1px;
+            }
+            
+            .top-nav-item {
+                padding: 5px 1px;
+                min-width: 0;
+            }
+            
+            .top-nav-item .icon {
+                font-size: 14px;
+            }
+            
+            .top-nav-item .text {
+                font-size: 9px;
+            }
+            
+            .top-nav-avatar {
+                width: 28px;
+                height: 28px;
+                font-size: 12px;
+            }
+            
+            .top-nav-gems {
+                font-size: 11px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1679,6 +1791,10 @@
                 <div class="top-nav-item" data-nav="explore">
                     <div class="icon">🔍</div>
                     <div class="text">Explore</div>
+                </div>
+                <div class="top-nav-item" data-nav="chat">
+                    <div class="icon">💬</div>
+                    <div class="text">Chat</div>
                 </div>
                 <div class="top-nav-item" data-nav="create">
                     <div class="icon">✨</div>
@@ -1714,7 +1830,7 @@
                     <div class="icon">🔍</div>
                     <div class="text">Explore</div>
                 </div>
-                        <div class="nav-item" onclick="navigateTo('chat')" style="display: none;">
+                <div class="nav-item" onclick="navigateTo('chat')">
                     <div class="icon">💬</div>
                     <div class="text">Chat</div>
                 </div>
@@ -2330,10 +2446,10 @@
     </div>
 
     <!-- 右侧结果面板 -->
-    <div class="result-panel">
-        <div class="result-panel-header">
+    <div class="result-panel" id="resultPanelDrawer">
+        <div class="result-panel-header" onclick="toggleResultPanelMobile()">
             <h2 class="result-panel-title">Generation Results</h2>
-            <p class="result-panel-subtitle">View your AI-generated content</p>
+            <button class="result-panel-close-btn" id="resultPanelCloseBtn" aria-hidden="true" hidden onclick="closeResultPanelMobile(event)">×</button>
         </div>
         <div class="result-panel-content" id="resultPanelContent">
             <div class="result-empty">
@@ -2542,6 +2658,12 @@
         });
 
         function showSection(sectionId) {
+            // 切换Tab时恢复生成按钮状态
+            if (window.currentGeneratingButton) {
+                window.currentGeneratingButton.element.disabled = false;
+                window.currentGeneratingButton.element.innerHTML = window.currentGeneratingButton.originalText;
+                window.currentGeneratingButton = null;
+            }
             // Hide all sections
             document.querySelectorAll('.content-section').forEach(section => {
                 section.classList.remove('active');
@@ -2565,6 +2687,7 @@
             });
             
             currentSection = sectionId;
+            restoreAllGeneratingButtons();
         }
 
         function selectCharacter(characterId) {
@@ -2877,18 +3000,20 @@
                 return;
             }
             
+            // 立即弹出结果抽屉
+            showResultPanelMobile();
             const btn = event.target;
             btn.disabled = true;
-            btn.innerHTML = '<span>⏳</span> Generating...';
+            btn.innerHTML = '<span>✨</span> Generating...';
             
             // Store current button info for restoration
-            currentGeneratingButton = {
-                element: btn,
-                originalText: '<span>✨</span> Generate Image'
-            };
+            setGeneratingButton(btn, '<span>✨</span> Generate Image');
             
             const characterName = selectedCharacter.name || (typeof selectedCharacter === 'string' ? selectedCharacter : 'Unknown');
             const cardId = createResultCard('Image Generation', description, characterName);
+            // 自动滚动到顶部
+            const resultPanel = document.getElementById('resultPanelContent');
+            if (resultPanel) resultPanel.scrollTop = 0;
             
             // Simulate generation with progress (replace with actual API call)
             // Using local sample images for demo
@@ -2926,18 +3051,20 @@
                 return;
             }
             
+            // 立即弹出结果抽屉
+            showResultPanelMobile();
             const btn = event.target;
             btn.disabled = true;
-            btn.innerHTML = '<span>⏳</span> Generating...';
+            btn.innerHTML = '<span>🎬</span> Generating...';
             
             // Store current button info for restoration
-            currentGeneratingButton = {
-                element: btn,
-                originalText: '<span>🎬</span> Generate Group Photo'
-            };
+            setGeneratingButton(btn, '<span>🎬</span> Generate Group Photo');
             
             const characterName = selectedCharacter.name || (typeof selectedCharacter === 'string' ? selectedCharacter : 'Unknown');
             const cardId = createResultCard('Group Photo', description, characterName);
+            // 自动滚动到顶部
+            const resultPanel = document.getElementById('resultPanelContent');
+            if (resultPanel) resultPanel.scrollTop = 0;
             
             // Simulate generation with progress (replace with actual API call)
             // Using local sample images for demo
@@ -2963,31 +3090,34 @@
                 alert('Please select a character first!');
                 return;
             }
-            
             const description = document.querySelector('#video .form-textarea').value;
             if (!description.trim()) {
                 alert('Please enter a video description!');
                 return;
             }
-            
+            showResultPanelMobile();
             const btn = event.target;
             btn.disabled = true;
-            btn.innerHTML = '<span>⏳</span> Generating...';
-            
-            // Store current button info for restoration
-            currentGeneratingButton = {
-                element: btn,
-                originalText: '<span>🎥</span> Generate Video'
-            };
-            
+            btn.innerHTML = '<span>🎥</span> Generating...';
+            setGeneratingButton(btn, '<span>🎥</span> Generate Video');
             const characterName = selectedCharacter.name || (typeof selectedCharacter === 'string' ? selectedCharacter : 'Unknown');
             const cardId = createResultCard('Video Generation', description, characterName);
-            
-            // Simulate generation with progress (replace with actual API call)
-            // Using the video file for demo
-            const videoUrl = 'assets/video_1.mp4';
-            
+            // 自动滚动到顶部
+            const resultPanel = document.getElementById('resultPanelContent');
+            if (resultPanel) resultPanel.scrollTop = 0;
+            // 选择专属视频
+            let videoUrl = 'assets/video_1.mp4';
+            if (selectedCharacter && selectedCharacter.id) {
+                videoUrl = `assets/video_${getCharacterVideoIndex(selectedCharacter.id)}.mp4`;
+            }
             simulateGeneration(cardId, 12000, 'video', videoUrl);
+        }
+
+        function getCharacterVideoIndex(characterId) {
+            // id: morganna, elaine, amanda, charlotte, emily, morgan, vanessa, aiko, summer, isabella
+            const ids = ['morganna','elaine','amanda','charlotte','emily','morgan','vanessa','aiko','summer','isabella'];
+            const idx = ids.indexOf(characterId);
+            return idx >= 0 ? idx+1 : 1;
         }
 
         function generateLipSync() {
@@ -3008,18 +3138,20 @@
                 return;
             }
             
+            // 立即弹出结果抽屉
+            showResultPanelMobile();
             const btn = event.target;
             btn.disabled = true;
-            btn.innerHTML = '<span>⏳</span> Generating...';
+            btn.innerHTML = '<span>🎤</span> Generating...';
             
             // Store current button info for restoration
-            currentGeneratingButton = {
-                element: btn,
-                originalText: '<span>🎤</span> Generate Voice Sync'
-            };
+            setGeneratingButton(btn, '<span>🎤</span> Generate Voice Sync');
             
             const characterName = selectedCharacter.name || (typeof selectedCharacter === 'string' ? selectedCharacter : 'Unknown');
             const cardId = createResultCard('Voice Sync Video', script, characterName);
+            // 自动滚动到顶部
+            const resultPanel = document.getElementById('resultPanelContent');
+            if (resultPanel) resultPanel.scrollTop = 0;
             
             // Simulate generation with progress (replace with actual API call)
             // Using the video file for demo
@@ -3122,16 +3254,13 @@
         function completeGeneration(cardId, resultType, resultData) {
             const card = document.getElementById(cardId);
             if (!card) return;
-            
             // Hide progress
             const progress = card.querySelector('.result-progress');
             progress.style.display = 'none';
-            
             // Show preview
             const preview = card.querySelector('.result-preview');
             const previewImage = card.querySelector('.result-preview-image');
             preview.style.display = 'block';
-            
             if (resultType === 'image') {
                 previewImage.innerHTML = `<img src="${resultData.url}" alt="Generated image" loading="lazy" onload="this.style.opacity='1'" onerror="this.style.opacity='0.5'; this.alt='Failed to load image';">`;
                 previewImage.classList.add('has-content');
@@ -3158,6 +3287,7 @@
                              onclick="openResultModal('${cardId}')">
                             ▶
                         </div>
+                        <div style="position: absolute; top: 12px; right: 12px; background: linear-gradient(135deg,#ed7f8c,#d16570); color: white; font-size: 12px; font-weight: bold; padding: 4px 12px; border-radius: 12px; z-index: 20; box-shadow: 0 2px 8px rgba(0,0,0,0.18);">Private</div>
                     </div>
                 `;
                 previewImage.classList.add('has-content');
@@ -3165,17 +3295,11 @@
                 card.setAttribute('data-result-url', resultData.url);
                 card.setAttribute('data-result-type', 'video');
             }
-            
-            // Show info and actions
             card.querySelector('.result-info').style.display = 'block';
             card.querySelector('.result-actions').style.display = 'flex';
-            
-            // Update primary button text based on result type
             const primaryBtn = card.querySelector(`#primary-btn-${cardId}`);
             const cardType = card.querySelector('.result-card-title').textContent;
-            
             if (resultType === 'video') {
-                // For video results, hide the primary button (only show Download)
                 primaryBtn.style.display = 'none';
             } else if (resultType === 'image' && (cardType === 'Image Generation' || cardType === 'Group Photo')) {
                 primaryBtn.textContent = 'Generate Video';
@@ -3185,13 +3309,8 @@
                 primaryBtn.textContent = 'View';
                 primaryBtn.style.display = 'block';
             }
-            
-            // Restore generate button state
-            if (currentGeneratingButton) {
-                currentGeneratingButton.element.disabled = false;
-                currentGeneratingButton.element.innerHTML = currentGeneratingButton.originalText;
-                currentGeneratingButton = null;
-            }
+            restoreGeneratingButton(getCurrentTabKey());
+            showResultPanelMobile();
         }
 
         // Handle primary action button click
@@ -3241,35 +3360,25 @@
         function openResultModal(cardId) {
             const card = document.getElementById(cardId);
             if (!card) return;
-            
             const resultUrl = card.getAttribute('data-result-url');
             const resultType = card.getAttribute('data-result-type');
-            
             if (!resultUrl) return;
-            
             const modal = document.getElementById('resultModal');
             const modalImage = document.getElementById('resultModalImage');
             const modalVideo = document.getElementById('resultModalVideo');
             const modalLoading = document.getElementById('modalLoading');
-            
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
-            
-            // Show loading indicator
             modalLoading.classList.add('show');
             modalImage.style.display = 'none';
             modalVideo.style.display = 'none';
-            
             if (resultType === 'image') {
                 modalImage.onload = () => {
                     modalLoading.classList.remove('show');
                     modalImage.style.display = 'block';
                     modalImage.style.opacity = '1';
-                    
-                    // 额外检查和限制图片尺寸
                     const maxWidth = window.innerWidth * 0.9;
                     const maxHeight = window.innerHeight * 0.9;
-                    
                     if (modalImage.naturalWidth > maxWidth || modalImage.naturalHeight > maxHeight) {
                         modalImage.style.maxWidth = maxWidth + 'px';
                         modalImage.style.maxHeight = maxHeight + 'px';
@@ -3287,13 +3396,11 @@
                     modalLoading.classList.remove('show');
                     modalVideo.style.display = 'block';
                     modalVideo.style.opacity = '1';
-                    
-                    // 额外检查和限制视频尺寸
                     const maxWidth = window.innerWidth * 0.9;
                     const maxHeight = window.innerHeight * 0.9;
-                    
                     modalVideo.style.maxWidth = maxWidth + 'px';
                     modalVideo.style.maxHeight = maxHeight + 'px';
+                    modalVideo.play(); // 自动播放
                 };
                 modalVideo.onerror = () => {
                     modalLoading.classList.remove('show');
@@ -3304,8 +3411,6 @@
                 modalVideo.querySelector('source').src = resultUrl;
                 modalVideo.load();
             }
-            
-            // Add keyboard event listener
             document.addEventListener('keydown', handleModalKeydown);
         }
 
@@ -3402,15 +3507,27 @@
             let progress = 0;
             const interval = 100; // Update every 100ms
             const increment = (100 / duration) * interval;
-            
+            const card = document.getElementById(cardId);
+            // 添加进度提示
+            if (card) {
+                let tip = card.querySelector('.result-progress-tip');
+                if (!tip) {
+                    tip = document.createElement('div');
+                    tip.className = 'result-progress-tip';
+                    tip.style.cssText = 'color:#ed7f8c;font-size:13px;text-align:right;margin-top:2px;';
+                    tip.textContent = (resultType === 'image') ? '1-3 mins' : '5-10 mins';
+                    const progress = card.querySelector('.result-progress');
+                    if (progress) progress.appendChild(tip);
+                } else {
+                    tip.textContent = (resultType === 'image') ? '1-3 mins' : '5-10 mins';
+                }
+            }
             const progressInterval = setInterval(() => {
                 progress += increment;
                 if (progress >= 100) {
                     progress = 100;
                     updateProgress(cardId, Math.floor(progress));
                     clearInterval(progressInterval);
-                    
-                    // Complete generation
                     setTimeout(() => {
                         completeGeneration(cardId, resultType, { url: resultUrl });
                     }, 500);
@@ -3613,8 +3730,66 @@
             }
         }
 
+        // 全局生成按钮状态管理
+        window.generatingButtons = {};
 
+        function getCurrentTabKey() {
+            // 可根据实际Tab结构调整
+            return window.currentSection || 'default';
+        }
 
+        // 修改生成按钮逻辑
+        function setGeneratingButton(btn, originalText) {
+            const tabKey = getCurrentTabKey();
+            window.generatingButtons[tabKey] = {
+                element: btn,
+                originalText: originalText
+            };
+        }
+        function restoreGeneratingButton(tabKey) {
+            const btnObj = window.generatingButtons[tabKey];
+            if (btnObj && btnObj.element) {
+                btnObj.element.disabled = false;
+                btnObj.element.innerHTML = btnObj.originalText;
+            }
+            delete window.generatingButtons[tabKey];
+        }
+        function restoreAllGeneratingButtons() {
+            Object.keys(window.generatingButtons).forEach(restoreGeneratingButton);
+        }
+
+        // 生成结果后自动弹出结果面板（移动端）
+        function showResultPanelMobile() {
+            if (window.innerWidth <= 768) {
+                document.getElementById('resultPanelDrawer').classList.add('active');
+            }
+        }
+        function closeResultPanelMobile(e) {
+            e.stopPropagation();
+            document.getElementById('resultPanelDrawer').classList.remove('active');
+        }
+        function toggleResultPanelMobile() {
+            const panel = document.getElementById('resultPanelDrawer');
+            if (panel.classList.contains('active')) {
+                panel.classList.remove('active');
+            } else {
+                panel.classList.add('active');
+            }
+        }
+
+        function updateResultPanelCloseBtnVisibility() {
+            const btn = document.getElementById('resultPanelCloseBtn');
+            if (!btn) return;
+            if (window.innerWidth <= 768) {
+                btn.removeAttribute('hidden');
+                btn.setAttribute('aria-hidden', 'false');
+            } else {
+                btn.setAttribute('hidden', '');
+                btn.setAttribute('aria-hidden', 'true');
+            }
+        }
+        window.addEventListener('resize', updateResultPanelCloseBtnVisibility);
+        document.addEventListener('DOMContentLoaded', updateResultPanelCloseBtnVisibility);
 
     </script>
 </body>

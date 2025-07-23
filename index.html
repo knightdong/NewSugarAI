@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #212121;
+            background-color: #0a0a0a;
             color: #ffffff;
             overflow-x: hidden;
         }
@@ -26,7 +26,7 @@
         /* 左侧导航栏 */
         .sidebar {
             width: 280px;
-            background: linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 100%);
+            background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
             position: fixed;
             height: 100vh;
             left: 0;
@@ -170,7 +170,7 @@
         .main-content {
             flex: 1;
             margin-left: 280px;
-            background: #212121;
+            background: #0a0a0a;
             min-height: 100vh;
             position: relative;
         }
@@ -211,7 +211,7 @@
         }
 
         .character-card {
-            background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
             border-radius: 20px;
             overflow: hidden;
             cursor: pointer;
@@ -255,6 +255,35 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            transition: opacity 0.3s ease;
+        }
+
+        .character-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .character-image {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        /* 悬停时显示视频 */
+        .character-card.has-video:hover .character-video {
+            opacity: 1;
+        }
+
+        /* 悬停时隐藏图片，但只有当视频存在时才隐藏 */
+        .character-card.has-video:hover .character-video ~ .character-image {
+            opacity: 0;
         }
 
         .character-info {
@@ -315,7 +344,7 @@
 
         /* Empty state for remaining cards */
         .character-card.placeholder {
-            background: linear-gradient(145deg, rgba(42, 42, 42, 0.3), rgba(30, 30, 30, 0.3));
+            background: linear-gradient(145deg, rgba(26, 26, 26, 0.3), rgba(15, 15, 15, 0.3));
             border: 2px dashed #444;
             display: flex;
             align-items: center;
@@ -349,7 +378,7 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: #1e1e1e;
+            background: #0f0f0f;
         }
 
         ::-webkit-scrollbar-thumb {
@@ -369,10 +398,10 @@
             left: 0;
             right: 0;
             height: 60px;
-            background: linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 100%);
+            background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
             border-bottom: 1px solid #333;
             z-index: 1001;
-            padding: 0 20px;
+            padding: 0 15px;
             align-items: center;
             justify-content: space-between;
         }
@@ -393,18 +422,21 @@
         .top-nav-menu {
             display: flex;
             align-items: center;
-            gap: 5px;
+            flex: 1;
+            justify-content: space-between;
+            gap: 2px;
         }
 
         .top-nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 8px 10px;
+            padding: 8px 4px;
             cursor: pointer;
             transition: all 0.3s ease;
             border-radius: 8px;
-            min-width: 60px;
+            flex: 1;
+            min-width: 0;
         }
 
         .top-nav-item:hover {
@@ -434,7 +466,8 @@
         .top-nav-user {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            flex-shrink: 0;
         }
 
         .top-nav-avatar {
@@ -486,6 +519,27 @@
                 display: flex;
             }
             
+            .top-nav-logo {
+                display: none;
+            }
+            
+            .top-nav-menu {
+                gap: 2px;
+            }
+            
+            .top-nav-item {
+                padding: 6px 2px;
+                min-width: 0;
+            }
+            
+            .top-nav-item .icon {
+                font-size: 15px;
+            }
+            
+            .top-nav-item .text {
+                font-size: 10px;
+            }
+            
             .main-content {
                 margin-left: 0;
                 padding-top: 60px;
@@ -511,24 +565,40 @@
             .content-header {
                 margin: 0 -20px 30px -20px;
             }
+            
+            /* 移动端人物卡片文字适配 */
+            .character-info h3 {
+                font-size: 16px;
+                margin-bottom: 4px;
+            }
+            
+            .character-age,
+            .character-role {
+                font-size: 12px;
+            }
+            
+            .character-tag {
+                font-size: 10px;
+                padding: 3px 8px;
+            }
+            
+            .character-info {
+                padding: 12px 16px;
+            }
         }
 
         @media (max-width: 480px) {
             .top-nav {
-                padding: 0 15px;
-            }
-            
-            .top-nav-logo h1 {
-                font-size: 18px;
+                padding: 0 8px;
             }
             
             .top-nav-menu {
-                gap: 2px;
+                gap: 1px;
             }
             
             .top-nav-item {
-                padding: 6px 8px;
-                min-width: 50px;
+                padding: 5px 1px;
+                min-width: 0;
             }
             
             .top-nav-item .icon {
@@ -565,6 +635,36 @@
             .character-card {
                 max-width: none;
             }
+            
+            /* 小屏幕人物卡片文字进一步适配 */
+            .character-info h3 {
+                font-size: 14px;
+                margin-bottom: 3px;
+            }
+            
+            .character-age,
+            .character-role {
+                font-size: 11px;
+            }
+            
+            .character-tag {
+                font-size: 9px;
+                padding: 2px 6px;
+                border-radius: 8px;
+            }
+            
+            .character-info {
+                padding: 10px 12px;
+            }
+            
+            .character-meta {
+                gap: 8px;
+                margin-bottom: 6px;
+            }
+            
+            .character-tags {
+                gap: 4px;
+            }
         }
     </style>
 </head>
@@ -579,6 +679,10 @@
                 <div class="top-nav-item active" data-nav="explore">
                     <div class="icon">🔍</div>
                     <div class="text">Explore</div>
+                </div>
+                <div class="top-nav-item" data-nav="chat">
+                    <div class="icon">💬</div>
+                    <div class="text">Chat</div>
                 </div>
                 <div class="top-nav-item" data-nav="create">
                     <div class="icon">✨</div>
@@ -614,7 +718,7 @@
                     <div class="icon">🔍</div>
                     <div class="text active">Explore</div>
                 </div>
-                <div class="nav-item" style="display: none;">
+                <div class="nav-item">
                     <div class="icon">💬</div>
                     <div class="text">Chat</div>
                 </div>
@@ -674,9 +778,12 @@
                 <!-- Character Grid with SoulFun.ai inspired proportions -->
                 <div class="character-grid">
                     <!-- Character 1 - Using your pic_1.jpeg -->
-                    <div class="character-card">
+                    <div class="character-card has-video">
                         <div class="character-image" style="background: linear-gradient(135deg, #ed7f8c, #d16570); background-image: url('assets/pic_1.jpeg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
                         </div>
+                        <video class="character-video" muted loop>
+                            <source src="assets/video_1.mp4" type="video/mp4">
+                        </video>
                         <div class="character-info">
                             <h3>Morganna Evernight</h3>
                             <div class="character-meta">
@@ -692,9 +799,12 @@
                     </div>
                     
                     <!-- Character 2 - Using your pic_2.jpeg -->
-                    <div class="character-card">
+                    <div class="character-card has-video">
                         <div class="character-image" style="background: linear-gradient(135deg, #d16570, #b85c7a); background-image: url('assets/pic_2.jpeg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
                         </div>
+                        <video class="character-video" muted loop>
+                            <source src="assets/video_2.mp4" type="video/mp4">
+                        </video>
                         <div class="character-info">
                             <h3>Elaine Bliss</h3>
                             <div class="character-meta">
@@ -710,9 +820,12 @@
                     </div>
 
                     <!-- Character 3 - Amanda (Goth Girl) -->
-                    <div class="character-card">
+                    <div class="character-card has-video">
                         <div class="character-image" style="background: linear-gradient(135deg, #333, #800080); background-image: url('assets/pic_3.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
                         </div>
+                        <video class="character-video" muted loop>
+                            <source src="assets/video_3.mp4" type="video/mp4">
+                        </video>
                         <div class="character-info">
                             <h3>Amanda</h3>
                             <div class="character-meta">
@@ -728,9 +841,12 @@
                     </div>
 
                     <!-- Character 4 - Charlotte West (Tour Guide) -->
-                    <div class="character-card">
+                    <div class="character-card has-video">
                         <div class="character-image" style="background: linear-gradient(135deg, #ff8c00, #ff8c00); background-image: url('assets/pic_4.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
                         </div>
+                        <video class="character-video" muted loop>
+                            <source src="assets/video_4.mp4" type="video/mp4">
+                        </video>
                         <div class="character-info">
                             <h3>Charlotte West</h3>
                             <div class="character-meta">
@@ -746,9 +862,12 @@
                     </div>
 
                     <!-- Character 5 - Emily Carter (College Girl) -->
-                    <div class="character-card">
+                    <div class="character-card has-video">
                         <div class="character-image" style="background: linear-gradient(135deg, #ffb6c1, #ff69b4); background-image: url('assets/pic_5.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
                         </div>
+                        <video class="character-video" muted loop>
+                            <source src="assets/video_5.mp4" type="video/mp4">
+                        </video>
                         <div class="character-info">
                             <h3>Emily Carter</h3>
                             <div class="character-meta">
@@ -764,9 +883,12 @@
                     </div>
 
                     <!-- Character 6 - Morgan Chase (Punk Vocalist) -->
-                    <div class="character-card">
+                    <div class="character-card has-video">
                         <div class="character-image" style="background: linear-gradient(135deg, #8b0000, #dc143c); background-image: url('assets/pic_6.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
                         </div>
+                        <video class="character-video" muted loop>
+                            <source src="assets/video_6.mp4" type="video/mp4">
+                        </video>
                         <div class="character-info">
                             <h3>Morgan Chase</h3>
                             <div class="character-meta">
@@ -782,9 +904,12 @@
                     </div>
 
                     <!-- Character 7 - Vanessa Taylor (Yoga Instructor) -->
-                    <div class="character-card">
+                    <div class="character-card has-video">
                         <div class="character-image" style="background: linear-gradient(135deg, #90ee90, #66cdaa); background-image: url('assets/pic_7.jpeg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
                         </div>
+                        <video class="character-video" muted loop>
+                            <source src="assets/video_7.mp4" type="video/mp4">
+                        </video>
                         <div class="character-info">
                             <h3>Vanessa Taylor</h3>
                             <div class="character-meta">
@@ -800,9 +925,12 @@
                     </div>
 
                     <!-- Character 8 - Aiko Tanaka (Waitress) -->
-                    <div class="character-card">
+                    <div class="character-card has-video">
                         <div class="character-image" style="background: linear-gradient(135deg, #ff1493, #ff69b4); background-image: url('assets/pic_8.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
                         </div>
+                        <video class="character-video" muted loop>
+                            <source src="assets/video_8.mp4" type="video/mp4">
+                        </video>
                         <div class="character-info">
                             <h3>Aiko Tanaka</h3>
                             <div class="character-meta">
@@ -818,9 +946,12 @@
                     </div>
 
                     <!-- Character 9 - Summer Brooks (Lifeguard) -->
-                    <div class="character-card">
+                    <div class="character-card has-video">
                         <div class="character-image" style="background: linear-gradient(135deg, #00bfff, #1e90ff); background-image: url('assets/pic_9.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
                         </div>
+                        <video class="character-video" muted loop>
+                            <source src="assets/video_9.mp4" type="video/mp4">
+                        </video>
                         <div class="character-info">
                             <h3>Summer Brooks</h3>
                             <div class="character-meta">
@@ -836,9 +967,12 @@
                     </div>
 
                     <!-- Character 10 - Isabella Reed (Teacher) -->
-                    <div class="character-card">
+                    <div class="character-card has-video">
                         <div class="character-image" style="background: linear-gradient(135deg, #7b68ee, #8a2be2); background-image: url('assets/pic_10.jpeg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
                         </div>
+                        <video class="character-video" muted loop>
+                            <source src="assets/video_10.mp4" type="video/mp4">
+                        </video>
                         <div class="character-info">
                             <h3>Isabella Reed</h3>
                             <div class="character-meta">
@@ -849,6 +983,7 @@
                                 <span class="character-tag">Intelligent</span>
                                 <span class="character-tag">Seductive</span>
                                 <span class="character-tag">Strict</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -940,31 +1075,31 @@
 
         // 导航点击事件处理函数
         function handleNavigation(navType) {
-                // Handle Dashboard navigation - redirect to dashboard.html
+            // Handle Dashboard navigation - redirect to dashboard.html
             if (navType === 'dashboard') {
-                    window.location.href = './dashboard.html';
-                    return;
-                }
-                
-            // Handle Chat navigation - temporarily disabled
+                window.location.href = './dashboard.html';
+                return;
+            }
+            
+            // Handle Chat navigation
             if (navType === 'chat') {
-                alert('Chat feature is temporarily unavailable. Please try other features!');
-                    return;
-                }
-                
-                // Handle Create navigation - redirect to create.html
+                window.location.href = './chat.html';
+                return;
+            }
+            
+            // Handle Create navigation - redirect to create.html
             if (navType === 'create') {
-                    window.location.href = './create.html';
-                    return;
-                }
-                
-                // Handle Generate navigation - redirect to generate.html
+                window.location.href = './create.html';
+                return;
+            }
+            
+            // Handle Generate navigation - redirect to generate.html
             if (navType === 'generate') {
-                    window.location.href = './generate.html';
-                    return;
-                }
-                
-                // For Explore page (current page) - update UI state
+                window.location.href = './generate.html';
+                return;
+            }
+            
+            // For Explore page (current page) - update UI state
             if (navType === 'explore') {
                 // Remove active state from other items
                 document.querySelectorAll('.nav-item').forEach(nav => {
@@ -1093,6 +1228,89 @@
             }
         };
 
+        // Navigation functionality
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const text = this.querySelector('.text').textContent;
+                
+                // Handle navigation
+                if (text === 'Explore') {
+                    return; // Current page
+                }
+                
+                if (text === 'Chat') {
+                    window.location.href = './chat.html';
+                    return;
+                }
+                
+                if (text === 'Create') {
+                    window.location.href = './create.html';
+                    return;
+                }
+                
+                if (text === 'Generate') {
+                    window.location.href = './generate.html';
+                    return;
+                }
+                
+                if (text === 'Dashboard') {
+                    window.location.href = './dashboard.html';
+                    return;
+                }
+            });
+        });
+
+        // Top navigation functionality
+        document.querySelectorAll('.top-nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const navType = this.getAttribute('data-nav');
+                
+                // Handle navigation
+                if (navType === 'explore') {
+                    return; // Current page
+                }
+                
+                if (navType === 'chat') {
+                    window.location.href = './chat.html';
+                    return;
+                }
+                
+                if (navType === 'create') {
+                    window.location.href = './create.html';
+                    return;
+                }
+                
+                if (navType === 'generate') {
+                    window.location.href = './generate.html';
+                    return;
+                }
+                
+                if (navType === 'dashboard') {
+                    window.location.href = './dashboard.html';
+                    return;
+                }
+            });
+        });
+
+        // Video hover functionality
+        document.querySelectorAll('.character-card').forEach(card => {
+            const video = card.querySelector('.character-video');
+            const source = video ? video.querySelector('source') : null;
+            if (video && source && source.getAttribute('src')) {
+                // Preload video
+                video.load();
+                // Mouse enter - play video
+                card.addEventListener('mouseenter', function() {
+                    video.currentTime = 0;
+                    video.play();
+                });
+                // Mouse leave - pause video
+                card.addEventListener('mouseleave', function() {
+                    video.pause();
+                });
+            }
+        });
+
         // Character card click effects
         document.querySelectorAll('.character-card:not(.placeholder)').forEach(card => {
             card.addEventListener('click', function() {
@@ -1100,18 +1318,19 @@
                 const character = characterData[name];
                 
                 if (character) {
-                    // Create URL parameters with character data for Generate page
+                    // Create URL parameters with character data for Chat page
                     const params = new URLSearchParams({
-                        character: name,
+                        name: name,
                         image: character.image,
                         age: character.age,
                         role: character.role,
                         tags: character.tags.join(','),
-                        status: character.status
+                        status: character.status,
+                        greeting: character.greeting
                     });
                     
-                    // Navigate to Generate page with character pre-selected
-                    window.location.href = `./generate.html?${params.toString()}`;
+                    // Navigate to Chat page with character pre-selected
+                    window.location.href = `./chat.html?${params.toString()}`;
                 } else {
                     alert(`Character data not found for ${name}`);
                 }

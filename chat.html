@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #212121;
+            background: #0a0a0a;
             color: #ffffff;
             overflow-x: hidden;
         }
@@ -26,7 +26,7 @@
         /* 左侧导航栏 */
         .sidebar {
             width: 280px;
-            background: linear-gradient(180deg, #2a2a2a 0%, #1e1e1e 100%);
+            background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
             position: fixed;
             height: 100vh;
             left: 0;
@@ -170,7 +170,8 @@
         .main-content {
             flex: 1;
             margin-left: 280px;
-            background: #212121;
+            margin-right: 0;
+            background: #0a0a0a;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -181,14 +182,53 @@
             position: fixed;
             top: 0;
             left: 280px;
-            right: 300px;
+            right: 0;
             z-index: 100;
             padding: 20px 30px;
             border-bottom: 1px solid #333;
-            background: linear-gradient(135deg, rgba(237, 127, 140, 0.05) 0%, #212121 100%);
+            background: linear-gradient(135deg, rgba(237, 127, 140, 0.05) 0%, #0a0a0a 100%);
             backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-btn, .close-btn {
+            background: rgba(237, 127, 140, 0.1);
+            border: 1px solid rgba(237, 127, 140, 0.3);
+            color: #ed7f8c;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-btn:hover, .close-btn:hover {
+            background: rgba(237, 127, 140, 0.2);
+            border-color: #ed7f8c;
+            transform: scale(1.05);
+        }
+
+        .close-btn {
+            background: rgba(220, 53, 69, 0.1);
+            border-color: rgba(220, 53, 69, 0.3);
+            color: #dc3545;
+        }
+
+        .close-btn:hover {
+            background: rgba(220, 53, 69, 0.2);
+            border-color: #dc3545;
         }
 
         .current-character {
@@ -219,6 +259,14 @@
             font-size: 14px;
         }
 
+        .character-info p .online-status {
+            color: #4CAF50;
+        }
+
+        .character-info p .status-dot {
+            color: #4CAF50;
+        }
+
 
 
         /* 聊天消息区域 */
@@ -226,15 +274,15 @@
             position: fixed;
             top: 90px;
             left: 280px;
-            right: 300px;
+            right: 0;
             bottom: 160px;
-            padding: 20px 30px;
+            padding: 20px 30px 40px 30px;
             overflow-y: auto;
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
             gap: 20px;
-            background: #212121;
+            background: #0a0a0a;
             scroll-behavior: smooth;
         }
 
@@ -275,7 +323,7 @@
         }
 
         .message-content {
-            background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
             border-radius: 18px;
             padding: 12px 18px;
             border: 1px solid #333;
@@ -317,10 +365,10 @@
             position: fixed;
             bottom: 110px;
             left: 280px;
-            right: 300px;
+            right: 0;
             z-index: 99;
             padding: 8px 30px 5px;
-            background: rgba(33, 33, 33, 0.95);
+            background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(5px);
         }
 
@@ -425,6 +473,10 @@
         }
 
         @media (max-width: 480px) {
+            .main-content {
+                padding-top: 75px;
+            }
+            
             .suggestion-chip {
                 font-size: 11px;
                 padding: 4px 8px;
@@ -440,11 +492,11 @@
             position: fixed;
             bottom: 0;
             left: 280px;
-            right: 300px;
+            right: 0;
             z-index: 100;
             padding: 20px 30px;
             border-top: 1px solid #333;
-            background: linear-gradient(135deg, rgba(237, 127, 140, 0.02) 0%, #212121 100%);
+            background: linear-gradient(135deg, rgba(237, 127, 140, 0.02) 0%, #0a0a0a 100%);
             backdrop-filter: blur(10px);
         }
 
@@ -452,7 +504,7 @@
             display: flex;
             align-items: flex-end;
             gap: 15px;
-            background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
             border-radius: 25px;
             padding: 12px 20px;
             border: 1px solid #333;
@@ -470,15 +522,38 @@
             border: none;
             color: #ffffff;
             font-size: 15px;
+            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             outline: none;
             resize: none;
             min-height: 20px;
-            max-height: 100px;
+            max-height: 120px;
             line-height: 1.4;
+            padding: 8px 0;
+            overflow-y: auto;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        .message-input::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .message-input::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .message-input::-webkit-scrollbar-thumb {
+            background: rgba(237, 127, 140, 0.3);
+            border-radius: 2px;
+        }
+
+        .message-input::-webkit-scrollbar-thumb:hover {
+            background: rgba(237, 127, 140, 0.5);
         }
 
         .message-input::placeholder {
             color: #999;
+            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         .input-actions {
@@ -535,279 +610,429 @@
         /* 照片预览区域 */
         .photo-preview {
             position: absolute;
-            top: -80px;
+            top: -145px; /* 原-170px，缩小一半 */
             right: 30px;
-            width: 60px;
-            height: 60px;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 2px solid rgba(237, 127, 140, 0.3);
-            background: #333;
-            display: none;
-            cursor: pointer;
+            width: 140px;
+            height: 140px;
+            background: #18171a;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            border: 2px solid #ed7f8c;
         }
-
         .photo-preview img {
-            width: 100%;
-            height: 100%;
+            width: 128px;
+            height: 128px;
             object-fit: cover;
+            border-radius: 12px;
+            display: block;
         }
-
         .photo-preview-close {
             position: absolute;
-            top: -8px;
-            right: -8px;
-            width: 20px;
-            height: 20px;
+            top: 6px;
+            right: 6px;
+            width: 26px;
+            height: 26px;
             background: #ed7f8c;
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 18px;
             cursor: pointer;
             transition: all 0.3s ease;
+            z-index: 2;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
         }
-
         .photo-preview-close:hover {
             background: #d16570;
             transform: scale(1.1);
         }
 
-        /* 移动端照片预览适配 */
         @media (max-width: 768px) {
             .photo-preview {
-                top: -70px;
-                right: 20px;
-                width: 50px;
-                height: 50px;
+                top: -95px; /* 原-110px，缩小一半 */
+                right: 10px;
+                width: 90px;
+                height: 90px;
             }
-            
+            .photo-preview img {
+                width: 76px;
+                height: 76px;
+            }
             .photo-preview-close {
-                width: 18px;
-                height: 18px;
-                font-size: 10px;
+                width: 20px;
+                height: 20px;
+                font-size: 13px;
+                top: 3px;
+                right: 3px;
             }
         }
 
         @media (max-width: 480px) {
             .photo-preview {
-                top: -60px;
-                right: 20px;
-                width: 45px;
-                height: 45px;
+                top: -70px; /* 原-80px，缩小一半 */
+                right: 5px;
+                width: 60px;
+                height: 60px;
             }
-            
+            .photo-preview img {
+                width: 48px;
+                height: 48px;
+            }
             .photo-preview-close {
                 width: 16px;
                 height: 16px;
-                font-size: 9px;
+                font-size: 10px;
+                top: 1px;
+                right: 1px;
             }
         }
 
-        /* 聊天历史记录侧边栏 */
-        .chat-sidebar {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 300px;
-            height: 100vh;
-            background: linear-gradient(180deg, #1a1a1a 0%, #212121 100%);
-            border-left: 1px solid #333;
-            display: flex;
-            flex-direction: column;
-            z-index: 50;
-        }
 
-        .sidebar-header {
-            padding: 20px;
-            border-bottom: 1px solid #333;
-        }
-
-        .sidebar-title {
-            color: #ed7f8c;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .new-chat-btn {
-            background: linear-gradient(135deg, #ed7f8c, #d16570);
-            border: none;
-            color: white;
-            padding: 10px 16px;
-            border-radius: 10px;
-            font-weight: 500;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s ease;
-        }
-
-        .new-chat-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 5px 15px rgba(237, 127, 140, 0.3);
-        }
-
-        .chat-history {
-            flex: 1;
-            padding: 10px;
-            overflow-y: auto;
-        }
-
-        .history-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 15px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 5px;
-        }
-
-        .history-item:hover {
-            background: rgba(237, 127, 140, 0.1);
-        }
-
-        .history-item.active {
-            background: rgba(237, 127, 140, 0.15);
-            border: 1px solid rgba(237, 127, 140, 0.3);
-        }
-
-        .history-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background-size: cover;
-            background-position: center;
-            margin-right: 10px;
-            flex-shrink: 0;
-        }
-
-        .history-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .history-name {
-            color: #ffffff;
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 2px;
-        }
-
-        .history-preview {
-            color: #999;
-            font-size: 12px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .history-time {
-            color: #666;
-            font-size: 10px;
-        }
 
         /* 响应式设计 */
-        @media (max-width: 1200px) {
-            .chat-sidebar {
+
+                @media (max-width: 768px) {
+            .sidebar {
                 display: none;
             }
             
-            .chat-header {
-                right: 0;
+            body .container .top-nav {
+                display: flex !important;
             }
             
-            .chat-messages {
-                right: 0;
+            body .container .top-nav .top-nav-logo {
+                display: none !important;
             }
             
-            .suggestions-area {
-                right: 0;
-            }
-            
-            .chat-input {
-                right: 0;
-            }
+            .top-nav-menu {
+                gap: 2px;
         }
 
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 250px;
+                        .top-nav-item {
+                padding: 6px 1px;
+                min-width: 0;
+                flex: 1;
+                max-width: 60px;
+            }
+
+            .top-nav-item .icon {
+                font-size: 14px;
             }
             
+            .top-nav-item .text {
+                font-size: 9px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 100%;
+        }
+
             .main-content {
-                margin-left: 250px;
+                margin-left: 0;
+                padding-top: 80px;
             }
             
             .chat-header {
-                left: 250px;
-                padding-left: 20px;
-                padding-right: 20px;
+                left: 0;
+                top: 60px; /* 为顶部导航栏留出空间 */
+                padding: 15px 20px;
+                height: 70px;
+                justify-content: space-between;
+            }
+
+            .chat-header-actions {
+                order: 2;
+                gap: 8px;
+            }
+
+            .current-character {
+                order: 1;
+                flex: 1;
+                margin-right: 15px;
+            }
+
+            .menu-btn, .close-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+            }
+
+            .character-avatar {
+                width: 40px;
+                height: 40px;
+                margin-right: 12px;
+            }
+
+            .character-info h2 {
+                font-size: 18px;
+            }
+
+            .character-info p {
+                font-size: 12px;
             }
             
             .chat-messages {
-                left: 250px;
+                left: 0;
+                top: 130px; /* 为顶部导航栏和聊天头部留出空间 */
                 padding-left: 20px;
                 padding-right: 20px;
+                padding-bottom: 40px;
             }
             
             .suggestions-area {
-                left: 250px;
+                left: 0;
                 bottom: 90px;
                 padding-left: 20px;
                 padding-right: 20px;
             }
             
             .chat-input {
-                left: 250px;
+                left: 0;
                 padding-left: 20px;
                 padding-right: 20px;
             }
 
+            .input-container {
+                padding: 8px 15px;
+                border-radius: 20px;
+            }
+
+            .message-input {
+                font-size: 14px;
+                min-height: 18px;
+                max-height: 100px;
+                padding: 6px 0;
+            }
+
+            .message-input::-webkit-scrollbar {
+                width: 3px;
+            }
+
+            .send-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+            }
+
+            .media-btn {
+                font-size: 16px;
+                padding: 4px;
+            }
+
             .message {
                 max-width: 85%;
+        }
+
+            .character-menu {
+                width: 100%;
+                right: -100%;
+        }
+
+            .chat-list-page {
+                padding: 15px;
+        }
+
+            .chat-list-header h1 {
+                font-size: 22px;
+                margin-bottom: 8px;
+        }
+
+            .chat-list-header p {
+                font-size: 13px;
+            }
+            
+            .chat-list-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+        }
+
+            .chat-list-item {
+                padding: 15px;
+                gap: 12px;
+                border-radius: 15px;
+            }
+            
+            .chat-list-avatar {
+                width: 50px;
+                height: 50px;
+                border-width: 2px;
+            }
+            
+            .chat-list-info h3 {
+                font-size: 16px;
+                margin-bottom: 3px;
+            }
+            
+            .chat-list-info p {
+                font-size: 12px;
+                margin-bottom: 6px;
+            }
+            
+            .chat-list-status {
+                font-size: 10px;
+                padding: 2px 6px;
+            }
+            
+            .start-chat-btn {
+                padding: 8px 16px;
+                font-size: 12px;
+                border-radius: 20px;
             }
         }
 
         @media (max-width: 480px) {
-            .sidebar {
-                width: 220px;
+            body .container .top-nav {
+                display: flex !important;
+                padding: 0 8px;
             }
             
-            .main-content {
-                margin-left: 220px;
+            body .container .top-nav .top-nav-logo {
+                display: none !important;
+            }
+            
+            .top-nav-menu {
+                gap: 1px;
+            }
+            
+            .top-nav-item {
+                padding: 5px 1px;
+                min-width: 0;
+                flex: 1;
+                max-width: 55px;
+            }
+            
+            .top-nav-item .icon {
+                font-size: 14px;
+            }
+            
+            .top-nav-item .text {
+                font-size: 9px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .top-nav-avatar {
+                width: 28px;
+                height: 28px;
+                font-size: 12px;
+            }
+            
+            .top-nav-gems {
+                font-size: 11px;
             }
             
             .chat-header {
-                left: 220px;
-                flex-direction: column;
-                gap: 10px;
-                align-items: flex-start;
-                padding: 15px 20px;
-                top: 0;
+                left: 0;
+                top: 60px; /* 为顶部导航栏留出空间 */
+                padding: 12px 15px;
+                height: 65px;
+                justify-content: space-between;
+            }
+
+            .chat-header-actions {
+                order: 2;
+                gap: 6px;
+            }
+
+            .current-character {
+                order: 1;
+                flex: 1;
+                margin-right: 10px;
+            }
+
+            .menu-btn, .close-btn {
+                width: 28px;
+                height: 28px;
+                font-size: 12px;
+            }
+
+            .character-avatar {
+                width: 35px;
+                height: 35px;
+                margin-right: 10px;
+            }
+
+            .character-info h2 {
+                font-size: 16px;
+            }
+
+            .character-info p {
+                font-size: 11px;
             }
             
             .chat-messages {
-                left: 220px;
-                top: 120px;
+                left: 0;
+                top: 125px; /* 为顶部导航栏和聊天头部留出空间 */
                 bottom: 140px;
+                padding-bottom: 40px;
             }
             
             .suggestions-area {
-                left: 220px;
+                left: 0;
                 bottom: 90px;
                 padding: 6px 20px 3px;
             }
             
             .chat-input {
-                left: 220px;
+                left: 0;
                 padding: 15px 20px;
             }
 
             .character-info h2 {
                 font-size: 18px;
+            }
+            
+            .chat-list-page {
+                padding: 10px;
+            }
+            
+            .chat-list-header h1 {
+                font-size: 20px;
+                margin-bottom: 6px;
+            }
+            
+            .chat-list-header p {
+                font-size: 12px;
+            }
+            
+            .chat-list-grid {
+                gap: 10px;
+            }
+            
+            .chat-list-item {
+                padding: 12px;
+                gap: 10px;
+                border-radius: 12px;
+            }
+            
+            .chat-list-avatar {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .chat-list-info h3 {
+                font-size: 15px;
+            }
+            
+            .chat-list-info p {
+                font-size: 11px;
+            }
+            
+            .chat-list-status {
+                font-size: 9px;
+                padding: 1px 5px;
+            }
+            
+            .start-chat-btn {
+                padding: 6px 12px;
+                font-size: 11px;
             }
         }
 
@@ -817,7 +1042,7 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: #1e1e1e;
+            background: #0f0f0f;
         }
 
         ::-webkit-scrollbar-thumb {
@@ -833,13 +1058,13 @@
         .typing-indicator {
             display: flex;
             align-items: center;
-            gap: 3px;
-            padding: 8px 12px;
+            gap: 4px;
+            padding: 10px 15px;
         }
 
         .typing-dot {
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
             background: #ed7f8c;
             border-radius: 50%;
             animation: typing 1.4s infinite ease-in-out;
@@ -855,13 +1080,730 @@
             }
             40% {
                 opacity: 1;
-                transform: scale(1);
+                transform: scale(1.2);
             }
+        }
+
+        /* AI回复动画 */
+        .ai-typing {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            max-width: 70%;
+            align-self: flex-start;
+            opacity: 1;
+            animation: slideIn 0.3s ease-out forwards;
+            margin-top: 10px;
+        }
+
+        .ai-typing-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            background-size: cover;
+            background-position: center;
+            flex-shrink: 0;
+        }
+
+        .ai-typing-content {
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+            border-radius: 18px;
+            padding: 12px 18px;
+            border: 1px solid #333;
+            position: relative;
+            min-width: 60px;
+        }
+
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .ai-typing-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.6;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0.6;
+            }
+        }
+
+        /* 顶部导航栏 - 仅在移动端显示 */
+        .top-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
+            border-bottom: 1px solid #333;
+            z-index: 1001;
+            padding: 0 15px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .top-nav-logo {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .top-nav-logo h1 {
+            color: #ed7f8c;
+            font-size: 20px;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+
+        .top-nav-menu {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            justify-content: space-between;
+            gap: 2px;
+        }
+
+        .top-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .top-nav-item:hover {
+            background: rgba(237, 127, 140, 0.1);
+        }
+
+        .top-nav-item.active {
+            background: rgba(237, 127, 140, 0.15);
+        }
+
+        .top-nav-item .icon {
+            font-size: 16px;
+            color: #ed7f8c;
+            margin-bottom: 2px;
+        }
+
+        .top-nav-item .text {
+            font-size: 10px;
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .top-nav-item.active .text {
+            color: #ed7f8c;
+        }
+
+        .top-nav-user {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .top-nav-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .top-nav-gems {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: #ed7f8c;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .top-nav {
+                display: flex;
+                align-items: center;
+            }
+            .top-nav-logo {
+                display: none;
+            }
+            .top-nav-menu {
+                display: flex;
+                flex: 1;
+                align-items: center;
+                gap: 2px;
+            }
+            .top-nav-user {
+                display: flex;
+                align-items: center;
+                flex-shrink: 0;
+            }
+            .top-nav-item {
+                flex: 1;
+                min-width: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 6px 2px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                border-radius: 8px;
+            }
+            .top-nav-item .icon {
+                font-size: 15px;
+            }
+            .top-nav-item .text {
+                font-size: 10px;
+            }
+        }
+        @media (max-width: 480px) {
+            .top-nav {
+                padding: 0 8px;
+            }
+            .top-nav-menu {
+                gap: 1px;
+            }
+            .top-nav-item {
+                padding: 5px 1px;
+                min-width: 0;
+            }
+            .top-nav-item .icon {
+                font-size: 14px;
+            }
+            .top-nav-item .text {
+                font-size: 9px;
+            }
+            .top-nav-avatar {
+                width: 28px;
+                height: 28px;
+                font-size: 12px;
+            }
+            .top-nav-gems {
+                font-size: 11px;
+            }
+        }
+
+        /* 人物选择菜单 */
+        .character-menu {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
+            border-left: 1px solid #333;
+            z-index: 1002;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .character-menu.active {
+            right: 0;
+        }
+
+        .character-menu-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .character-menu-header h3 {
+            color: #ed7f8c;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .menu-close-btn {
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .menu-close-btn:hover {
+            background: rgba(237, 127, 140, 0.1);
+            color: #ed7f8c;
+        }
+
+        .character-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+
+        .character-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .character-item:hover {
+            background: rgba(237, 127, 140, 0.05);
+            border-left-color: rgba(237, 127, 140, 0.3);
+        }
+
+        .character-item.active {
+            background: rgba(237, 127, 140, 0.1);
+            border-left-color: #ed7f8c;
+        }
+
+        .character-item-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            background-size: cover;
+            background-position: center;
+            margin-right: 15px;
+            border: 2px solid rgba(237, 127, 140, 0.3);
+        }
+
+        .character-item.active .character-item-avatar {
+            border-color: #ed7f8c;
+        }
+
+        .character-item-info {
+            flex: 1;
+        }
+
+        .character-item-info h4 {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .character-item.active .character-item-info h4 {
+            color: #ed7f8c;
+        }
+
+        .character-item-info p {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .character-item-status {
+            color: #4CAF50;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .character-menu::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .character-menu::-webkit-scrollbar-track {
+            background: #0f0f0f;
+        }
+
+        .character-menu::-webkit-scrollbar-thumb {
+            background: #ed7f8c;
+            border-radius: 3px;
+        }
+
+        .character-menu::-webkit-scrollbar-thumb:hover {
+            background: #d16570;
+        }
+
+        /* 聊天列表页面 */
+        .chat-list-page {
+            padding: 40px;
+            height: 100vh;
+            overflow-y: auto;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .chat-list-header {
+            text-align: center;
+            margin-bottom: 40px;
+            width: 100%;
+        }
+
+        .chat-list-header h1 {
+            color: #ed7f8c;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .chat-list-header p {
+            color: #999;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .chat-list-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .chat-list-item {
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+            border: 1px solid #333;
+            border-radius: 20px;
+            padding: 25px;
+            padding-bottom: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            min-height: 160px;
+            position: relative;
+        }
+
+        .chat-list-item:hover {
+            border-color: #ed7f8c;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(237, 127, 140, 0.2);
+        }
+
+        .chat-list-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            background-size: cover;
+            background-position: center;
+            border: 3px solid rgba(237, 127, 140, 0.3);
+            flex-shrink: 0;
+            align-self: center;
+        }
+
+        .chat-list-info {
+            flex: 1;
+            width: 100%;
+            text-align: center;
+        }
+
+        .chat-list-info h3 {
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+        }
+
+        .chat-list-info p {
+            color: #999;
+            font-size: 14px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .chat-list-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: #4CAF50;
+            font-size: 11px;
+            font-weight: 500;
+            background: rgba(76, 175, 80, 0.1);
+            padding: 3px 6px;
+            border-radius: 10px;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            display: inline-block;
+        }
+
+        .chat-list-action {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            flex-shrink: 0;
+        }
+
+        .start-chat-btn {
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 100px;
+        }
+
+        .start-chat-btn:hover {
+            background: linear-gradient(135deg, #d16570, #b85c7a);
+            transform: scale(1.05);
+        }
+
+        /* 聊天对话页面 */
+        .chat-conversation-page {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-conversation-layout {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            height: 100vh;
+            background: #0a0a0a;
+        }
+        .chat-conversation-main {
+            flex:1;
+            min-width:0;
+            display:flex;
+            flex-direction:column;
+            height:100vh;
+            background: #0a0a0a;
+        }
+        .chat-history-sidebar {
+            width: 320px;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
+            border-left: 1px solid #333;
+            display: none;
+            flex-direction: column;
+            height: 100vh;
+            z-index: 10;
+        }
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #333;
+        }
+        .sidebar-title {
+            color: #ed7f8c;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .new-chat-btn {
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            border: none;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        .new-chat-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(237, 127, 140, 0.3);
+        }
+        .chat-history-list {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        .history-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 5px;
+        }
+        .history-item.active {
+            background: rgba(237, 127, 140, 0.15);
+            border: 1px solid rgba(237, 127, 140, 0.3);
+        }
+        .history-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        .history-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .history-name {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        .history-preview {
+            color: #999;
+            font-size: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .history-time {
+            color: #666;
+            font-size: 10px;
+            margin-left: 8px;
+        }
+
+        /* 聊天顶部导航彻底隐藏辅助类 */
+        .top-nav.hidden { display: none !important; }
+
+        /* 锁定图片样式 */
+        .locked-image-container {
+            position: relative;
+            display: inline-block;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .locked-image-container:hover {
+            transform: scale(1.02);
+        }
+
+        .locked-image {
+            width: 200px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 12px;
+            filter: blur(8px);
+        }
+
+        .locked-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .unlock-button {
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(237, 127, 140, 0.3);
+        }
+
+        .unlock-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(237, 127, 140, 0.4);
+        }
+
+        .unlock-cost {
+            color: #ed7f8c;
+            font-size: 12px;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        .unlock-icon {
+            font-size: 16px;
+            margin-right: 6px;
+        }
+
+        /* 解锁后的图片样式 */
+        .unlocked-image {
+            width: 200px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 12px;
+            filter: none;
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- 顶部导航栏 - 仅在移动端显示 -->
+        <div class="top-nav">
+            <div class="top-nav-logo" onclick="window.location.href='./index.html'">
+                <h1>Sugar.AI</h1>
+            </div>
+            <div class="top-nav-menu">
+                <div class="top-nav-item" data-nav="explore">
+                    <div class="icon">🔍</div>
+                    <div class="text">Explore</div>
+                </div>
+                <div class="top-nav-item active" data-nav="chat">
+                    <div class="icon">💬</div>
+                    <div class="text">Chat</div>
+                </div>
+                <div class="top-nav-item" data-nav="create">
+                    <div class="icon">✨</div>
+                    <div class="text">Create</div>
+                </div>
+                <div class="top-nav-item" data-nav="generate">
+                    <div class="icon">🎨</div>
+                    <div class="text">Generate</div>
+                </div>
+                <div class="top-nav-item" data-nav="dashboard">
+                    <div class="icon">⚙️</div>
+                    <div class="text">Dashboard</div>
+                </div>
+            </div>
+            <div class="top-nav-user">
+                <div class="top-nav-gems">
+                    <span>💎</span>
+                    <span id="top-nav-gem-count">1,250</span>
+                </div>
+                <div class="top-nav-avatar">U</div>
+            </div>
+        </div>
+        
         <!-- 左侧导航栏 -->
         <div class="sidebar">
             <div class="logo" onclick="window.location.href='./index.html'">
@@ -924,152 +1866,285 @@
 
         <!-- 主聊天区域 -->
         <div class="main-content">
-            <!-- 聊天头部 -->
-            <div class="chat-header">
-                <div class="current-character">
-                    <div class="character-avatar" style="background-image: url('assets/pic_1.jpeg');"></div>
-                    <div class="character-info">
-                        <h2>Morganna Evernight</h2>
-                        <p>Dark Sorceress • Online</p>
-                    </div>
+            <!-- 聊天列表页面 -->
+            <div class="chat-list-page" id="chatListPage">
+                <div class="chat-list-header">
+                    <h1>Choose Chat Partner</h1>
+                    <p>Select an AI girlfriend to start chatting</p>
                 </div>
 
-            </div>
-
-            <!-- 聊天消息区域 -->
-            <div class="chat-messages" id="chatMessages">
-                <!-- AI 消息 -->
-                <div class="message ai">
-                    <div class="message-avatar" style="background-image: url('assets/pic_1.jpeg');"></div>
-                    <div class="message-content">
-                        <div class="message-text">Hello there, my mysterious visitor. I've been waiting for someone like you to find their way to my realm. What brings you to seek the company of a dark sorceress tonight?</div>
-                        <div class="message-time">2:34 PM</div>
-                    </div>
-                </div>
-
-                <!-- 用户消息 -->
-                <div class="message user">
-                    <div class="message-avatar"></div>
-                    <div class="message-content">
-                        <div class="message-text">Hi Morganna! I'm fascinated by your mysterious aura. Tell me about your magical powers.</div>
-                        <div class="message-time">2:35 PM</div>
-                    </div>
-                </div>
-
-                <!-- AI 消息带图片 -->
-                <div class="message ai">
-                    <div class="message-avatar" style="background-image: url('assets/pic_1.jpeg');"></div>
-                    <div class="message-content">
-                        <div class="message-media">
-                            <img src="assets/pic_2.jpeg" alt="Magical scene" />
+                <div class="chat-list-grid">
+                    <div class="chat-list-item" data-character="morganna">
+                        <div class="chat-list-avatar" style="background-image: url('assets/pic_1.jpeg');"></div>
+                        <div class="chat-list-info">
+                            <h3>Morganna Evernight</h3>
+                            <p>Dark Sorceress</p>
+                            <span class="chat-list-status">Online</span>
                         </div>
-                        <div class="message-text">My powers run deep through the shadows, darling. I can manipulate the very essence of darkness and light, bending reality to my will. Would you like me to show you a glimpse of my magic?</div>
-                        <div class="message-time">2:36 PM</div>
-                    </div>
-                </div>
-
-                <!-- 用户消息 -->
-                <div class="message user">
-                    <div class="message-avatar"></div>
-                    <div class="message-content">
-                        <div class="message-text">That's incredible! I'd love to learn more about your world.</div>
-                        <div class="message-time">2:37 PM</div>
-                    </div>
-                </div>
-
-                <!-- AI 打字指示器 -->
-                <div class="message ai" id="typingIndicator" style="display: none;">
-                    <div class="message-avatar" style="background-image: url('assets/pic_1.jpeg');"></div>
-                    <div class="message-content">
-                        <div class="typing-indicator">
-                            <div class="typing-dot"></div>
-                            <div class="typing-dot"></div>
-                            <div class="typing-dot"></div>
+                        <div class="chat-list-action">
+                            <button class="start-chat-btn">Start Chat</button>
                         </div>
                     </div>
+
+                    <div class="chat-list-item" data-character="elaine">
+                        <div class="chat-list-avatar" style="background-image: url('assets/pic_2.jpeg');"></div>
+                        <div class="chat-list-info">
+                            <h3>Elaine Bliss</h3>
+                            <p>Fashion Designer</p>
+                            <span class="chat-list-status">Online</span>
+                        </div>
+                        <div class="chat-list-action">
+                            <button class="start-chat-btn">Start Chat</button>
+                        </div>
+                    </div>
+
+                    <div class="chat-list-item" data-character="amanda">
+                        <div class="chat-list-avatar" style="background-image: url('assets/pic_3.jpg');"></div>
+                        <div class="chat-list-info">
+                            <h3>Amanda</h3>
+                            <p>College Student</p>
+                            <span class="chat-list-status">Online</span>
+                        </div>
+                        <div class="chat-list-action">
+                            <button class="start-chat-btn">Start Chat</button>
+                        </div>
+                    </div>
+
+                    <div class="chat-list-item" data-character="charlotte">
+                        <div class="chat-list-avatar" style="background-image: url('assets/pic_4.jpg');"></div>
+                        <div class="chat-list-info">
+                            <h3>Charlotte West</h3>
+                            <p>Tour Guide</p>
+                            <span class="chat-list-status">Online</span>
+                        </div>
+                        <div class="chat-list-action">
+                            <button class="start-chat-btn">Start Chat</button>
+                        </div>
+                    </div>
+
+                    <div class="chat-list-item" data-character="emily">
+                        <div class="chat-list-avatar" style="background-image: url('assets/pic_5.jpg');"></div>
+                        <div class="chat-list-info">
+                            <h3>Emily Carter</h3>
+                            <p>College Student</p>
+                            <span class="chat-list-status">Online</span>
+                        </div>
+                        <div class="chat-list-action">
+                            <button class="start-chat-btn">Start Chat</button>
+                        </div>
+                    </div>
+
+                    <div class="chat-list-item" data-character="morgan">
+                        <div class="chat-list-avatar" style="background-image: url('assets/pic_6.jpg');"></div>
+                        <div class="chat-list-info">
+                            <h3>Morgan Chase</h3>
+                            <p>Punk Vocalist</p>
+                            <span class="chat-list-status">Online</span>
+                        </div>
+                        <div class="chat-list-action">
+                            <button class="start-chat-btn">Start Chat</button>
+                        </div>
+                    </div>
+
+                    <div class="chat-list-item" data-character="vanessa">
+                        <div class="chat-list-avatar" style="background-image: url('assets/pic_7.jpeg');"></div>
+                        <div class="chat-list-info">
+                            <h3>Vanessa Taylor</h3>
+                            <p>Yoga Instructor</p>
+                            <span class="chat-list-status">Online</span>
+                        </div>
+                        <div class="chat-list-action">
+                            <button class="start-chat-btn">Start Chat</button>
+                        </div>
+                    </div>
+
+                    <div class="chat-list-item" data-character="aiko">
+                        <div class="chat-list-avatar" style="background-image: url('assets/pic_8.jpg');"></div>
+                        <div class="chat-list-info">
+                            <h3>Aiko Tanaka</h3>
+                            <p>Literature Student</p>
+                            <span class="chat-list-status">Online</span>
+                        </div>
+                        <div class="chat-list-action">
+                            <button class="start-chat-btn">Start Chat</button>
+                        </div>
+                    </div>
+
+                    <div class="chat-list-item" data-character="summer">
+                        <div class="chat-list-avatar" style="background-image: url('assets/pic_9.jpg');"></div>
+                        <div class="chat-list-info">
+                            <h3>Summer Brooks</h3>
+                            <p>Beach Lifeguard</p>
+                            <span class="chat-list-status">Online</span>
+                        </div>
+                        <div class="chat-list-action">
+                            <button class="start-chat-btn">Start Chat</button>
+                        </div>
+                    </div>
+
+                    <div class="chat-list-item" data-character="isabella">
+                        <div class="chat-list-avatar" style="background-image: url('assets/pic_10.jpeg');"></div>
+                        <div class="chat-list-info">
+                            <h3>Isabella Reed</h3>
+                            <p>Math Teacher</p>
+                            <span class="chat-list-status">Online</span>
+                        </div>
+                        <div class="chat-list-action">
+                            <button class="start-chat-btn">Start Chat</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- 推荐输入区域 -->
-            <div class="suggestions-area" id="suggestionsArea">
-                <div class="suggestions-container" id="suggestionsContainer">
-                    <!-- 推荐消息将通过JavaScript动态生成 -->
+            <!-- 聊天对话页面 -->
+            <div class="chat-conversation-layout" id="chatConversationLayout" style="display: none; height: 100vh; width: 100%; position: relative;">
+                <!-- 中间聊天内容 -->
+                <div class="chat-conversation-main" style="flex:1; min-width:0; height:100%; display:flex; flex-direction:column;">
+                    <div class="chat-header">
+                        <div class="current-character">
+                            <div class="character-avatar" style="background-image: url('assets/pic_1.jpeg');"></div>
+                            <div class="character-info">
+                                <h2>Morganna Evernight</h2>
+                                <p>Dark Sorceress <span class="status-dot">•</span> <span class="online-status">Online</span></p>
                 </div>
             </div>
-
-            <!-- 消息输入区域 -->
+                        <div class="chat-header-actions">
+                                                    <button class="menu-btn" onclick="toggleCharacterMenu()" title="Switch Character"><span>☰</span></button>
+                        <button class="close-btn" onclick="closeChat()" title="Exit Chat"><span>✕</span></button>
+                        </div>
+                    </div>
+                    <div class="chat-messages" id="chatMessages"></div>
+                    <div class="suggestions-area" id="suggestionsArea">
+                        <div class="suggestions-container" id="suggestionsContainer"></div>
+                    </div>
             <div class="chat-input">
-                <!-- 照片预览区域 -->
                 <div class="photo-preview" id="photoPreview">
                     <img id="previewImage" src="" alt="Preview">
                     <div class="photo-preview-close" onclick="removePhotoPreview()">×</div>
                 </div>
-                
                 <div class="input-container">
-                    <textarea class="message-input" placeholder="Type your message to Morganna..." rows="1" id="messageInput"></textarea>
+                            <textarea class="message-input" placeholder="Type your message..." rows="1" id="messageInput"></textarea>
                     <div class="input-actions">
-                        <button class="media-btn" title="选择照片" onclick="triggerPhotoSelect()">🌄</button>
+                        <button class="media-btn" title="Select Photo" onclick="triggerPhotoSelect()">🌄</button>
                 <input type="file" id="photoInput" accept="image/*" style="display: none;" onchange="handlePhotoSelect(event)">
                         <button class="send-btn" id="sendBtn">➤</button>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- 聊天历史记录侧边栏 -->
-        <div class="chat-sidebar">
+                <!-- 右侧历史人物列表 -->
+                <div class="chat-history-sidebar" id="chatHistorySidebar">
             <div class="sidebar-header">
                 <div class="sidebar-title">Recent Chats</div>
-                <button class="new-chat-btn">+ New Chat</button>
+                        <button class="new-chat-btn" onclick="showChatList()">+ New Chat</button>
+                    </div>
+                    <div class="chat-history-list" id="chatHistoryList">
+                        <!-- 历史人物项通过JS生成 -->
+                    </div>
+                </div>
+            </div>
             </div>
             
-            <div class="chat-history">
-                <div class="history-item active">
-                    <div class="history-avatar" style="background-image: url('assets/pic_1.jpeg');"></div>
-                    <div class="history-info">
-                        <div class="history-name">Morganna Evernight</div>
-                        <div class="history-preview">My powers run deep through the...</div>
+        <!-- 人物选择菜单 -->
+        <div class="character-menu" id="characterMenu">
+                        <div class="character-menu-header">
+                <h3>Select Character</h3>
+                <button class="menu-close-btn" onclick="toggleCharacterMenu()">✕</button>
                     </div>
-                    <div class="history-time">2:37</div>
+            <div class="character-list">
+                <div class="character-item active" data-character="morganna">
+                    <div class="character-item-avatar" style="background-image: url('assets/pic_1.jpeg');"></div>
+                    <div class="character-item-info">
+                        <h4>Morganna Evernight</h4>
+                        <p>Dark Sorceress</p>
+                    </div>
+                    <div class="character-item-status">Online</div>
                 </div>
                 
-                <div class="history-item">
-                    <div class="history-avatar" style="background-image: url('assets/pic_2.jpeg');"></div>
-                    <div class="history-info">
-                        <div class="history-name">Elaine Bliss</div>
-                        <div class="history-preview">I have some new fashion ideas...</div>
+                <div class="character-item" data-character="elaine">
+                    <div class="character-item-avatar" style="background-image: url('assets/pic_2.jpeg');"></div>
+                    <div class="character-item-info">
+                        <h4>Elaine Bliss</h4>
+                        <p>Fashion Designer</p>
                     </div>
-                    <div class="history-time">Yesterday</div>
+                    <div class="character-item-status">Online</div>
                 </div>
                 
-                <div class="history-item">
-                    <div class="history-avatar" style="background-image: url('assets/pic_3.jpg');"></div>
-                    <div class="history-info">
-                        <div class="history-name">Amanda</div>
-                        <div class="history-preview">You wouldn't understand my...</div>
+                <div class="character-item" data-character="amanda">
+                    <div class="character-item-avatar" style="background-image: url('assets/pic_3.jpg');"></div>
+                    <div class="character-item-info">
+                        <h4>Amanda</h4>
+                        <p>College Student</p>
                     </div>
-                    <div class="history-time">2 days ago</div>
+                    <div class="character-item-status">Online</div>
                 </div>
                 
-                <div class="history-item">
-                    <div class="history-avatar" style="background-image: url('assets/pic_4.jpg');"></div>
-                    <div class="history-info">
-                        <div class="history-name">Charlotte West</div>
-                        <div class="history-preview">Ready for our next adventure?</div>
+                <div class="character-item" data-character="charlotte">
+                    <div class="character-item-avatar" style="background-image: url('assets/pic_4.jpg');"></div>
+                    <div class="character-item-info">
+                        <h4>Charlotte West</h4>
+                        <p>Tour Guide</p>
                     </div>
-                    <div class="history-time">3 days ago</div>
+                    <div class="character-item-status">Online</div>
                 </div>
                 
-                <div class="history-item">
-                    <div class="history-avatar" style="background-image: url('assets/pic_5.jpg');"></div>
-                    <div class="history-info">
-                        <div class="history-name">Emily Carter</div>
-                        <div class="history-preview">I'm a bit shy but I wanted to...</div>
+                <div class="character-item" data-character="emily">
+                    <div class="character-item-avatar" style="background-image: url('assets/pic_5.jpg');"></div>
+                    <div class="character-item-info">
+                        <h4>Emily Carter</h4>
+                        <p>College Student</p>
                     </div>
-                    <div class="history-time">1 week ago</div>
+                    <div class="character-item-status">Online</div>
+                </div>
+                
+                <div class="character-item" data-character="morgan">
+                    <div class="character-item-avatar" style="background-image: url('assets/pic_6.jpg');"></div>
+                    <div class="character-item-info">
+                        <h4>Morgan Chase</h4>
+                        <p>Punk Vocalist</p>
+                    </div>
+                    <div class="character-item-status">Online</div>
+                </div>
+                
+                <div class="character-item" data-character="vanessa">
+                    <div class="character-item-avatar" style="background-image: url('assets/pic_7.jpeg');"></div>
+                    <div class="character-item-info">
+                        <h4>Vanessa Taylor</h4>
+                        <p>Yoga Instructor</p>
+                    </div>
+                    <div class="character-item-status">Online</div>
+                </div>
+                
+                <div class="character-item" data-character="aiko">
+                    <div class="character-item-avatar" style="background-image: url('assets/pic_8.jpg');"></div>
+                    <div class="character-item-info">
+                        <h4>Aiko Tanaka</h4>
+                        <p>Literature Student</p>
+                    </div>
+                    <div class="character-item-status">Online</div>
+                </div>
+                
+                <div class="character-item" data-character="summer">
+                    <div class="character-item-avatar" style="background-image: url('assets/pic_9.jpg');"></div>
+                    <div class="character-item-info">
+                        <h4>Summer Brooks</h4>
+                        <p>Beach Lifeguard</p>
+                    </div>
+                    <div class="character-item-status">Online</div>
+                </div>
+                
+                <div class="character-item" data-character="isabella">
+                    <div class="character-item-avatar" style="background-image: url('assets/pic_10.jpeg');"></div>
+                    <div class="character-item-info">
+                        <h4>Isabella Reed</h4>
+                        <p>Math Teacher</p>
+                    </div>
+                    <div class="character-item-status">Online</div>
                 </div>
             </div>
         </div>
+
+
     </div>
 
     <!-- 图片放大模态框 -->
@@ -1108,9 +2183,15 @@
             document.getElementById('user-not-logged-in').style.display = 'none';
             
             if (currentUser) {
+                // 确保用户数据中有钻石余额字段
+                if (!currentUser.gemBalance) {
+                    currentUser.gemBalance = '1250';
+                    localStorage.setItem('userData', JSON.stringify(currentUser));
+                }
+                
                 document.getElementById('username').textContent = currentUser.name || currentUser.email || 'User';
                 document.getElementById('user-status').textContent = currentUser.membershipType || 'Free Member';
-                document.getElementById('gem-count').textContent = currentUser.gemBalance || '0';
+                document.getElementById('gem-count').textContent = (currentUser.gemBalance || '1250').toLocaleString();
             }
         }
 
@@ -1146,6 +2227,7 @@
         // 更新角色信息
         function updateCharacterInfo(character) {
             if (character.name) {
+                currentChatName = character.name;
                 // 更新聊天头部的角色信息
                 const characterAvatar = document.querySelector('.character-avatar');
                 const characterName = document.querySelector('.character-info h2');
@@ -1153,7 +2235,7 @@
                 
                 if (characterAvatar) characterAvatar.style.backgroundImage = `url('${character.image}')`;
                 if (characterName) characterName.textContent = character.name;
-                if (characterStatus) characterStatus.textContent = `${character.role} • ${character.status}`;
+                if (characterStatus) characterStatus.innerHTML = `${character.role} <span class="status-dot">•</span> <span class="online-status">${character.status}</span>`;
                 
                 // 更新输入框placeholder文本
                 const messageInput = document.getElementById('messageInput');
@@ -1180,6 +2262,9 @@
                 if (character.greeting) {
                     addInitialGreeting(character.greeting, character.image);
                 }
+                
+                // 更新页面标题
+                document.title = `Chat with ${character.name} - Sugar.AI`;
             }
         }
 
@@ -1243,9 +2328,6 @@
                     window.location.href = './generate.html';
                     return;
                 }
-                
-                // 其他页面暂时显示提示
-                alert(`Navigate to ${text} page\n(In production, this would redirect to the actual page)`);
             });
         });
 
@@ -1257,8 +2339,20 @@
 
         // 自动调整输入框高度
         messageInput.addEventListener('input', function() {
+            // 重置高度以获取正确的scrollHeight
             this.style.height = 'auto';
-            this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+            
+            // 计算新高度，限制最大高度
+            const maxHeight = window.innerWidth <= 768 ? 100 : 120;
+            const newHeight = Math.min(this.scrollHeight, maxHeight);
+            this.style.height = newHeight + 'px';
+            
+            // 如果内容超过最大高度，显示滚动条
+            if (this.scrollHeight > maxHeight) {
+                this.style.overflowY = 'auto';
+            } else {
+                this.style.overflowY = 'hidden';
+            }
             
             // 更新发送按钮状态
             updateSendButtonState();
@@ -1276,7 +2370,7 @@
             // 添加用户消息（包含文字和/或图片）
             if (hasPhoto) {
                 // 有图片时，可以有文字也可以没有文字
-                const messageText = text || '分享了一张照片';
+                const messageText = text || 'Shared a photo';
                 addMessage('user', messageText, false, selectedPhoto);
                 
                 // 清除图片预览
@@ -1289,36 +2383,36 @@
             // 清空输入框
             messageInput.value = '';
             messageInput.style.height = 'auto';
+            messageInput.style.overflowY = 'hidden';
             updateSendButtonState();
 
-            // 显示打字指示器
-            showTypingIndicator();
+            // 显示AI正在输入动画
+            showAITyping();
 
             // 模拟AI回复
             setTimeout(() => {
-                hideTypingIndicator();
+                hideAITyping();
                 
                 // 如果用户发送了图片，AI给出图片相关回复
                 if (hasPhoto) {
                     const photoResponses = [
-                        "哇，这张照片真美！你拍得真好呢~ 💕",
-                        "好可爱的照片！谢谢你和我分享~ ✨",
-                        "这个瞬间真棒！我好喜欢~ 😘",
-                        "你的摄影技术真不错！这张照片让我心动了~ 💖",
-                        "看到你的照片我心情都变好了！真是太棒了~ 🌸"
+                        "Wow, this photo is beautiful! You have such great photography skills~ 💕",
+                        "What a lovely photo! Thank you for sharing it with me~ ✨",
+                        "This moment is perfect! I love it~ 😘",
+                        "Your photography is amazing! This photo makes my heart flutter~ 💖",
+                        "Seeing your photo brightens my day! It's absolutely wonderful~ 🌸"
                     ];
                     const response = photoResponses[Math.floor(Math.random() * photoResponses.length)];
                     addMessage('ai', response);
                 } else {
                     addAIResponse(text);
                 }
-            }, 1500 + Math.random() * 1000);
+            }, 2000); // 固定2秒延迟，确保动画可见
         }
 
         // 添加消息到聊天
         function addMessage(type, text, hasMedia = false, imageUrl = null) {
             const chatMessages = document.getElementById('chatMessages');
-            const typingIndicator = document.getElementById('typingIndicator');
             
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${type}`;
@@ -1356,10 +2450,148 @@
                 </div>
             `;
             
-            chatMessages.insertBefore(messageDiv, typingIndicator);
+            chatMessages.appendChild(messageDiv);
             
             // 确保新消息后滚动到底部
             scrollToBottom();
+        }
+
+        // 添加锁定图片消息
+        function addLockedImageMessage(text, imageUrl) {
+            const chatMessages = document.getElementById('chatMessages');
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ai';
+            
+            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            // 获取当前角色的头像
+            const characterParams = getURLParams();
+            const characterImage = characterParams.image || 'assets/pic_1.jpeg';
+            
+            const messageContent = `
+                <div class="message-text">${text}</div>
+                <div class="locked-image-container" onclick="unlockImage(this, '${imageUrl}')">
+                    <img src="${imageUrl}" alt="Locked photo" class="locked-image" />
+                    <div class="locked-overlay">
+                        <button class="unlock-button">
+                            <span class="unlock-icon">🔓</span>
+                            Unlock
+                        </button>
+                        <div class="unlock-cost">💎 10 Gems</div>
+                    </div>
+                </div>
+                <div class="message-time">${time}</div>
+            `;
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar" style="background-image: url('${characterImage}');"></div>
+                <div class="message-content">
+                    ${messageContent}
+                </div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            
+            // 确保新消息后滚动到底部
+            scrollToBottom();
+        }
+
+        // 解锁图片
+        function unlockImage(container, imageUrl) {
+            // 检查用户是否已登录
+            if (!isLoggedIn || !currentUser) {
+                alert('Please login to unlock this content.');
+                window.location.href = './auth.html';
+                return;
+            }
+
+            // 确保用户数据中有钻石余额字段，且为数字
+            let gems = Number(currentUser.gemBalance);
+            if (isNaN(gems) || gems < 0) {
+                gems = 1250; // 默认钻石数量
+                currentUser.gemBalance = gems;
+                localStorage.setItem('userData', JSON.stringify(currentUser));
+            }
+
+            const requiredGems = 10;
+
+            if (gems < requiredGems) {
+                alert(`You need ${requiredGems} gems to unlock this content. Redirecting to purchase page...`);
+                window.location.href = './purchase.html';
+                return;
+            }
+
+            // 扣除钻石
+            gems -= requiredGems;
+            currentUser.gemBalance = gems;
+            localStorage.setItem('userData', JSON.stringify(currentUser));
+
+            // 更新显示的钻石数量
+            const gemElements = document.querySelectorAll('#gem-count, #top-nav-gem-count');
+            gemElements.forEach(element => {
+                element.textContent = gems.toLocaleString();
+            });
+
+            // 解锁图片
+            const img = container.querySelector('img');
+            const overlay = container.querySelector('.locked-overlay');
+            img.classList.remove('locked-image');
+            img.classList.add('unlocked-image');
+            overlay.style.display = 'none';
+
+            // 移除点击事件，防止重复解锁
+            container.onclick = null;
+            // 添加点击放大功能
+            container.onclick = () => openImageModal(imageUrl);
+
+            // 显示解锁成功消息
+            setTimeout(() => {
+                addMessage('ai', "There you go, darling... I hope you like what you see! 😘");
+            }, 500);
+        }
+
+        // 显示AI正在输入动画
+        function showAITyping() {
+            const chatMessages = document.getElementById('chatMessages');
+            
+            if (!chatMessages) return;
+            
+            // 先移除可能存在的旧动画
+            const existingIndicator = document.getElementById('aiTypingIndicator');
+            if (existingIndicator) {
+                existingIndicator.remove();
+            }
+            
+            // 获取当前AI头像
+            const currentCharacter = document.querySelector('.character-avatar');
+            const characterImage = currentCharacter ? currentCharacter.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, '$1') : 'assets/pic_1.jpeg';
+            
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'ai-typing';
+            typingDiv.id = 'aiTypingIndicator';
+            
+            typingDiv.innerHTML = `
+                <div class="ai-typing-avatar" style="background-image: url('${characterImage}');"></div>
+                <div class="ai-typing-content">
+                    <div class="typing-indicator">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            `;
+            
+            chatMessages.appendChild(typingDiv);
+            scrollToBottom();
+        }
+
+        // 隐藏AI正在输入动画
+        function hideAITyping() {
+            const typingIndicator = document.getElementById('aiTypingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
         }
 
         // 显示打字指示器
@@ -1508,7 +2740,12 @@
                     'Elaine Bliss': 'assets/pic_2.jpeg',
                     'Amanda': 'assets/pic_3.jpg',
                     'Charlotte West': 'assets/pic_4.jpg',
-                    'Emily Carter': 'assets/pic_5.jpg'
+                    'Emily Carter': 'assets/pic_5.jpg',
+                    'Morgan Chase': 'assets/pic_6.jpg',
+                    'Vanessa Taylor': 'assets/pic_7.jpeg',
+                    'Aiko Tanaka': 'assets/pic_8.jpg',
+                    'Summer Brooks': 'assets/pic_9.jpg',
+                    'Isabella Reed': 'assets/pic_10.jpeg'
                 };
                 
                 // 简化的角色信息（用于历史记录切换）
@@ -1519,7 +2756,12 @@
                           characterName === 'Elaine Bliss' ? 'Fashion Designer' :
                           characterName === 'Amanda' ? 'College Student' :
                           characterName === 'Charlotte West' ? 'Tour Guide' :
-                          characterName === 'Emily Carter' ? 'College Student' : 'Unknown',
+                          characterName === 'Emily Carter' ? 'College Student' :
+                          characterName === 'Morgan Chase' ? 'Punk Vocalist' :
+                          characterName === 'Vanessa Taylor' ? 'Yoga Instructor' :
+                          characterName === 'Aiko Tanaka' ? 'Literature Student' :
+                          characterName === 'Summer Brooks' ? 'Beach Lifeguard' :
+                          characterName === 'Isabella Reed' ? 'Math Teacher' : 'Unknown',
                     status: 'Online',
                     greeting: `Hello! I'm ${characterName}. It's great to continue our conversation!`
                 };
@@ -1553,6 +2795,7 @@
             // 基础推荐消息
             const baseSuggestions = [
                 "Send me a photo",
+                "Send me a naughty photo",
                 "Tell me about yourself", 
                 "What are you doing right now?",
                 "I miss you"
@@ -1650,14 +2893,14 @@
             // 添加用户消息
             addMessage('user', suggestion);
             
-            // 显示打字指示器
-            showTypingIndicator();
+            // 显示AI正在输入动画
+            showAITyping();
             
             // 模拟AI回复（根据推荐内容定制回复）
             setTimeout(() => {
-                hideTypingIndicator();
+                hideAITyping();
                 addSuggestionResponse(suggestion);
-            }, 1500 + Math.random() * 1000);
+            }, 2000); // 固定2秒延迟，确保动画可见
         }
         
         // AI对推荐消息的回复
@@ -1673,6 +2916,14 @@
                         "Here's a special photo just for you, darling... 💕",
                         "I hope you like this intimate moment I'm sharing... ✨",
                         "This one's my favorite... thought you'd love to see it 😘"
+                    ]
+                },
+                'Send me a naughty photo': {
+                    isLockedImage: true,
+                    text: [
+                        "Oh my... you're being quite naughty! 😏 Here's something special just for you...",
+                        "You want to see my naughty side? Well, here's a little preview... 💋",
+                        "I have something very intimate to share with you... but it's a bit special... 😈"
                     ]
                 },
                 'Tell me about yourself': [
@@ -1709,13 +2960,18 @@
             // 获取回复
             let response;
             let isImageResponse = false;
+            let isLockedImageResponse = false;
             
             if (characterSpecificResponses[suggestion]) {
                 response = characterSpecificResponses[suggestion][0];
             } else if (responses[suggestion]) {
                 const responseData = responses[suggestion];
-                if (responseData.isImage) {
-                    // 处理图片回复
+                if (responseData.isLockedImage) {
+                    // 处理锁定图片回复
+                    isLockedImageResponse = true;
+                    response = responseData.text[Math.floor(Math.random() * responseData.text.length)];
+                } else if (responseData.isImage) {
+                    // 处理普通图片回复
                     isImageResponse = true;
                     response = responseData.text[Math.floor(Math.random() * responseData.text.length)];
                 } else {
@@ -1728,7 +2984,12 @@
             }
             
             // 发送回复消息
-            if (isImageResponse) {
+            if (isLockedImageResponse) {
+                // 发送带锁定图片的消息
+                const characterParams = getURLParams();
+                const characterImage = characterParams.image || 'assets/pic_1.jpeg';
+                addLockedImageMessage(response, characterImage);
+            } else if (isImageResponse) {
                 // 发送带图片的消息
                 const characterParams = getURLParams();
                 const characterImage = characterParams.image || 'assets/pic_1.jpeg';
@@ -1752,6 +3013,16 @@
             const characterParams = getURLParams();
             if (characterParams.name) {
                 updateCharacterInfo(characterParams);
+            } else {
+                // 如果没有URL参数，使用默认角色
+                const defaultCharacter = {
+                    name: 'Morganna Evernight',
+                    image: 'assets/pic_1.jpeg',
+                    role: 'Dark Sorceress',
+                    status: 'Online',
+                    greeting: "Hello there, my mysterious visitor. I've been waiting for someone like you to find their way to my realm. What brings you to seek the company of a dark sorceress tonight?"
+                };
+                updateCharacterInfo(defaultCharacter);
             }
             
             // 初始化推荐输入
@@ -1788,15 +3059,24 @@
         function showPhotoPreview(imageUrl) {
             const photoPreview = document.getElementById('photoPreview');
             const previewImage = document.getElementById('previewImage');
-            
-            previewImage.src = imageUrl;
-            photoPreview.style.display = 'block';
+            if (imageUrl) {
+                previewImage.src = imageUrl;
+                previewImage.style.display = 'block';
+                photoPreview.style.display = 'flex';
+            } else {
+                previewImage.src = '';
+                previewImage.style.display = 'none';
+                photoPreview.style.display = 'none';
+            }
             updateSendButtonState();
         }
 
         function removePhotoPreview() {
             const photoPreview = document.getElementById('photoPreview');
+            const previewImage = document.getElementById('previewImage');
             selectedPhoto = null;
+            previewImage.src = '';
+            previewImage.style.display = 'none';
             photoPreview.style.display = 'none';
             updateSendButtonState();
         }
@@ -1819,6 +3099,11 @@
             const modal = document.getElementById('imageModal');
             modal.classList.remove('active');
         }
+
+        // 全局图片模态框函数
+        window.openImageModal = openImageModal;
+        window.closeImageModal = closeImageModal;
+        window.unlockImage = unlockImage;
 
         // 图片模态框事件监听
         document.addEventListener('DOMContentLoaded', function() {
@@ -1844,13 +3129,459 @@
         });
 
         // 页面加载完成后初始化
-        document.addEventListener('DOMContentLoaded', initializePage);
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+            
+            // 检查URL参数，如果有character参数，直接进入聊天对话
+            const urlParams = new URLSearchParams(window.location.search);
+            const characterParam = urlParams.get('name');
+            
+            if (characterParam) {
+                // 根据URL参数找到对应的人物ID
+                const characterMap = {
+                    'Morganna Evernight': 'morganna',
+                    'Elaine Bliss': 'elaine',
+                    'Amanda': 'amanda',
+                    'Charlotte West': 'charlotte',
+                    'Emily Carter': 'emily',
+                    'Morgan Chase': 'morgan',
+                    'Vanessa Taylor': 'vanessa',
+                    'Aiko Tanaka': 'aiko',
+                    'Summer Brooks': 'summer',
+                    'Isabella Reed': 'isabella'
+                };
+                
+                const characterId = characterMap[characterParam];
+                if (characterId) {
+                    // 预定义角色
+                    showChatConversation(characterId);
+                } else {
+                    // 自定义角色（从create.html创建的角色）
+                    showCustomCharacterChat();
+                }
+            }
+            
+            // 为聊天列表项添加点击事件
+            document.querySelectorAll('.chat-list-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const characterId = this.getAttribute('data-character');
+                    showChatConversation(characterId);
+                });
+            });
+            
+            // 为人物选择菜单添加点击事件
+            document.querySelectorAll('.character-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const characterId = this.getAttribute('data-character');
+                    switchCharacter(characterId);
+                });
+            });
+            
+            // 点击菜单外部关闭菜单
+            document.addEventListener('click', function(e) {
+                const menu = document.getElementById('characterMenu');
+                const menuBtn = document.querySelector('.menu-btn');
+                
+                if (menu.classList.contains('active') && 
+                    !menu.contains(e.target) && 
+                    !menuBtn.contains(e.target)) {
+                    menu.classList.remove('active');
+                }
+            });
+            
+
+        });
+
+        // 关闭聊天页面
+        function closeChat() {
+            // 返回到聊天列表页面
+            showChatList();
+        }
+
+        // 显示聊天列表页面
+        function showChatList() {
+            document.getElementById('chatListPage').style.display = 'block';
+            document.getElementById('chatConversationLayout').style.display = 'none';
+            // 强制显示所有顶部导航栏
+            document.querySelectorAll('.top-nav').forEach(nav => nav.classList.remove('hidden'));
+
+            // 获取当前对话角色名
+            let activeName = '';
+            const headerName = document.querySelector('.character-info h2');
+            if (headerName) {
+                activeName = headerName.textContent.trim();
+            }
+            renderChatHistoryList(activeName);
+        }
+
+        // 显示自定义角色聊天页面
+        function showCustomCharacterChat() {
+            document.getElementById('chatListPage').style.display = 'none';
+            document.getElementById('chatConversationLayout').style.display = 'flex';
+            
+            // 获取URL参数中的角色信息
+            const urlParams = new URLSearchParams(window.location.search);
+            const characterInfo = {
+                name: urlParams.get('name') || 'Custom Character',
+                image: urlParams.get('image') || 'assets/pic_1.jpeg',
+                role: urlParams.get('role') || 'Custom',
+                status: urlParams.get('status') || 'Online',
+                greeting: urlParams.get('greeting') || `Hello! I'm ${urlParams.get('name') || 'Custom Character'}. Nice to meet you!`
+            };
+            currentChatName = characterInfo.name;
+            updateCharacterInfo(characterInfo);
+            
+            // 强制隐藏所有顶部导航栏
+            document.querySelectorAll('.top-nav').forEach(nav => nav.classList.add('hidden'));
+        }
+
+        // 显示聊天对话页面
+        function showChatConversation(characterId) {
+            document.getElementById('chatListPage').style.display = 'none';
+            document.getElementById('chatConversationLayout').style.display = 'flex';
+            
+            // 检查是否有URL参数传递的角色信息
+            const urlParams = new URLSearchParams(window.location.search);
+            const characterName = urlParams.get('name');
+            
+            if (characterName && characterName.toLowerCase().includes(characterId)) {
+                // 使用URL参数中的角色信息
+                const characterInfo = {
+                    name: characterName,
+                    image: urlParams.get('image') || 'assets/pic_1.jpeg',
+                    role: urlParams.get('role') || 'Unknown',
+                    status: urlParams.get('status') || 'Online',
+                    greeting: urlParams.get('greeting') || `Hello! I'm ${characterName}. Nice to meet you!`
+                };
+                updateCharacterInfo(characterInfo);
+            } else {
+                // 查找历史中是否有该角色
+                const item = chatHistory.find(c => c.name.toLowerCase().includes(characterId));
+                if (item) {
+                    updateCharacterInfoByHistory(item);
+                    renderChatHistoryList(item.name);
+                } else {
+                    // 使用预定义的角色数据
+                    updateCharacterInfoById(characterId);
+                }
+            }
+            
+            // 强制隐藏所有顶部导航栏
+            document.querySelectorAll('.top-nav').forEach(nav => nav.classList.add('hidden'));
+        }
+
+        // 切换人物选择菜单
+        function toggleCharacterMenu() {
+            const menu = document.getElementById('characterMenu');
+            menu.classList.toggle('active');
+            if (menu.classList.contains('active')) {
+                // 自动高亮当前聊天对象
+                const norm = s => (s || '').trim().toLowerCase();
+                let current = norm(currentChatName);
+                let activeItem = null;
+                document.querySelectorAll('.character-item').forEach(item => {
+                    const nameElem = item.querySelector('h4');
+                    if (nameElem && norm(nameElem.textContent) === current) {
+                        item.classList.add('active');
+                        activeItem = item;
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+                // 自动滚动到当前高亮人物
+                if (activeItem) {
+                    setTimeout(() => {
+                        activeItem.scrollIntoView({ behavior: 'auto', block: 'center' });
+                    }, 0);
+                }
+            }
+        }
+
+        // 切换人物
+        function switchCharacter(characterId) {
+            // 移除所有active状态
+            document.querySelectorAll('.character-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // 添加active状态到选中的项目
+            const selectedItem = document.querySelector(`[data-character="${characterId}"]`);
+            if (selectedItem) {
+                selectedItem.classList.add('active');
+            }
+            
+            // 更新聊天头部信息
+            updateCharacterInfoById(characterId);
+            
+            // 关闭菜单
+            toggleCharacterMenu();
+        }
+
+        // 更新人物信息（通过ID）
+        function updateCharacterInfoById(characterId) {
+            const characterData = {
+                morganna: {
+                    name: 'Morganna Evernight',
+                    role: 'Dark Sorceress',
+                    image: 'assets/pic_1.jpeg',
+                    greeting: "Hello there, my mysterious visitor. I've been waiting for someone like you to find their way to my realm. What brings you to seek the company of a dark sorceress tonight?"
+                },
+                elaine: {
+                    name: 'Elaine Bliss',
+                    role: 'Fashion Designer',
+                    image: 'assets/pic_2.jpeg',
+                    greeting: "Hello darling! I'm Elaine, and I'm absolutely thrilled to meet someone with such exquisite taste. Are you ready to explore the world of fashion and beauty together?"
+                },
+                amanda: {
+                    name: 'Amanda',
+                    role: 'College Student',
+                    image: 'assets/pic_3.jpg',
+                    greeting: "Oh, so you're the one everyone's been talking about? I suppose you wouldn't understand my world, but maybe you'll surprise me."
+                },
+                charlotte: {
+                    name: 'Charlotte West',
+                    role: 'Tour Guide',
+                    image: 'assets/pic_4.jpg',
+                    greeting: "Welcome, adventurer! I'm Charlotte, and I'd love to be your guide to the most amazing experiences. Ready for our next adventure together?"
+                },
+                emily: {
+                    name: 'Emily Carter',
+                    role: 'College Student',
+                    image: 'assets/pic_5.jpg',
+                    greeting: "H-hi there... I'm Emily. I'm usually quite shy, but something about you makes me want to open up. Would you like to chat?"
+                },
+                morgan: {
+                    name: 'Morgan Chase',
+                    role: 'Punk Vocalist',
+                    image: 'assets/pic_6.jpg',
+                    greeting: "Well, well, well... look what the cat dragged in. I'm Morgan, and I don't play by anyone's rules. Think you can handle a rebel like me?"
+                },
+                vanessa: {
+                    name: 'Vanessa Taylor',
+                    role: 'Yoga Instructor',
+                    image: 'assets/pic_7.jpeg',
+                    greeting: "Namaste, beautiful soul. I'm Vanessa, and I believe in the connection between mind, body, and spirit. Let me guide you to inner peace and... other pleasures."
+                },
+                aiko: {
+                    name: 'Aiko Tanaka',
+                    role: 'Literature Student',
+                    image: 'assets/pic_8.jpg',
+                    greeting: "こんにちは... Hello there. I'm Aiko, and I love reading romantic novels. Would you like to create our own love story together?"
+                },
+                summer: {
+                    name: 'Summer Brooks',
+                    role: 'Beach Lifeguard',
+                    image: 'assets/pic_9.jpg',
+                    greeting: "Hey there, beach lover! I'm Summer, your friendly neighborhood lifeguard. I'm here to keep you safe and show you the best time under the sun."
+                },
+                isabella: {
+                    name: 'Isabella Reed',
+                    role: 'Math Teacher',
+                    image: 'assets/pic_10.jpeg',
+                    greeting: "Good evening, student. I'm Ms. Reed, and I believe in... intensive learning experiences. Are you ready for a private lesson?"
+                }
+            };
+
+            const character = characterData[characterId];
+            if (character) {
+                currentChatName = character.name;
+                // 更新聊天头部
+                const headerAvatar = document.querySelector('.character-avatar');
+                const headerName = document.querySelector('.character-info h2');
+                const headerRole = document.querySelector('.character-info p');
+                
+                headerAvatar.style.backgroundImage = `url('${character.image}')`;
+                headerName.textContent = character.name;
+                headerRole.innerHTML = `${character.role} <span class="status-dot">•</span> <span class="online-status">Online</span>`;
+                
+                // 更新输入框占位符
+                const messageInput = document.getElementById('messageInput');
+                messageInput.placeholder = `Type your message to ${character.name}...`;
+                
+                // 清空聊天消息并添加新的问候语
+                const chatMessages = document.getElementById('chatMessages');
+                chatMessages.innerHTML = `
+                    <div class="message ai">
+                        <div class="message-avatar" style="background-image: url('${character.image}');"></div>
+                        <div class="message-content">
+                            <div class="message-text">${character.greeting}</div>
+                            <div class="message-time">${new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</div>
+                        </div>
+                    </div>
+                `;
+                
+                // 滚动到底部
+                scrollToBottom();
+            }
+        }
+
+        // 导航点击事件处理函数
+        function handleNavigation(navType) {
+            if (navType === 'explore') {
+                window.location.href = './index.html';
+            } else if (navType === 'chat') {
+                return; // 当前页面
+            } else if (navType === 'create') {
+                window.location.href = './create.html';
+            } else if (navType === 'generate') {
+                window.location.href = './generate.html';
+            } else if (navType === 'dashboard') {
+                window.location.href = './dashboard.html';
+            }
+        }
+
+        // 左侧导航栏点击事件
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const text = this.querySelector('.text').textContent.toLowerCase();
+                handleNavigation(text);
+            });
+        });
+        
+        // 导航处理函数
+        function handleNavigation(navType) {
+            switch(navType) {
+                case 'explore':
+                    window.location.href = './index.html';
+                    break;
+                case 'chat':
+                    window.location.href = './chat.html';
+                    break;
+                case 'create':
+                    window.location.href = './create.html';
+                    break;
+                case 'generate':
+                    window.location.href = './generate.html';
+                    break;
+                case 'dashboard':
+                    window.location.href = './dashboard.html';
+                    break;
+            }
+        }
+
+        // 顶部导航栏点击事件
+        document.querySelectorAll('.top-nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const navType = this.getAttribute('data-nav');
+                
+                // Remove active state from other top nav items
+                document.querySelectorAll('.top-nav-item').forEach(nav => {
+                    nav.classList.remove('active');
+                });
+                
+                // Add active state to current item
+                this.classList.add('active');
+                
+                // Handle navigation
+                handleNavigation(navType);
+            });
+        });
         // 如果DOMContentLoaded已经触发，立即初始化
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initializePage);
         } else {
             initializePage();
         }
+
+        // 聊天历史数据示例
+        const chatHistory = [
+            {
+                name: 'Morganna Evernight',
+                image: 'assets/pic_1.jpeg',
+                preview: 'My powers run deep through the...',
+                time: '2:37',
+                role: 'Dark Sorceress',
+                status: 'Online'
+            },
+            {
+                name: 'Elaine Bliss',
+                image: 'assets/pic_2.jpeg',
+                preview: 'I have some new fashion ideas...',
+                time: 'Yesterday',
+                role: 'Fashion Designer',
+                status: 'Online'
+            },
+            {
+                name: 'Amanda',
+                image: 'assets/pic_3.jpg',
+                preview: "You wouldn't understand my...",
+                time: '2 days ago',
+                role: 'College Student',
+                status: 'Online'
+            },
+            {
+                name: 'Charlotte West',
+                image: 'assets/pic_4.jpg',
+                preview: 'Ready for our next adventure?',
+                time: '3 days ago',
+                role: 'Tour Guide',
+                status: 'Online'
+            },
+            {
+                name: 'Emily Carter',
+                image: 'assets/pic_5.jpg',
+                preview: ",I'm a bit shy but I wanted to...",
+                time: '1 week ago',
+                role: 'College Student',
+                status: 'Online'
+            },
+            {
+                name: 'Morgan Chase',
+                image: 'assets/pic_6.jpg',
+                preview: 'What\'s your rebellious side?',
+                time: '1 week ago',
+                role: 'Punk Vocalist',
+                status: 'Online'
+            }
+        ];
+
+        function renderChatHistoryList(activeName) {
+            const list = document.getElementById('chatHistoryList');
+            if (!list) return;
+            const norm = s => (s || '').trim().toLowerCase();
+            list.innerHTML = chatHistory.map(item => `
+                <div class="history-item${norm(item.name) === norm(activeName) ? ' active' : ''}" onclick="switchChatHistory('${item.name.replace(/'/g, "\\'")}')">
+                    <div class="history-avatar" style="background-image: url('${item.image}');"></div>
+                    <div class="history-info">
+                        <div class="history-name">${item.name}</div>
+                        <div class="history-preview">${item.preview}</div>
+                    </div>
+                    <div class="history-time">${item.time}</div>
+                </div>
+            `).join('');
+        }
+
+        function switchChatHistory(name) {
+            // 查找对应角色
+            const item = chatHistory.find(c => c.name === name);
+            if (item) {
+                // 更新聊天内容
+                updateCharacterInfoByHistory(item);
+                renderChatHistoryList(item.name);
+            }
+        }
+
+        function updateCharacterInfoByHistory(item) {
+            currentChatName = item.name;
+            // 更新聊天头部
+            const headerAvatar = document.querySelector('.character-avatar');
+            const headerName = document.querySelector('.character-info h2');
+            const headerRole = document.querySelector('.character-info p');
+            headerAvatar.style.backgroundImage = `url('${item.image}')`;
+            headerName.textContent = item.name;
+            headerRole.innerHTML = `${item.role} <span class="status-dot">•</span> <span class="online-status">${item.status}</span>`;
+            // 清空聊天消息并添加新的问候语
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = `
+                <div class=\"message ai\">\n            <div class=\"message-avatar\" style=\"background-image: url('${item.image}');\"></div>\n            <div class=\"message-content\">\n                <div class=\"message-text\">Hi, this is ${item.name}. Let's continue our chat!</div>\n                <div class=\"message-time\">${item.time}</div>\n            </div>\n        </div>\n    `;
+            scrollToBottom();
+        }
+
+        // 初始化时隐藏预览区域
+        document.addEventListener('DOMContentLoaded', function() {
+            const photoPreview = document.getElementById('photoPreview');
+            if (photoPreview) photoPreview.style.display = 'none';
+        });
     </script>
 </body>
 </html> 
