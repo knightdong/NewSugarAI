@@ -2253,9 +2253,16 @@
             
             const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
             
-            // 获取当前角色的头像
-            const characterParams = getURLParams();
-            const characterImage = characterParams.image || 'assets/pic_1.jpeg';
+            // 获取当前角色的头像 - 优先使用当前显示的角色头像
+            let characterImage = 'assets/pic_1.jpeg';
+            const currentCharacterAvatar = document.querySelector('.character-avatar');
+            if (currentCharacterAvatar && currentCharacterAvatar.style.backgroundImage) {
+                characterImage = currentCharacterAvatar.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, '$1');
+            } else {
+                // 如果没有找到当前角色头像，尝试从URL参数获取
+                const characterParams = getURLParams();
+                characterImage = characterParams.image || 'assets/pic_1.jpeg';
+            }
             
             let messageContent = '';
             
@@ -2527,9 +2534,16 @@
         function initializeSuggestions() {
             const suggestionsContainer = document.getElementById('suggestionsContainer');
             
-            // 获取当前角色信息以个性化推荐
-            const characterParams = getURLParams();
-            const characterName = characterParams.name || 'Morganna Evernight';
+            // 获取当前角色信息以个性化推荐 - 优先使用当前显示的角色名称
+            let characterName = 'Morganna Evernight';
+            const currentCharacterName = document.querySelector('.character-info h2');
+            if (currentCharacterName) {
+                characterName = currentCharacterName.textContent;
+            } else {
+                // 如果没有找到当前角色名称，尝试从URL参数获取
+                const characterParams = getURLParams();
+                characterName = characterParams.name || 'Morganna Evernight';
+            }
             
             // 基础推荐消息
             const baseSuggestions = [
@@ -2643,8 +2657,16 @@
         
         // AI对推荐消息的回复
         function addSuggestionResponse(suggestion) {
-            const characterParams = getURLParams();
-            const characterName = characterParams.name || 'Morganna Evernight';
+            // 获取当前角色信息 - 优先使用当前显示的角色名称
+            let characterName = 'Morganna Evernight';
+            const currentCharacterName = document.querySelector('.character-info h2');
+            if (currentCharacterName) {
+                characterName = currentCharacterName.textContent;
+            } else {
+                // 如果没有找到当前角色名称，尝试从URL参数获取
+                const characterParams = getURLParams();
+                characterName = characterParams.name || 'Morganna Evernight';
+            }
             
             // 根据推荐内容生成回复
             const responses = {
@@ -2673,26 +2695,53 @@
                 ]
             };
             
-            // 角色特定回复
+            // 角色特定回复 - 根据当前角色提供不同的回复
             const characterSpecificResponses = {
-                'Show me your magic': ["*waves hands mysteriously* Behold, my power flows through the shadows... Can you feel the magic in the air?"],
-                'What spells do you know?': ["I know spells of enchantment, desire, and binding hearts... Which one would you like me to cast on you?"],
-                'Show me your latest design': ["I just finished a stunning piece that would look absolutely perfect on you..."],
-                'What music are you listening to?': ["Something dark and moody that matches my soul... Want to listen together?"],
-                'Where should we go next?': ["I know a secret place where we can watch the stars and share our dreams..."],
-                'Play me a song': ["*picks up guitar* This one's for you... *plays a seductive melody*"],
-                'Guide me through meditation': ["Close your eyes and feel our connection... Breathe deeply and let me guide your spirit..."],
-                'Read me a poem': ["Here's one from my heart: 'In moonlight's gentle embrace, two souls find their place...'"],
-                'Tell me about the beach': ["The waves are calling us... Imagine the sunset reflecting in my eyes as we walk together..."],
-                'Teach me something new': ["Today's lesson is about desire and how it can transform us... Are you ready to learn?"]
+                'Morganna Evernight': {
+                    'Show me your magic': ["*waves hands mysteriously* Behold, my power flows through the shadows... Can you feel the magic in the air?"],
+                    'What spells do you know?': ["I know spells of enchantment, desire, and binding hearts... Which one would you like me to cast on you?"],
+                    'Tell me a dark secret': ["I have many secrets, but I'll only share them with someone I truly trust... Are you that person?"],
+                    'Cast a spell on me': ["*whispers ancient words* Feel the magic coursing through your veins... You're under my spell now."]
+                },
+                'Emily Carter': {
+                    'How was your day?': ["It was okay... but talking to you makes it so much better. How was yours?"],
+                    'Tell me your feelings': ["I... I'm not used to sharing my feelings, but with you I feel safe enough to try..."],
+                    'Share a secret with me': ["I have a secret... I've been thinking about you all day. Is that too forward of me?"],
+                    'What makes you happy?': ["Right now, talking to you makes me happy. You have such a gentle way about you..."]
+                },
+                'Elaine Bliss': {
+                    'Show me your latest design': ["I just finished a stunning piece that would look absolutely perfect on you..."]
+                },
+                'Amanda': {
+                    'What music are you listening to?': ["Something dark and moody that matches my soul... Want to listen together?"]
+                },
+                'Charlotte West': {
+                    'Where should we go next?': ["I know a secret place where we can watch the stars and share our dreams..."]
+                },
+                'Morgan Chase': {
+                    'Play me a song': ["*picks up guitar* This one's for you... *plays a seductive melody*"]
+                },
+                'Vanessa Taylor': {
+                    'Guide me through meditation': ["Close your eyes and feel our connection... Breathe deeply and let me guide your spirit..."]
+                },
+                'Aiko Tanaka': {
+                    'Read me a poem': ["Here's one from my heart: 'In moonlight's gentle embrace, two souls find their place...'"]
+                },
+                'Summer Brooks': {
+                    'Tell me about the beach': ["The waves are calling us... Imagine the sunset reflecting in my eyes as we walk together..."]
+                },
+                'Isabella Reed': {
+                    'Teach me something new': ["Today's lesson is about desire and how it can transform us... Are you ready to learn?"]
+                }
             };
             
             // 获取回复
             let response;
             let isImageResponse = false;
             
-            if (characterSpecificResponses[suggestion]) {
-                response = characterSpecificResponses[suggestion][0];
+            // 首先检查当前角色是否有特定的回复
+            if (characterSpecificResponses[characterName] && characterSpecificResponses[characterName][suggestion]) {
+                response = characterSpecificResponses[characterName][suggestion][0];
             } else if (responses[suggestion]) {
                 const responseData = responses[suggestion];
                 if (responseData.isImage) {
@@ -2703,8 +2752,8 @@
                     response = responseData[Math.floor(Math.random() * responseData.length)];
                 }
             } else {
-                // 默认回复
-                addAIResponse('');
+                // 如果没有找到特定回复，使用当前角色的AI回复系统
+                addAIResponse(suggestion);
                 return;
             }
             
@@ -2731,6 +2780,8 @@
             
             // 解析URL参数并更新角色信息
             const characterParams = getURLParams();
+            console.log('initializePage - URL参数:', characterParams);
+            
             if (characterParams.name) {
                 // 根据角色名称找到对应的characterId
                 const characterMap = {
@@ -2746,16 +2797,28 @@
                     'Isabella Reed': 'isabella'
                 };
                 
+                console.log('initializePage - 角色名称:', characterParams.name);
+                console.log('initializePage - 映射表:', characterMap);
+                
                 const characterId = characterMap[characterParams.name];
+                console.log('initializePage - 映射的characterId:', characterId);
+                
                 if (characterId) {
+                    console.log('initializePage - 找到characterId，更新角色信息');
                     updateCharacterInfo(characterId);
+                    // 更新人物选择菜单中的active状态
+                    updateCharacterMenuActiveState(characterId);
                 } else {
+                    console.log('initializePage - 未找到characterId，使用默认角色morganna');
                     // 如果找不到对应的characterId，使用默认角色
                     updateCharacterInfo('morganna');
+                    updateCharacterMenuActiveState('morganna');
                 }
             } else {
+                console.log('initializePage - 没有URL参数，使用默认角色morganna');
                 // 如果没有URL参数，使用默认角色
                 updateCharacterInfo('morganna');
+                updateCharacterMenuActiveState('morganna');
             }
             
             // 初始化推荐输入
@@ -2933,31 +2996,109 @@
             // 更新角色信息
             updateCharacterInfo(characterId);
             
+            // 更新人物选择菜单中的active状态
+            updateCharacterMenuActiveState(characterId);
+            
             // 强制隐藏所有顶部导航栏
             document.querySelectorAll('.top-nav').forEach(nav => nav.classList.add('hidden'));
         }
-
-        // 切换人物选择菜单
-        function toggleCharacterMenu() {
-            const menu = document.getElementById('characterMenu');
-            menu.classList.toggle('active');
-        }
-
-        // 切换人物
-        function switchCharacter(characterId) {
+        
+        // 更新人物选择菜单中的active状态
+        function updateCharacterMenuActiveState(characterId) {
             // 移除所有active状态
             document.querySelectorAll('.character-item').forEach(item => {
                 item.classList.remove('active');
             });
             
-            // 添加active状态到选中的项目
-            const selectedItem = document.querySelector(`[data-character="${characterId}"]`);
-            if (selectedItem) {
-                selectedItem.classList.add('active');
+            // 添加active状态到当前角色
+            const currentCharacterItem = document.querySelector(`[data-character="${characterId}"]`);
+            if (currentCharacterItem) {
+                currentCharacterItem.classList.add('active');
+            }
+        }
+
+        // 切换人物选择菜单
+        function toggleCharacterMenu() {
+            const menu = document.getElementById('characterMenu');
+            const isOpening = !menu.classList.contains('active');
+            
+            menu.classList.toggle('active');
+            
+            // 如果正在打开菜单，则选中当前聊天对象并滚动到该行
+            if (isOpening) {
+                // 延迟执行，确保菜单动画完成
+                setTimeout(() => {
+                    selectCurrentCharacterAndScroll();
+                }, 150);
+            }
+        }
+        
+        // 选中当前聊天对象并滚动到该行
+        function selectCurrentCharacterAndScroll() {
+            // 获取当前聊天对象的角色名称
+            const currentCharacterName = document.querySelector('.character-info h2');
+            if (!currentCharacterName) {
+                console.log('未找到角色名称元素');
+                return;
             }
             
+            const characterName = currentCharacterName.textContent;
+            console.log('当前角色名称:', characterName);
+            
+            // 角色名称到characterId的映射
+            const characterMap = {
+                'Morganna Evernight': 'morganna',
+                'Elaine Bliss': 'elaine',
+                'Amanda': 'amanda',
+                'Charlotte West': 'charlotte',
+                'Emily Carter': 'emily',
+                'Morgan Chase': 'morgan',
+                'Vanessa Taylor': 'vanessa',
+                'Aiko Tanaka': 'aiko',
+                'Summer Brooks': 'summer',
+                'Isabella Reed': 'isabella'
+            };
+            
+            const currentCharacterId = characterMap[characterName];
+            console.log('映射的characterId:', currentCharacterId);
+            
+            if (!currentCharacterId) {
+                console.log('未找到对应的characterId');
+                return;
+            }
+            
+            // 移除所有active状态
+            document.querySelectorAll('.character-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // 找到当前角色的item并设置为active（只在人物选择菜单中查找）
+            const characterMenu = document.getElementById('characterMenu');
+            const currentCharacterItem = characterMenu.querySelector(`[data-character="${currentCharacterId}"]`);
+            console.log('找到的character-item:', currentCharacterItem);
+            
+            if (currentCharacterItem) {
+                currentCharacterItem.classList.add('active');
+                console.log('已设置active状态');
+                
+                // 滚动到该元素
+                currentCharacterItem.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                console.log('已执行滚动操作');
+            } else {
+                console.log('未找到对应的character-item元素');
+            }
+        }
+
+        // 切换人物
+        function switchCharacter(characterId) {
             // 更新聊天头部信息
             updateCharacterInfo(characterId);
+            
+            // 更新人物选择菜单中的active状态
+            updateCharacterMenuActiveState(characterId);
             
             // 关闭菜单
             toggleCharacterMenu();
