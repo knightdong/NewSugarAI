@@ -259,14 +259,6 @@
             font-size: 14px;
         }
 
-        .character-info p .online-status {
-            color: #4CAF50;
-        }
-
-        .character-info p .status-dot {
-            color: #4CAF50;
-        }
-
 
 
         /* 聊天消息区域 */
@@ -522,38 +514,15 @@
             border: none;
             color: #ffffff;
             font-size: 15px;
-            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             outline: none;
             resize: none;
             min-height: 20px;
-            max-height: 120px;
+            max-height: 100px;
             line-height: 1.4;
-            padding: 8px 0;
-            overflow-y: auto;
-            word-wrap: break-word;
-            white-space: pre-wrap;
-        }
-
-        .message-input::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .message-input::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .message-input::-webkit-scrollbar-thumb {
-            background: rgba(237, 127, 140, 0.3);
-            border-radius: 2px;
-        }
-
-        .message-input::-webkit-scrollbar-thumb:hover {
-            background: rgba(237, 127, 140, 0.5);
         }
 
         .message-input::placeholder {
             color: #999;
-            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         .input-actions {
@@ -610,86 +579,74 @@
         /* 照片预览区域 */
         .photo-preview {
             position: absolute;
-            top: -145px; /* 原-170px，缩小一半 */
+            top: -80px;
             right: 30px;
-            width: 140px;
-            height: 140px;
-            background: #18171a;
-            border-radius: 16px;
-            box-shadow: 0 2px 16px rgba(0,0,0,0.18);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 20;
-            border: 2px solid #ed7f8c;
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid rgba(237, 127, 140, 0.3);
+            background: #333;
+            display: none;
+            cursor: pointer;
         }
+
         .photo-preview img {
-            width: 128px;
-            height: 128px;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            border-radius: 12px;
-            display: block;
         }
+
         .photo-preview-close {
             position: absolute;
-            top: 6px;
-            right: 6px;
-            width: 26px;
-            height: 26px;
+            top: -8px;
+            right: -8px;
+            width: 20px;
+            height: 20px;
             background: #ed7f8c;
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
-            z-index: 2;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
         }
+
         .photo-preview-close:hover {
             background: #d16570;
             transform: scale(1.1);
         }
 
+        /* 移动端照片预览适配 */
         @media (max-width: 768px) {
             .photo-preview {
-                top: -95px; /* 原-110px，缩小一半 */
-                right: 10px;
-                width: 90px;
-                height: 90px;
+                top: -70px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
             }
-            .photo-preview img {
-                width: 76px;
-                height: 76px;
-            }
+            
             .photo-preview-close {
-                width: 20px;
-                height: 20px;
-                font-size: 13px;
-                top: 3px;
-                right: 3px;
+                width: 18px;
+                height: 18px;
+                font-size: 10px;
             }
         }
 
         @media (max-width: 480px) {
             .photo-preview {
-                top: -70px; /* 原-80px，缩小一半 */
-                right: 5px;
-                width: 60px;
-                height: 60px;
+                top: -60px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
             }
-            .photo-preview img {
-                width: 48px;
-                height: 48px;
-            }
+            
             .photo-preview-close {
                 width: 16px;
                 height: 16px;
-                font-size: 10px;
-                top: 1px;
-                right: 1px;
+                font-size: 9px;
             }
         }
 
@@ -796,33 +753,6 @@
                 left: 0;
                 padding-left: 20px;
                 padding-right: 20px;
-            }
-
-            .input-container {
-                padding: 8px 15px;
-                border-radius: 20px;
-            }
-
-            .message-input {
-                font-size: 14px;
-                min-height: 18px;
-                max-height: 100px;
-                padding: 6px 0;
-            }
-
-            .message-input::-webkit-scrollbar {
-                width: 3px;
-            }
-
-            .send-btn {
-                width: 32px;
-                height: 32px;
-                font-size: 14px;
-            }
-
-            .media-btn {
-                font-size: 16px;
-                padding: 4px;
             }
 
             .message {
@@ -1688,82 +1618,6 @@
 
         /* 聊天顶部导航彻底隐藏辅助类 */
         .top-nav.hidden { display: none !important; }
-
-        /* 锁定图片样式 */
-        .locked-image-container {
-            position: relative;
-            display: inline-block;
-            border-radius: 12px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .locked-image-container:hover {
-            transform: scale(1.02);
-        }
-
-        .locked-image {
-            width: 200px;
-            height: 250px;
-            object-fit: cover;
-            border-radius: 12px;
-            filter: blur(8px);
-        }
-
-        .locked-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(4px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-        }
-
-        .unlock-button {
-            background: linear-gradient(135deg, #ed7f8c, #d16570);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(237, 127, 140, 0.3);
-        }
-
-        .unlock-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(237, 127, 140, 0.4);
-        }
-
-        .unlock-cost {
-            color: #ed7f8c;
-            font-size: 12px;
-            margin-top: 8px;
-            font-weight: 500;
-        }
-
-        .unlock-icon {
-            font-size: 16px;
-            margin-right: 6px;
-        }
-
-        /* 解锁后的图片样式 */
-        .unlocked-image {
-            width: 200px;
-            height: 250px;
-            object-fit: cover;
-            border-radius: 12px;
-            filter: none;
-        }
     </style>
 </head>
 <body>
@@ -1883,8 +1737,8 @@
                         </div>
                         <div class="chat-list-action">
                             <button class="start-chat-btn">Start Chat</button>
-                        </div>
                     </div>
+            </div>
 
                     <div class="chat-list-item" data-character="elaine">
                         <div class="chat-list-avatar" style="background-image: url('assets/pic_2.jpeg');"></div>
@@ -1895,8 +1749,8 @@
                         </div>
                         <div class="chat-list-action">
                             <button class="start-chat-btn">Start Chat</button>
-                        </div>
                     </div>
+                </div>
 
                     <div class="chat-list-item" data-character="amanda">
                         <div class="chat-list-avatar" style="background-image: url('assets/pic_3.jpg');"></div>
@@ -1907,8 +1761,8 @@
                         </div>
                         <div class="chat-list-action">
                             <button class="start-chat-btn">Start Chat</button>
-                        </div>
                     </div>
+                </div>
 
                     <div class="chat-list-item" data-character="charlotte">
                         <div class="chat-list-avatar" style="background-image: url('assets/pic_4.jpg');"></div>
@@ -1919,8 +1773,8 @@
                         </div>
                         <div class="chat-list-action">
                             <button class="start-chat-btn">Start Chat</button>
-                        </div>
                     </div>
+                </div>
 
                     <div class="chat-list-item" data-character="emily">
                         <div class="chat-list-avatar" style="background-image: url('assets/pic_5.jpg');"></div>
@@ -1931,62 +1785,14 @@
                         </div>
                         <div class="chat-list-action">
                             <button class="start-chat-btn">Start Chat</button>
-                        </div>
                     </div>
+                </div>
 
                     <div class="chat-list-item" data-character="morgan">
                         <div class="chat-list-avatar" style="background-image: url('assets/pic_6.jpg');"></div>
                         <div class="chat-list-info">
                             <h3>Morgan Chase</h3>
                             <p>Punk Vocalist</p>
-                            <span class="chat-list-status">Online</span>
-                        </div>
-                        <div class="chat-list-action">
-                            <button class="start-chat-btn">Start Chat</button>
-                        </div>
-                    </div>
-
-                    <div class="chat-list-item" data-character="vanessa">
-                        <div class="chat-list-avatar" style="background-image: url('assets/pic_7.jpeg');"></div>
-                        <div class="chat-list-info">
-                            <h3>Vanessa Taylor</h3>
-                            <p>Yoga Instructor</p>
-                            <span class="chat-list-status">Online</span>
-                        </div>
-                        <div class="chat-list-action">
-                            <button class="start-chat-btn">Start Chat</button>
-                        </div>
-                    </div>
-
-                    <div class="chat-list-item" data-character="aiko">
-                        <div class="chat-list-avatar" style="background-image: url('assets/pic_8.jpg');"></div>
-                        <div class="chat-list-info">
-                            <h3>Aiko Tanaka</h3>
-                            <p>Literature Student</p>
-                            <span class="chat-list-status">Online</span>
-                        </div>
-                        <div class="chat-list-action">
-                            <button class="start-chat-btn">Start Chat</button>
-                        </div>
-                    </div>
-
-                    <div class="chat-list-item" data-character="summer">
-                        <div class="chat-list-avatar" style="background-image: url('assets/pic_9.jpg');"></div>
-                        <div class="chat-list-info">
-                            <h3>Summer Brooks</h3>
-                            <p>Beach Lifeguard</p>
-                            <span class="chat-list-status">Online</span>
-                        </div>
-                        <div class="chat-list-action">
-                            <button class="start-chat-btn">Start Chat</button>
-                        </div>
-                    </div>
-
-                    <div class="chat-list-item" data-character="isabella">
-                        <div class="chat-list-avatar" style="background-image: url('assets/pic_10.jpeg');"></div>
-                        <div class="chat-list-info">
-                            <h3>Isabella Reed</h3>
-                            <p>Math Teacher</p>
                             <span class="chat-list-status">Online</span>
                         </div>
                         <div class="chat-list-action">
@@ -2005,7 +1811,7 @@
                             <div class="character-avatar" style="background-image: url('assets/pic_1.jpeg');"></div>
                             <div class="character-info">
                                 <h2>Morganna Evernight</h2>
-                                <p>Dark Sorceress <span class="status-dot">•</span> <span class="online-status">Online</span></p>
+                                <p>Dark Sorceress • Online</p>
                 </div>
             </div>
                         <div class="chat-header-actions">
@@ -2104,44 +1910,8 @@
                         <p>Punk Vocalist</p>
                     </div>
                     <div class="character-item-status">Online</div>
-                </div>
-                
-                <div class="character-item" data-character="vanessa">
-                    <div class="character-item-avatar" style="background-image: url('assets/pic_7.jpeg');"></div>
-                    <div class="character-item-info">
-                        <h4>Vanessa Taylor</h4>
-                        <p>Yoga Instructor</p>
-                    </div>
-                    <div class="character-item-status">Online</div>
-                </div>
-                
-                <div class="character-item" data-character="aiko">
-                    <div class="character-item-avatar" style="background-image: url('assets/pic_8.jpg');"></div>
-                    <div class="character-item-info">
-                        <h4>Aiko Tanaka</h4>
-                        <p>Literature Student</p>
-                    </div>
-                    <div class="character-item-status">Online</div>
-                </div>
-                
-                <div class="character-item" data-character="summer">
-                    <div class="character-item-avatar" style="background-image: url('assets/pic_9.jpg');"></div>
-                    <div class="character-item-info">
-                        <h4>Summer Brooks</h4>
-                        <p>Beach Lifeguard</p>
-                    </div>
-                    <div class="character-item-status">Online</div>
-                </div>
-                
-                <div class="character-item" data-character="isabella">
-                    <div class="character-item-avatar" style="background-image: url('assets/pic_10.jpeg');"></div>
-                    <div class="character-item-info">
-                        <h4>Isabella Reed</h4>
-                        <p>Math Teacher</p>
-                    </div>
-                    <div class="character-item-status">Online</div>
-                </div>
             </div>
+        </div>
         </div>
 
 
@@ -2183,15 +1953,9 @@
             document.getElementById('user-not-logged-in').style.display = 'none';
             
             if (currentUser) {
-                // 确保用户数据中有钻石余额字段
-                if (!currentUser.gemBalance) {
-                    currentUser.gemBalance = '1250';
-                    localStorage.setItem('userData', JSON.stringify(currentUser));
-                }
-                
                 document.getElementById('username').textContent = currentUser.name || currentUser.email || 'User';
                 document.getElementById('user-status').textContent = currentUser.membershipType || 'Free Member';
-                document.getElementById('gem-count').textContent = (currentUser.gemBalance || '1250').toLocaleString();
+                document.getElementById('gem-count').textContent = currentUser.gemBalance || '0';
             }
         }
 
@@ -2227,7 +1991,6 @@
         // 更新角色信息
         function updateCharacterInfo(character) {
             if (character.name) {
-                currentChatName = character.name;
                 // 更新聊天头部的角色信息
                 const characterAvatar = document.querySelector('.character-avatar');
                 const characterName = document.querySelector('.character-info h2');
@@ -2235,7 +1998,7 @@
                 
                 if (characterAvatar) characterAvatar.style.backgroundImage = `url('${character.image}')`;
                 if (characterName) characterName.textContent = character.name;
-                if (characterStatus) characterStatus.innerHTML = `${character.role} <span class="status-dot">•</span> <span class="online-status">${character.status}</span>`;
+                if (characterStatus) characterStatus.textContent = `${character.role} • ${character.status}`;
                 
                 // 更新输入框placeholder文本
                 const messageInput = document.getElementById('messageInput');
@@ -2339,20 +2102,8 @@
 
         // 自动调整输入框高度
         messageInput.addEventListener('input', function() {
-            // 重置高度以获取正确的scrollHeight
             this.style.height = 'auto';
-            
-            // 计算新高度，限制最大高度
-            const maxHeight = window.innerWidth <= 768 ? 100 : 120;
-            const newHeight = Math.min(this.scrollHeight, maxHeight);
-            this.style.height = newHeight + 'px';
-            
-            // 如果内容超过最大高度，显示滚动条
-            if (this.scrollHeight > maxHeight) {
-                this.style.overflowY = 'auto';
-            } else {
-                this.style.overflowY = 'hidden';
-            }
+            this.style.height = Math.min(this.scrollHeight, 100) + 'px';
             
             // 更新发送按钮状态
             updateSendButtonState();
@@ -2383,7 +2134,6 @@
             // 清空输入框
             messageInput.value = '';
             messageInput.style.height = 'auto';
-            messageInput.style.overflowY = 'hidden';
             updateSendButtonState();
 
             // 显示AI正在输入动画
@@ -2454,101 +2204,6 @@
             
             // 确保新消息后滚动到底部
             scrollToBottom();
-        }
-
-        // 添加锁定图片消息
-        function addLockedImageMessage(text, imageUrl) {
-            const chatMessages = document.getElementById('chatMessages');
-            
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message ai';
-            
-            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            
-            // 获取当前角色的头像
-            const characterParams = getURLParams();
-            const characterImage = characterParams.image || 'assets/pic_1.jpeg';
-            
-            const messageContent = `
-                <div class="message-text">${text}</div>
-                <div class="locked-image-container" onclick="unlockImage(this, '${imageUrl}')">
-                    <img src="${imageUrl}" alt="Locked photo" class="locked-image" />
-                    <div class="locked-overlay">
-                        <button class="unlock-button">
-                            <span class="unlock-icon">🔓</span>
-                            Unlock
-                        </button>
-                        <div class="unlock-cost">💎 10 Gems</div>
-                    </div>
-                </div>
-                <div class="message-time">${time}</div>
-            `;
-            
-            messageDiv.innerHTML = `
-                <div class="message-avatar" style="background-image: url('${characterImage}');"></div>
-                <div class="message-content">
-                    ${messageContent}
-                </div>
-            `;
-            
-            chatMessages.appendChild(messageDiv);
-            
-            // 确保新消息后滚动到底部
-            scrollToBottom();
-        }
-
-        // 解锁图片
-        function unlockImage(container, imageUrl) {
-            // 检查用户是否已登录
-            if (!isLoggedIn || !currentUser) {
-                alert('Please login to unlock this content.');
-                window.location.href = './auth.html';
-                return;
-            }
-
-            // 确保用户数据中有钻石余额字段，且为数字
-            let gems = Number(currentUser.gemBalance);
-            if (isNaN(gems) || gems < 0) {
-                gems = 1250; // 默认钻石数量
-                currentUser.gemBalance = gems;
-                localStorage.setItem('userData', JSON.stringify(currentUser));
-            }
-
-            const requiredGems = 10;
-
-            if (gems < requiredGems) {
-                alert(`You need ${requiredGems} gems to unlock this content. Redirecting to purchase page...`);
-                window.location.href = './purchase.html';
-                return;
-            }
-
-            // 扣除钻石
-            gems -= requiredGems;
-            currentUser.gemBalance = gems;
-            localStorage.setItem('userData', JSON.stringify(currentUser));
-
-            // 更新显示的钻石数量
-            const gemElements = document.querySelectorAll('#gem-count, #top-nav-gem-count');
-            gemElements.forEach(element => {
-                element.textContent = gems.toLocaleString();
-            });
-
-            // 解锁图片
-            const img = container.querySelector('img');
-            const overlay = container.querySelector('.locked-overlay');
-            img.classList.remove('locked-image');
-            img.classList.add('unlocked-image');
-            overlay.style.display = 'none';
-
-            // 移除点击事件，防止重复解锁
-            container.onclick = null;
-            // 添加点击放大功能
-            container.onclick = () => openImageModal(imageUrl);
-
-            // 显示解锁成功消息
-            setTimeout(() => {
-                addMessage('ai', "There you go, darling... I hope you like what you see! 😘");
-            }, 500);
         }
 
         // 显示AI正在输入动画
@@ -2740,12 +2395,7 @@
                     'Elaine Bliss': 'assets/pic_2.jpeg',
                     'Amanda': 'assets/pic_3.jpg',
                     'Charlotte West': 'assets/pic_4.jpg',
-                    'Emily Carter': 'assets/pic_5.jpg',
-                    'Morgan Chase': 'assets/pic_6.jpg',
-                    'Vanessa Taylor': 'assets/pic_7.jpeg',
-                    'Aiko Tanaka': 'assets/pic_8.jpg',
-                    'Summer Brooks': 'assets/pic_9.jpg',
-                    'Isabella Reed': 'assets/pic_10.jpeg'
+                    'Emily Carter': 'assets/pic_5.jpg'
                 };
                 
                 // 简化的角色信息（用于历史记录切换）
@@ -2756,12 +2406,7 @@
                           characterName === 'Elaine Bliss' ? 'Fashion Designer' :
                           characterName === 'Amanda' ? 'College Student' :
                           characterName === 'Charlotte West' ? 'Tour Guide' :
-                          characterName === 'Emily Carter' ? 'College Student' :
-                          characterName === 'Morgan Chase' ? 'Punk Vocalist' :
-                          characterName === 'Vanessa Taylor' ? 'Yoga Instructor' :
-                          characterName === 'Aiko Tanaka' ? 'Literature Student' :
-                          characterName === 'Summer Brooks' ? 'Beach Lifeguard' :
-                          characterName === 'Isabella Reed' ? 'Math Teacher' : 'Unknown',
+                          characterName === 'Emily Carter' ? 'College Student' : 'Unknown',
                     status: 'Online',
                     greeting: `Hello! I'm ${characterName}. It's great to continue our conversation!`
                 };
@@ -2795,7 +2440,6 @@
             // 基础推荐消息
             const baseSuggestions = [
                 "Send me a photo",
-                "Send me a naughty photo",
                 "Tell me about yourself", 
                 "What are you doing right now?",
                 "I miss you"
@@ -2918,14 +2562,6 @@
                         "This one's my favorite... thought you'd love to see it 😘"
                     ]
                 },
-                'Send me a naughty photo': {
-                    isLockedImage: true,
-                    text: [
-                        "Oh my... you're being quite naughty! 😏 Here's something special just for you...",
-                        "You want to see my naughty side? Well, here's a little preview... 💋",
-                        "I have something very intimate to share with you... but it's a bit special... 😈"
-                    ]
-                },
                 'Tell me about yourself': [
                     "There's so much mystery about me that I'd love to share with someone special like you...",
                     "I'm more complex than I appear on the surface. What would you like to know first?",
@@ -2960,18 +2596,13 @@
             // 获取回复
             let response;
             let isImageResponse = false;
-            let isLockedImageResponse = false;
             
             if (characterSpecificResponses[suggestion]) {
                 response = characterSpecificResponses[suggestion][0];
             } else if (responses[suggestion]) {
                 const responseData = responses[suggestion];
-                if (responseData.isLockedImage) {
-                    // 处理锁定图片回复
-                    isLockedImageResponse = true;
-                    response = responseData.text[Math.floor(Math.random() * responseData.text.length)];
-                } else if (responseData.isImage) {
-                    // 处理普通图片回复
+                if (responseData.isImage) {
+                    // 处理图片回复
                     isImageResponse = true;
                     response = responseData.text[Math.floor(Math.random() * responseData.text.length)];
                 } else {
@@ -2984,12 +2615,7 @@
             }
             
             // 发送回复消息
-            if (isLockedImageResponse) {
-                // 发送带锁定图片的消息
-                const characterParams = getURLParams();
-                const characterImage = characterParams.image || 'assets/pic_1.jpeg';
-                addLockedImageMessage(response, characterImage);
-            } else if (isImageResponse) {
+            if (isImageResponse) {
                 // 发送带图片的消息
                 const characterParams = getURLParams();
                 const characterImage = characterParams.image || 'assets/pic_1.jpeg';
@@ -3059,24 +2685,15 @@
         function showPhotoPreview(imageUrl) {
             const photoPreview = document.getElementById('photoPreview');
             const previewImage = document.getElementById('previewImage');
-            if (imageUrl) {
-                previewImage.src = imageUrl;
-                previewImage.style.display = 'block';
-                photoPreview.style.display = 'flex';
-            } else {
-                previewImage.src = '';
-                previewImage.style.display = 'none';
-                photoPreview.style.display = 'none';
-            }
+            
+            previewImage.src = imageUrl;
+            photoPreview.style.display = 'block';
             updateSendButtonState();
         }
 
         function removePhotoPreview() {
             const photoPreview = document.getElementById('photoPreview');
-            const previewImage = document.getElementById('previewImage');
             selectedPhoto = null;
-            previewImage.src = '';
-            previewImage.style.display = 'none';
             photoPreview.style.display = 'none';
             updateSendButtonState();
         }
@@ -3103,7 +2720,6 @@
         // 全局图片模态框函数
         window.openImageModal = openImageModal;
         window.closeImageModal = closeImageModal;
-        window.unlockImage = unlockImage;
 
         // 图片模态框事件监听
         document.addEventListener('DOMContentLoaded', function() {
@@ -3144,20 +2760,12 @@
                     'Amanda': 'amanda',
                     'Charlotte West': 'charlotte',
                     'Emily Carter': 'emily',
-                    'Morgan Chase': 'morgan',
-                    'Vanessa Taylor': 'vanessa',
-                    'Aiko Tanaka': 'aiko',
-                    'Summer Brooks': 'summer',
-                    'Isabella Reed': 'isabella'
+                    'Morgan Chase': 'morgan'
                 };
                 
                 const characterId = characterMap[characterParam];
                 if (characterId) {
-                    // 预定义角色
                     showChatConversation(characterId);
-                } else {
-                    // 自定义角色（从create.html创建的角色）
-                    showCustomCharacterChat();
                 }
             }
             
@@ -3204,68 +2812,18 @@
             document.getElementById('chatConversationLayout').style.display = 'none';
             // 强制显示所有顶部导航栏
             document.querySelectorAll('.top-nav').forEach(nav => nav.classList.remove('hidden'));
-
-            // 获取当前对话角色名
-            let activeName = '';
-            const headerName = document.querySelector('.character-info h2');
-            if (headerName) {
-                activeName = headerName.textContent.trim();
-            }
-            renderChatHistoryList(activeName);
-        }
-
-        // 显示自定义角色聊天页面
-        function showCustomCharacterChat() {
-            document.getElementById('chatListPage').style.display = 'none';
-            document.getElementById('chatConversationLayout').style.display = 'flex';
-            
-            // 获取URL参数中的角色信息
-            const urlParams = new URLSearchParams(window.location.search);
-            const characterInfo = {
-                name: urlParams.get('name') || 'Custom Character',
-                image: urlParams.get('image') || 'assets/pic_1.jpeg',
-                role: urlParams.get('role') || 'Custom',
-                status: urlParams.get('status') || 'Online',
-                greeting: urlParams.get('greeting') || `Hello! I'm ${urlParams.get('name') || 'Custom Character'}. Nice to meet you!`
-            };
-            currentChatName = characterInfo.name;
-            updateCharacterInfo(characterInfo);
-            
-            // 强制隐藏所有顶部导航栏
-            document.querySelectorAll('.top-nav').forEach(nav => nav.classList.add('hidden'));
         }
 
         // 显示聊天对话页面
         function showChatConversation(characterId) {
             document.getElementById('chatListPage').style.display = 'none';
             document.getElementById('chatConversationLayout').style.display = 'flex';
-            
-            // 检查是否有URL参数传递的角色信息
-            const urlParams = new URLSearchParams(window.location.search);
-            const characterName = urlParams.get('name');
-            
-            if (characterName && characterName.toLowerCase().includes(characterId)) {
-                // 使用URL参数中的角色信息
-                const characterInfo = {
-                    name: characterName,
-                    image: urlParams.get('image') || 'assets/pic_1.jpeg',
-                    role: urlParams.get('role') || 'Unknown',
-                    status: urlParams.get('status') || 'Online',
-                    greeting: urlParams.get('greeting') || `Hello! I'm ${characterName}. Nice to meet you!`
-                };
-                updateCharacterInfo(characterInfo);
-            } else {
-                // 查找历史中是否有该角色
-                const item = chatHistory.find(c => c.name.toLowerCase().includes(characterId));
-                if (item) {
-                    updateCharacterInfoByHistory(item);
-                    renderChatHistoryList(item.name);
-                } else {
-                    // 使用预定义的角色数据
-                    updateCharacterInfoById(characterId);
-                }
+            // 查找历史中是否有该角色
+            const item = chatHistory.find(c => c.name.toLowerCase().includes(characterId));
+            if (item) {
+                updateCharacterInfoByHistory(item);
+                renderChatHistoryList(item.name);
             }
-            
             // 强制隐藏所有顶部导航栏
             document.querySelectorAll('.top-nav').forEach(nav => nav.classList.add('hidden'));
         }
@@ -3274,27 +2832,6 @@
         function toggleCharacterMenu() {
             const menu = document.getElementById('characterMenu');
             menu.classList.toggle('active');
-            if (menu.classList.contains('active')) {
-                // 自动高亮当前聊天对象
-                const norm = s => (s || '').trim().toLowerCase();
-                let current = norm(currentChatName);
-                let activeItem = null;
-                document.querySelectorAll('.character-item').forEach(item => {
-                    const nameElem = item.querySelector('h4');
-                    if (nameElem && norm(nameElem.textContent) === current) {
-                        item.classList.add('active');
-                        activeItem = item;
-                    } else {
-                        item.classList.remove('active');
-                    }
-                });
-                // 自动滚动到当前高亮人物
-                if (activeItem) {
-                    setTimeout(() => {
-                        activeItem.scrollIntoView({ behavior: 'auto', block: 'center' });
-                    }, 0);
-                }
-            }
         }
 
         // 切换人物
@@ -3311,14 +2848,14 @@
             }
             
             // 更新聊天头部信息
-            updateCharacterInfoById(characterId);
+            updateCharacterInfo(characterId);
             
             // 关闭菜单
             toggleCharacterMenu();
         }
 
-        // 更新人物信息（通过ID）
-        function updateCharacterInfoById(characterId) {
+        // 更新人物信息
+        function updateCharacterInfo(characterId) {
             const characterData = {
                 morganna: {
                     name: 'Morganna Evernight',
@@ -3355,36 +2892,11 @@
                     role: 'Punk Vocalist',
                     image: 'assets/pic_6.jpg',
                     greeting: "Well, well, well... look what the cat dragged in. I'm Morgan, and I don't play by anyone's rules. Think you can handle a rebel like me?"
-                },
-                vanessa: {
-                    name: 'Vanessa Taylor',
-                    role: 'Yoga Instructor',
-                    image: 'assets/pic_7.jpeg',
-                    greeting: "Namaste, beautiful soul. I'm Vanessa, and I believe in the connection between mind, body, and spirit. Let me guide you to inner peace and... other pleasures."
-                },
-                aiko: {
-                    name: 'Aiko Tanaka',
-                    role: 'Literature Student',
-                    image: 'assets/pic_8.jpg',
-                    greeting: "こんにちは... Hello there. I'm Aiko, and I love reading romantic novels. Would you like to create our own love story together?"
-                },
-                summer: {
-                    name: 'Summer Brooks',
-                    role: 'Beach Lifeguard',
-                    image: 'assets/pic_9.jpg',
-                    greeting: "Hey there, beach lover! I'm Summer, your friendly neighborhood lifeguard. I'm here to keep you safe and show you the best time under the sun."
-                },
-                isabella: {
-                    name: 'Isabella Reed',
-                    role: 'Math Teacher',
-                    image: 'assets/pic_10.jpeg',
-                    greeting: "Good evening, student. I'm Ms. Reed, and I believe in... intensive learning experiences. Are you ready for a private lesson?"
                 }
             };
 
             const character = characterData[characterId];
             if (character) {
-                currentChatName = character.name;
                 // 更新聊天头部
                 const headerAvatar = document.querySelector('.character-avatar');
                 const headerName = document.querySelector('.character-info h2');
@@ -3392,7 +2904,7 @@
                 
                 headerAvatar.style.backgroundImage = `url('${character.image}')`;
                 headerName.textContent = character.name;
-                headerRole.innerHTML = `${character.role} <span class="status-dot">•</span> <span class="online-status">Online</span>`;
+                headerRole.textContent = `${character.role} • Online`;
                 
                 // 更新输入框占位符
                 const messageInput = document.getElementById('messageInput');
@@ -3538,9 +3050,8 @@
         function renderChatHistoryList(activeName) {
             const list = document.getElementById('chatHistoryList');
             if (!list) return;
-            const norm = s => (s || '').trim().toLowerCase();
             list.innerHTML = chatHistory.map(item => `
-                <div class="history-item${norm(item.name) === norm(activeName) ? ' active' : ''}" onclick="switchChatHistory('${item.name.replace(/'/g, "\\'")}')">
+                <div class="history-item${item.name === activeName ? ' active' : ''}" onclick="switchChatHistory('${item.name.replace(/'/g, "\\'")}')">
                     <div class="history-avatar" style="background-image: url('${item.image}');"></div>
                     <div class="history-info">
                         <div class="history-name">${item.name}</div>
@@ -3562,26 +3073,19 @@
         }
 
         function updateCharacterInfoByHistory(item) {
-            currentChatName = item.name;
             // 更新聊天头部
             const headerAvatar = document.querySelector('.character-avatar');
             const headerName = document.querySelector('.character-info h2');
             const headerRole = document.querySelector('.character-info p');
             headerAvatar.style.backgroundImage = `url('${item.image}')`;
             headerName.textContent = item.name;
-            headerRole.innerHTML = `${item.role} <span class="status-dot">•</span> <span class="online-status">${item.status}</span>`;
+            headerRole.textContent = `${item.role} • ${item.status}`;
             // 清空聊天消息并添加新的问候语
             const chatMessages = document.getElementById('chatMessages');
             chatMessages.innerHTML = `
                 <div class=\"message ai\">\n            <div class=\"message-avatar\" style=\"background-image: url('${item.image}');\"></div>\n            <div class=\"message-content\">\n                <div class=\"message-text\">Hi, this is ${item.name}. Let's continue our chat!</div>\n                <div class=\"message-time\">${item.time}</div>\n            </div>\n        </div>\n    `;
             scrollToBottom();
         }
-
-        // 初始化时隐藏预览区域
-        document.addEventListener('DOMContentLoaded', function() {
-            const photoPreview = document.getElementById('photoPreview');
-            if (photoPreview) photoPreview.style.display = 'none';
-        });
     </script>
 </body>
 </html> 
