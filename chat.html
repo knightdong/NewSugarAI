@@ -1799,6 +1799,54 @@
                             <button class="start-chat-btn">Start Chat</button>
                         </div>
                     </div>
+
+                    <div class="chat-list-item" data-character="vanessa">
+                        <div class="chat-list-avatar" style="background-image: url('assets/pic_7.jpeg');"></div>
+                        <div class="chat-list-info">
+                            <h3>Vanessa Taylor</h3>
+                            <p>Yoga Instructor</p>
+                            <span class="chat-list-status">Online</span>
+                        </div>
+                        <div class="chat-list-action">
+                            <button class="start-chat-btn">Start Chat</button>
+                        </div>
+                    </div>
+
+                    <div class="chat-list-item" data-character="aiko">
+                        <div class="chat-list-avatar" style="background-image: url('assets/pic_8.jpg');"></div>
+                        <div class="chat-list-info">
+                            <h3>Aiko Tanaka</h3>
+                            <p>Literature Student</p>
+                            <span class="chat-list-status">Online</span>
+                        </div>
+                        <div class="chat-list-action">
+                            <button class="start-chat-btn">Start Chat</button>
+                        </div>
+                    </div>
+
+                    <div class="chat-list-item" data-character="summer">
+                        <div class="chat-list-avatar" style="background-image: url('assets/pic_9.jpg');"></div>
+                        <div class="chat-list-info">
+                            <h3>Summer Brooks</h3>
+                            <p>Beach Lifeguard</p>
+                            <span class="chat-list-status">Online</span>
+                        </div>
+                        <div class="chat-list-action">
+                            <button class="start-chat-btn">Start Chat</button>
+                        </div>
+                    </div>
+
+                    <div class="chat-list-item" data-character="isabella">
+                        <div class="chat-list-avatar" style="background-image: url('assets/pic_10.jpeg');"></div>
+                        <div class="chat-list-info">
+                            <h3>Isabella Reed</h3>
+                            <p>Math Teacher</p>
+                            <span class="chat-list-status">Online</span>
+                        </div>
+                        <div class="chat-list-action">
+                            <button class="start-chat-btn">Start Chat</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1910,8 +1958,44 @@
                         <p>Punk Vocalist</p>
                     </div>
                     <div class="character-item-status">Online</div>
+                </div>
+
+                <div class="character-item" data-character="vanessa">
+                    <div class="character-item-avatar" style="background-image: url('assets/pic_7.jpeg');"></div>
+                    <div class="character-item-info">
+                        <h4>Vanessa Taylor</h4>
+                        <p>Yoga Instructor</p>
+                    </div>
+                    <div class="character-item-status">Online</div>
+                </div>
+
+                <div class="character-item" data-character="aiko">
+                    <div class="character-item-avatar" style="background-image: url('assets/pic_8.jpg');"></div>
+                    <div class="character-item-info">
+                        <h4>Aiko Tanaka</h4>
+                        <p>Literature Student</p>
+                    </div>
+                    <div class="character-item-status">Online</div>
+                </div>
+
+                <div class="character-item" data-character="summer">
+                    <div class="character-item-avatar" style="background-image: url('assets/pic_9.jpg');"></div>
+                    <div class="character-item-info">
+                        <h4>Summer Brooks</h4>
+                        <p>Beach Lifeguard</p>
+                    </div>
+                    <div class="character-item-status">Online</div>
+                </div>
+
+                <div class="character-item" data-character="isabella">
+                    <div class="character-item-avatar" style="background-image: url('assets/pic_10.jpeg');"></div>
+                    <div class="character-item-info">
+                        <h4>Isabella Reed</h4>
+                        <p>Math Teacher</p>
+                    </div>
+                    <div class="character-item-status">Online</div>
+                </div>
             </div>
-        </div>
         </div>
 
 
@@ -2395,7 +2479,12 @@
                     'Elaine Bliss': 'assets/pic_2.jpeg',
                     'Amanda': 'assets/pic_3.jpg',
                     'Charlotte West': 'assets/pic_4.jpg',
-                    'Emily Carter': 'assets/pic_5.jpg'
+                    'Emily Carter': 'assets/pic_5.jpg',
+                    'Morgan Chase': 'assets/pic_6.jpg',
+                    'Vanessa Taylor': 'assets/pic_7.jpeg',
+                    'Aiko Tanaka': 'assets/pic_8.jpg',
+                    'Summer Brooks': 'assets/pic_9.jpg',
+                    'Isabella Reed': 'assets/pic_10.jpeg'
                 };
                 
                 // 简化的角色信息（用于历史记录切换）
@@ -2406,7 +2495,12 @@
                           characterName === 'Elaine Bliss' ? 'Fashion Designer' :
                           characterName === 'Amanda' ? 'College Student' :
                           characterName === 'Charlotte West' ? 'Tour Guide' :
-                          characterName === 'Emily Carter' ? 'College Student' : 'Unknown',
+                          characterName === 'Emily Carter' ? 'College Student' :
+                          characterName === 'Morgan Chase' ? 'Punk Vocalist' :
+                          characterName === 'Vanessa Taylor' ? 'Yoga Instructor' :
+                          characterName === 'Aiko Tanaka' ? 'Literature Student' :
+                          characterName === 'Summer Brooks' ? 'Beach Lifeguard' :
+                          characterName === 'Isabella Reed' ? 'Math Teacher' : 'Unknown',
                     status: 'Online',
                     greeting: `Hello! I'm ${characterName}. It's great to continue our conversation!`
                 };
@@ -2638,17 +2732,30 @@
             // 解析URL参数并更新角色信息
             const characterParams = getURLParams();
             if (characterParams.name) {
-                updateCharacterInfo(characterParams);
+                // 根据角色名称找到对应的characterId
+                const characterMap = {
+                    'Morganna Evernight': 'morganna',
+                    'Elaine Bliss': 'elaine',
+                    'Amanda': 'amanda',
+                    'Charlotte West': 'charlotte',
+                    'Emily Carter': 'emily',
+                    'Morgan Chase': 'morgan',
+                    'Vanessa Taylor': 'vanessa',
+                    'Aiko Tanaka': 'aiko',
+                    'Summer Brooks': 'summer',
+                    'Isabella Reed': 'isabella'
+                };
+                
+                const characterId = characterMap[characterParams.name];
+                if (characterId) {
+                    updateCharacterInfo(characterId);
+                } else {
+                    // 如果找不到对应的characterId，使用默认角色
+                    updateCharacterInfo('morganna');
+                }
             } else {
                 // 如果没有URL参数，使用默认角色
-                const defaultCharacter = {
-                    name: 'Morganna Evernight',
-                    image: 'assets/pic_1.jpeg',
-                    role: 'Dark Sorceress',
-                    status: 'Online',
-                    greeting: "Hello there, my mysterious visitor. I've been waiting for someone like you to find their way to my realm. What brings you to seek the company of a dark sorceress tonight?"
-                };
-                updateCharacterInfo(defaultCharacter);
+                updateCharacterInfo('morganna');
             }
             
             // 初始化推荐输入
@@ -2760,7 +2867,11 @@
                     'Amanda': 'amanda',
                     'Charlotte West': 'charlotte',
                     'Emily Carter': 'emily',
-                    'Morgan Chase': 'morgan'
+                    'Morgan Chase': 'morgan',
+                    'Vanessa Taylor': 'vanessa',
+                    'Aiko Tanaka': 'aiko',
+                    'Summer Brooks': 'summer',
+                    'Isabella Reed': 'isabella'
                 };
                 
                 const characterId = characterMap[characterParam];
@@ -2818,12 +2929,10 @@
         function showChatConversation(characterId) {
             document.getElementById('chatListPage').style.display = 'none';
             document.getElementById('chatConversationLayout').style.display = 'flex';
-            // 查找历史中是否有该角色
-            const item = chatHistory.find(c => c.name.toLowerCase().includes(characterId));
-            if (item) {
-                updateCharacterInfoByHistory(item);
-                renderChatHistoryList(item.name);
-            }
+            
+            // 更新角色信息
+            updateCharacterInfo(characterId);
+            
             // 强制隐藏所有顶部导航栏
             document.querySelectorAll('.top-nav').forEach(nav => nav.classList.add('hidden'));
         }
@@ -2892,6 +3001,30 @@
                     role: 'Punk Vocalist',
                     image: 'assets/pic_6.jpg',
                     greeting: "Well, well, well... look what the cat dragged in. I'm Morgan, and I don't play by anyone's rules. Think you can handle a rebel like me?"
+                },
+                vanessa: {
+                    name: 'Vanessa Taylor',
+                    role: 'Yoga Instructor',
+                    image: 'assets/pic_7.jpeg',
+                    greeting: "Namaste, beautiful soul. I'm Vanessa, and I believe in the connection between mind, body, and spirit. Let me guide you to inner peace and... other pleasures."
+                },
+                aiko: {
+                    name: 'Aiko Tanaka',
+                    role: 'Literature Student',
+                    image: 'assets/pic_8.jpg',
+                    greeting: "こんにちは... Hello there. I'm Aiko, and I love reading romantic novels. Would you like to create our own love story together?"
+                },
+                summer: {
+                    name: 'Summer Brooks',
+                    role: 'Beach Lifeguard',
+                    image: 'assets/pic_9.jpg',
+                    greeting: "Hey there, beach lover! I'm Summer, your friendly neighborhood lifeguard. I'm here to keep you safe and show you the best time under the sun."
+                },
+                isabella: {
+                    name: 'Isabella Reed',
+                    role: 'Math Teacher',
+                    image: 'assets/pic_10.jpeg',
+                    greeting: "Good evening, student. I'm Ms. Reed, and I believe in... intensive learning experiences. Are you ready for a private lesson?"
                 }
             };
 
@@ -3043,6 +3176,38 @@
                 preview: 'What\'s your rebellious side?',
                 time: '1 week ago',
                 role: 'Punk Vocalist',
+                status: 'Online'
+            },
+            {
+                name: 'Vanessa Taylor',
+                image: 'assets/pic_7.jpeg',
+                preview: 'Let me guide you to inner peace...',
+                time: '1 week ago',
+                role: 'Yoga Instructor',
+                status: 'Online'
+            },
+            {
+                name: 'Aiko Tanaka',
+                image: 'assets/pic_8.jpg',
+                preview: 'Would you like to create our own love story?',
+                time: '2 weeks ago',
+                role: 'Literature Student',
+                status: 'Online'
+            },
+            {
+                name: 'Summer Brooks',
+                image: 'assets/pic_9.jpg',
+                preview: 'Ready for some beach fun?',
+                time: '2 weeks ago',
+                role: 'Beach Lifeguard',
+                status: 'Online'
+            },
+            {
+                name: 'Isabella Reed',
+                image: 'assets/pic_10.jpeg',
+                preview: 'Are you ready for a private lesson?',
+                time: '2 weeks ago',
+                role: 'Math Teacher',
                 status: 'Online'
             }
         ];
