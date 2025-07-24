@@ -1663,6 +1663,7 @@
             style: 'realistic',           // 默认选择第一项：Realistic
             ethnicity: 'asian',           // 默认选择第一项：Asian
             age: 22,
+            hairStyle: 'chicMediumLengthHair', // 新增：默认发型
             hairColor: 'black',           // 默认选择第一项：Black
             eyeColor: 'dark_brown',       // 默认选择第一项：Dark Brown
             bodyType: 'petite',           // 默认选择第一项：Petite
@@ -1818,6 +1819,12 @@
             container.innerHTML = content;
             updateProgress();
             updateNavigation();
+
+            // 新增：切换步骤时自动滚动到进度条
+            const progressContainer = document.querySelector('.progress-container');
+            if (progressContainer) {
+                progressContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         }
 
         // 获取样式选择内容
@@ -1891,6 +1898,32 @@
 
         // 获取外观选择内容
         function getAppearanceContent() {
+            // 新增：发型图片与名称
+            const hairStyles = [
+                { id: 'shortHair', file: 'SHORT HAIR.jpg', name: 'Short Hair' },
+                { id: 'chicMediumLengthHair', file: 'CHIC MEDIUM LENGTH HAIR.png', name: 'Chic Medium Length Hair' },
+                { id: 'sleekBob', file: 'SLEEK BOB.png', name: 'Sleek Bob' },
+                { id: 'sleekHair', file: 'SLEEK HAIR.png', name: 'Sleek Hair' },
+                { id: 'straightSideBangs', file: 'STRAIGHT SIDE BANGS.png', name: 'Straight Side Bangs' },
+                { id: 'voluminousCurls', file: 'VOLUMINOUS CURLS.png', name: 'Voluminous Curls' },
+                { id: 'naturalWaves', file: 'NATURAL WAVES.png', name: 'Natural Waves' },
+                { id: 'stackedBob', file: 'STACKED BOB.png', name: 'Stacked Bob' }
+            ];
+            let content = '<div style="max-width: 900px; margin: 0 auto;">';
+            // Hair Style 选择器
+            content += '<div style="margin-bottom: 40px;"><h3 style="color: #ed7f8c; margin-bottom: 20px; text-align: center; font-size: 20px;">Hair Style</h3>';
+            content += '<div class="options-grid style-grid">';
+            hairStyles.forEach(style => {
+                const selected = characterData.hairStyle === style.id ? 'selected' : '';
+                content += `
+                    <div class="option-card ${selected}" style="max-width:140px;min-width:100px;cursor:pointer;padding-bottom:10px;">
+                        <div class="option-image" style="background-image: url('assets/hair styles/${style.file}');width:120px;height:120px;margin:0 auto;border-radius:12px;"></div>
+                        <div class="option-title" style="font-size:15px;margin:8px 0 2px 0;line-height:1.2;padding:0 2px;min-height:28px;">${style.name}</div>
+                    </div>
+                `;
+            });
+            content += '</div></div>';
+            
             const hairColors = [
                 { id: 'black', color: '#1B1B1B', name: 'Black' },
                 { id: 'dark_brown', color: '#3B2F2F', name: 'Dark Brown' },
@@ -1917,8 +1950,6 @@
                 { id: 'gray', color: '#90A4AE', name: 'Gray' },
                 { id: 'violet', color: '#7B1FA2', name: 'Violet' }
             ];
-            
-            let content = '<div style="max-width: 900px; margin: 0 auto;">';
             
             // 发色
             content += '<div style="margin-bottom: 50px;"><h3 style="color: #ed7f8c; margin-bottom: 25px; text-align: center; font-size: 20px;">Hair Color</h3>';
@@ -2586,6 +2617,7 @@
                 style: 'realistic',           // 默认选择第一项：Realistic
                 ethnicity: 'asian',           // 默认选择第一项：Asian
                 age: 22,
+                hairStyle: 'chicMediumLengthHair', // 新增：默认发型
                 hairColor: 'black',           // 默认选择第一项：Black
                 eyeColor: 'dark_brown',       // 默认选择第一项：Dark Brown
                 bodyType: 'petite',           // 默认选择第一项：Petite
@@ -2665,6 +2697,13 @@
                 handleNavigation(navType);
             });
         });
+
+        // 新增：发型选择函数
+        function selectHairStyle(styleId) {
+            characterData.hairStyle = styleId;
+            document.querySelectorAll('.options-grid.style-grid .option-card').forEach(card => card.classList.remove('selected'));
+            event.target.closest('.option-card').classList.add('selected');
+        }
     </script>
 </body>
 </html> 
