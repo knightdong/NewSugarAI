@@ -429,8 +429,8 @@
 
         /* 人种图片样式 */
         .option-card.icon-card .option-image {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -521,10 +521,10 @@
         /* 颜色选择器 */
         .color-selector {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             margin: 20px 0;
-            max-width: 600px;
+            max-width: 400px;
             justify-content: center;
         }
 
@@ -672,7 +672,7 @@
         /* 总结页面 */
         .summary-container {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
             margin: 30px 0;
         }
@@ -1298,8 +1298,8 @@
             }
 
             .option-card.icon-card .option-image {
-                width: 60px;
-                height: 60px;
+                width: 80px;
+                height: 80px;
                 margin-bottom: 10px;
             }
 
@@ -1364,8 +1364,8 @@
             }
 
             .option-card.icon-card .option-image {
-                width: 50px;
-                height: 50px;
+                width: 70px;
+                height: 70px;
                 margin-bottom: 8px;
             }
 
@@ -1380,7 +1380,7 @@
 
             /* 第3步颜色选择器小屏幕优化 */
             .color-selector {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(4, 1fr);
                 gap: 12px;
                 max-width: 100%;
                 margin: 12px 0;
@@ -1664,8 +1664,8 @@
             ethnicity: 'asian',           // 默认选择第一项：Asian
             age: 22,
             hairStyle: 'chicMediumLengthHair', // 新增：默认发型
-            hairColor: 'black',           // 默认选择第一项：Black
-            eyeColor: 'dark_brown',       // 默认选择第一项：Dark Brown
+            hairColor: 'jet_black',           // 默认选择第一项：Jet Black
+            eyeColor: 'black',       // 默认选择第一项：Black
             bodyType: 'petite',           // 默认选择第一项：Petite
             outfit: 'casual',             // 默认选择第一项：Casual
             background: 'home',           // 默认选择第一项：Home
@@ -1825,6 +1825,11 @@
             if (progressContainer) {
                 progressContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
+
+            // 在第7步加载时自动填充提示词
+            if (stepNumber === 7) {
+                setTimeout(fillPromptTextarea, 100);
+            }
         }
 
         // 获取样式选择内容
@@ -1916,39 +1921,32 @@
             hairStyles.forEach(style => {
                 const selected = characterData.hairStyle === style.id ? 'selected' : '';
                 content += `
-                    <div class="option-card ${selected}" style="max-width:140px;min-width:100px;cursor:pointer;padding-bottom:10px;">
-                        <div class="option-image" style="background-image: url('assets/hair styles/${style.file}');width:120px;height:120px;margin:0 auto;border-radius:12px;"></div>
-                        <div class="option-title" style="font-size:15px;margin:8px 0 2px 0;line-height:1.2;padding:0 2px;min-height:28px;">${style.name}</div>
+                    <div class="option-card ${selected}" onclick="selectHairStyle('${style.id}')" style="max-width:140px;min-width:100px;cursor:pointer;padding:10px;display:flex;flex-direction:column;align-items:center;">
+                        <div class="option-image" style="background-image: url('assets/hair styles/${style.file}');width:100px;height:100px;border-radius:12px;background-size:cover;background-position:center;aspect-ratio:1/1;"></div>
+                        <div class="option-title" style="font-size:15px;margin:10px 0 5px 0;line-height:1.2;padding:0 2px;min-height:28px;text-align:center;">${style.name}</div>
                     </div>
                 `;
             });
             content += '</div></div>';
             
             const hairColors = [
-                { id: 'black', color: '#1B1B1B', name: 'Black' },
-                { id: 'dark_brown', color: '#3B2F2F', name: 'Dark Brown' },
-                { id: 'brown', color: '#6B4423', name: 'Brown' },
-                { id: 'light_brown', color: '#8B6F47', name: 'Light Brown' },
-                { id: 'dirty_blonde', color: '#B89778', name: 'Dirty Blonde' },
-                { id: 'blonde', color: '#D4C194', name: 'Blonde' },
-                { id: 'strawberry_blonde', color: '#C7956D', name: 'Strawberry Blonde' },
-                { id: 'red', color: '#8B3103', name: 'Auburn Red' },
-                { id: 'light_red', color: '#B85450', name: 'Light Red' },
-                { id: 'gray', color: '#7D7D7D', name: 'Gray' },
-                { id: 'silver', color: '#C0C0C0', name: 'Silver' },
-                { id: 'white', color: '#F5F5F5', name: 'White' }
+                { id: 'jet_black', image: 'assets/hair colors/Jet Black.jpg', name: 'Jet Black' },
+                { id: 'natural_dark_brown', image: 'assets/hair colors/Natural Dark Brown.jpg', name: 'Natural Dark Brown' },
+                { id: 'soft_mahogany_brown', image: 'assets/hair colors/Soft Mahogany Brown.jpg', name: 'Soft Mahogany Brown' },
+                { id: 'golden_blonde', image: 'assets/hair colors/Golden Blonde.jpg', name: 'Golden Blonde' },
+                { id: 'platinum_blonde', image: 'assets/hair colors/Platinum Blonde.jpg', name: 'Platinum Blonde' },
+                { id: 'strawberry_blonde', image: 'assets/hair colors/Strawberry Blonde.jpg', name: 'Strawberry Blonde' },
+                { id: 'red_mahogany', image: 'assets/hair colors/Red Mahogany.jpg', name: 'Red Mahogany' },
+                { id: 'rose_red', image: 'assets/hair colors/Rose Red.jpg', name: 'Rose Red' }
             ];
             
             const eyeColors = [
-                { id: 'dark_brown', color: '#3E2723', name: 'Dark Brown' },
-                { id: 'brown', color: '#6D4C41', name: 'Brown' },
-                { id: 'hazel', color: '#8D6E63', name: 'Hazel' },
-                { id: 'amber', color: '#D2691E', name: 'Amber' },
-                { id: 'green', color: '#4CAF50', name: 'Green' },
-                { id: 'blue', color: '#2196F3', name: 'Blue' },
-                { id: 'light_blue', color: '#81D4FA', name: 'Light Blue' },
-                { id: 'gray', color: '#90A4AE', name: 'Gray' },
-                { id: 'violet', color: '#7B1FA2', name: 'Violet' }
+                { id: 'black', color: '#2C2C2C', name: 'Black' },
+                { id: 'brown', color: '#8B7355', name: 'Brown' },
+                { id: 'light_blue', color: '#A8C6DF', name: 'Light Blue' },
+                { id: 'light_green', color: '#A8D5BA', name: 'Light Green' },
+                { id: 'light_yellow', color: '#D4C4A8', name: 'Light Yellow' },
+                { id: 'gray', color: '#B8B8B8', name: 'Gray' }
             ];
             
             // 发色
@@ -1957,7 +1955,7 @@
             hairColors.forEach(color => {
                 const selected = characterData.hairColor === color.id ? 'selected' : '';
                 content += `
-                    <div class="color-option ${selected}" style="background-color: ${color.color}" 
+                    <div class="color-option ${selected}" style="background-image: url('${color.image}'); background-size: cover; background-position: center;" 
                          onclick="selectHairColor('${color.id}')" title="${color.name}">
                     </div>
                 `;
@@ -1966,7 +1964,7 @@
             
             // 眼色
             content += '<div><h3 style="color: #ed7f8c; margin-bottom: 25px; text-align: center; font-size: 20px;">Eye Color</h3>';
-            content += '<div class="color-selector" style="margin: 0 auto;">';
+            content += '<div class="color-selector" style="margin: 0 auto; grid-template-columns: repeat(3, 1fr); max-width: 300px;">';
             eyeColors.forEach(color => {
                 const selected = characterData.eyeColor === color.id ? 'selected' : '';
                 content += `
@@ -2079,30 +2077,33 @@
                 const mappings = {
                     style: { realistic: 'Realistic', anime: 'Anime' },
                     ethnicity: { asian: 'Asian', caucasian: 'Caucasian', latina: 'Latina', african: 'African', middle_eastern: 'Middle Eastern', mixed: 'Mixed' },
+                    hairStyle: {
+                        shortHair: 'Short Hair',
+                        chicMediumLengthHair: 'Chic Medium Length Hair',
+                        sleekBob: 'Sleek Bob',
+                        sleekHair: 'Sleek Hair',
+                        straightSideBangs: 'Straight Side Bangs',
+                        voluminousCurls: 'Voluminous Curls',
+                        naturalWaves: 'Natural Waves',
+                        stackedBob: 'Stacked Bob'
+                    },
                     hairColor: { 
-                        black: 'Black', 
-                        dark_brown: 'Dark Brown', 
-                        brown: 'Brown', 
-                        light_brown: 'Light Brown', 
-                        dirty_blonde: 'Dirty Blonde', 
-                        blonde: 'Blonde', 
+                        jet_black: 'Jet Black', 
+                        natural_dark_brown: 'Natural Dark Brown', 
+                        soft_mahogany_brown: 'Soft Mahogany Brown', 
+                        golden_blonde: 'Golden Blonde', 
+                        platinum_blonde: 'Platinum Blonde', 
                         strawberry_blonde: 'Strawberry Blonde', 
-                        red: 'Auburn Red', 
-                        light_red: 'Light Red', 
-                        gray: 'Gray', 
-                        silver: 'Silver', 
-                        white: 'White' 
+                        red_mahogany: 'Red Mahogany',
+                        rose_red: 'Rose Red'
                     },
                     eyeColor: { 
-                        dark_brown: 'Dark Brown', 
+                        black: 'Black', 
                         brown: 'Brown', 
-                        hazel: 'Hazel', 
-                        amber: 'Amber', 
-                        green: 'Green', 
-                        blue: 'Blue', 
                         light_blue: 'Light Blue', 
-                        gray: 'Gray', 
-                        violet: 'Violet' 
+                        light_green: 'Light Green', 
+                        light_yellow: 'Light Yellow', 
+                        gray: 'Gray'
                     },
                     bodyType: { 
                         petite: 'Petite', 
@@ -2137,13 +2138,19 @@
                             <span class="summary-value">${characterData.age}</span>
                         </div>
                         <div class="summary-item">
-                            <span class="summary-label">Background:</span>
-                            <span class="summary-value">${getDisplayValue('background', characterData.background)}</span>
+                            <span class="summary-label">Character Name:</span>
+                            <input type="text" class="age-input" id="characterName" value="${characterData.name}" 
+                                   placeholder="Enter character name..." onchange="updateCharacterName()" 
+                                   style="width: 120px; height: 30px; font-size: 14px; margin: 0;">
                         </div>
                     </div>
                     
                     <div class="summary-section">
                         <div class="summary-title">Appearance</div>
+                        <div class="summary-item">
+                            <span class="summary-label">Hair Style:</span>
+                            <span class="summary-value">${getDisplayValue('hairStyle', characterData.hairStyle)}</span>
+                        </div>
                         <div class="summary-item">
                             <span class="summary-label">Hair Color:</span>
                             <span class="summary-value">${getDisplayValue('hairColor', characterData.hairColor)}</span>
@@ -2160,45 +2167,17 @@
                             <span class="summary-label">Outfit:</span>
                             <span class="summary-value">${getDisplayValue('outfit', characterData.outfit)}</span>
                         </div>
-                    </div>
-                    
-                    <div class="summary-section">
-                        <div class="summary-title">Selection Status</div>
-                        <div class="summary-item">
-                            <span class="summary-label">Style:</span>
-                            <span class="summary-value" style="color: ${characterData.style ? '#4CAF50' : '#ed7f8c'}">${characterData.style ? '✓ Selected' : '✗ Required'}</span>
-                        </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Ethnicity:</span>
-                            <span class="summary-value" style="color: ${characterData.ethnicity ? '#4CAF50' : '#ed7f8c'}">${characterData.ethnicity ? '✓ Selected' : '✗ Required'}</span>
-                        </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Hair Color:</span>
-                            <span class="summary-value" style="color: ${characterData.hairColor ? '#4CAF50' : '#999'}">${characterData.hairColor ? '✓ Selected' : 'Optional'}</span>
-                        </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Eye Color:</span>
-                            <span class="summary-value" style="color: ${characterData.eyeColor ? '#4CAF50' : '#999'}">${characterData.eyeColor ? '✓ Selected' : 'Optional'}</span>
-                        </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Body Type:</span>
-                            <span class="summary-value" style="color: ${characterData.bodyType ? '#4CAF50' : '#ed7f8c'}">${characterData.bodyType ? '✓ Selected' : '✗ Required'}</span>
-                        </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Outfit:</span>
-                            <span class="summary-value" style="color: ${characterData.outfit ? '#4CAF50' : '#ed7f8c'}">${characterData.outfit ? '✓ Selected' : '✗ Required'}</span>
-                        </div>
                         <div class="summary-item">
                             <span class="summary-label">Background:</span>
-                            <span class="summary-value" style="color: ${characterData.background ? '#4CAF50' : '#ed7f8c'}">${characterData.background ? '✓ Selected' : '✗ Required'}</span>
+                            <span class="summary-value">${getDisplayValue('background', characterData.background)}</span>
                         </div>
                     </div>
                     
-                    <div class="summary-section">
-                        <div class="summary-title">Character Name</div>
-                        <input type="text" class="age-input" id="characterName" value="${characterData.name}" 
-                               placeholder="Enter character name..." onchange="updateCharacterName()" 
-                               style="width: 100%; margin-top: 10px;">
+
+                    
+                    <div class="summary-section" style="grid-column: 1 / -1;">
+                        <div class="summary-title">Image Generation Prompt</div>
+                        <textarea id="promptTextarea" style="width: 100%; min-height: 80px; resize: vertical; font-size: 14px; padding: 12px; border-radius: 8px; border: 1px solid #444; background: #232323; color: #fff; margin-top: 10px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" placeholder="Prompt for image generation..."></textarea>
                     </div>
                 </div>
                 
@@ -2323,8 +2302,8 @@
             if (!characterData.bodyType) characterData.bodyType = 'petite';
             if (!characterData.outfit) characterData.outfit = 'casual';
             if (!characterData.background) characterData.background = 'home';
-            if (!characterData.hairColor) characterData.hairColor = 'black';
-            if (!characterData.eyeColor) characterData.eyeColor = 'dark_brown';
+            if (!characterData.hairColor) characterData.hairColor = 'jet_black';
+            if (!characterData.eyeColor) characterData.eyeColor = 'black';
             
             // 开始加载状态
             startGenerating();
@@ -2482,8 +2461,17 @@
         function fillCharacterDetails() {
             const styleMap = { realistic: 'Realistic', anime: 'Anime' };
             const ethnicityMap = { asian: 'Asian', caucasian: 'Caucasian', african: 'African', latina: 'Latina', middle_eastern: 'Middle Eastern', mixed: 'Mixed' };
-            const hairColorMap = { black: 'Black', brown: 'Brown', blonde: 'Blonde', red: 'Red', gray: 'Gray', white: 'White' };
-            const eyeColorMap = { dark_brown: 'Dark Brown', light_brown: 'Light Brown', blue: 'Blue', green: 'Green', gray: 'Gray', hazel: 'Hazel' };
+            const hairColorMap = { 
+                jet_black: 'Jet Black', 
+                natural_dark_brown: 'Natural Dark Brown', 
+                soft_mahogany_brown: 'Soft Mahogany Brown', 
+                golden_blonde: 'Golden Blonde', 
+                platinum_blonde: 'Platinum Blonde', 
+                strawberry_blonde: 'Strawberry Blonde', 
+                red_mahogany: 'Red Mahogany',
+                rose_red: 'Rose Red'
+            };
+            const eyeColorMap = { black: 'Black', brown: 'Brown', light_blue: 'Light Blue', light_green: 'Light Green', light_yellow: 'Light Yellow', gray: 'Gray' };
             const bodyTypeMap = { petite: 'Petite', slim: 'Slim', athletic: 'Athletic', curvy: 'Curvy', plus_size: 'Plus Size' };
             const outfitMap = { casual: 'Casual', elegant: 'Elegant', business: 'Business', sporty: 'Sporty', sexy: 'Sexy', vintage: 'Vintage', gothic: 'Gothic', cute: 'Cute', punk: 'Punk', bohemian: 'Bohemian', streetwear: 'Streetwear', loungewear: 'Loungewear' };
             const backgroundMap = { beach: 'Beach', city: 'City', forest: 'Forest', office: 'Office', home: 'Home', cafe: 'Cafe', gym: 'Gym', school: 'School', party: 'Party', garden: 'Garden', mountain: 'Mountain', nightclub: 'Nightclub' };
@@ -2618,8 +2606,8 @@
                 ethnicity: 'asian',           // 默认选择第一项：Asian
                 age: 22,
                 hairStyle: 'chicMediumLengthHair', // 新增：默认发型
-                hairColor: 'black',           // 默认选择第一项：Black
-                eyeColor: 'dark_brown',       // 默认选择第一项：Dark Brown
+                hairColor: 'jet_black',           // 默认选择第一项：Jet Black
+                eyeColor: 'black',       // 默认选择第一项：Black
                 bodyType: 'petite',           // 默认选择第一项：Petite
                 outfit: 'casual',             // 默认选择第一项：Casual
                 background: 'home',           // 默认选择第一项：Home
@@ -2701,9 +2689,46 @@
         // 新增：发型选择函数
         function selectHairStyle(styleId) {
             characterData.hairStyle = styleId;
+            // 移除所有发型卡片的选中状态
             document.querySelectorAll('.options-grid.style-grid .option-card').forEach(card => card.classList.remove('selected'));
+            // 为当前点击的卡片添加选中状态
             event.target.closest('.option-card').classList.add('selected');
         }
+
+        function generatePromptFromSelections() {
+            // 获取映射
+            const getDisplay = (key, value) => {
+                const mappings = {
+                    style: { realistic: 'realistic', anime: 'anime style' },
+                    ethnicity: { asian: 'East Asian', caucasian: 'Caucasian', latina: 'Latina', african: 'African', middle_eastern: 'Middle Eastern', mixed: 'Mixed ethnicity' },
+                    hairStyle: {
+                        shortHair: 'short hair', chicMediumLengthHair: 'chic medium length hair', sleekBob: 'sleek bob', sleekHair: 'sleek hair', straightSideBangs: 'straight side bangs', voluminousCurls: 'voluminous curls', naturalWaves: 'natural waves', stackedBob: 'stacked bob'
+                    },
+                    hairColor: {
+                        jet_black: 'jet black hair', natural_dark_brown: 'natural dark brown hair', soft_mahogany_brown: 'soft mahogany brown hair', golden_blonde: 'golden blonde hair', platinum_blonde: 'platinum blonde hair', strawberry_blonde: 'strawberry blonde hair', red_mahogany: 'red mahogany hair', rose_red: 'rose red hair'
+                    },
+                    eyeColor: {
+                        black: 'black eyes', brown: 'brown eyes', light_blue: 'light blue eyes', light_green: 'light green eyes', light_yellow: 'light yellow eyes', gray: 'gray eyes'
+                    },
+                    bodyType: { petite: 'petite', slim: 'slim', average: 'average', curvy: 'curvy', voluptuous: 'voluptuous', athletic: 'athletic', plus_size: 'plus size', tall_slim: 'tall and slim' },
+                    outfit: { casual: 'casual outfit', elegant: 'elegant dress', business: 'business suit', sporty: 'sporty wear', sexy: 'sexy outfit', vintage: 'vintage style', gothic: 'gothic style', cute: 'cute clothes', punk: 'punk style', bohemian: 'bohemian style', streetwear: 'streetwear', loungewear: 'loungewear' },
+                    background: { beach: 'on the beach', city: 'in the city', forest: 'in the forest', office: 'in an office', home: 'at home', cafe: 'in a cafe', gym: 'in a gym', school: 'at school', party: 'at a party', garden: 'in a garden', mountain: 'in the mountains', nightclub: 'in a nightclub' }
+                };
+                return mappings[key] && mappings[key][value] ? mappings[key][value] : value;
+            };
+            
+            // 构建自然语言描述
+            let prompt = `A beautiful ${getDisplay('ethnicity', characterData.ethnicity)} young woman, ${characterData.age} years old, with a ${getDisplay('bodyType', characterData.bodyType)} figure. She has ${getDisplay('hairStyle', characterData.hairStyle)} in ${getDisplay('hairColor', characterData.hairColor)}, and ${getDisplay('eyeColor', characterData.eyeColor)}. She is wearing ${getDisplay('outfit', characterData.outfit)} and is ${getDisplay('background', characterData.background)}. The image is in ${getDisplay('style', characterData.style)} style.`;
+            
+            return prompt;
+        }
+
+        function fillPromptTextarea() {
+            const textarea = document.getElementById('promptTextarea');
+            if (textarea) textarea.value = generatePromptFromSelections();
+        }
+
+
     </script>
 </body>
 </html> 
