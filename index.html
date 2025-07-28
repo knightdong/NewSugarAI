@@ -680,10 +680,12 @@
                     <div class="icon">🔍</div>
                     <div class="text">Explore</div>
                 </div>
+                <!-- Chat功能暂时隐藏，后续开发
                 <div class="top-nav-item" data-nav="chat">
                     <div class="icon">💬</div>
                     <div class="text">Chat</div>
                 </div>
+                -->
                 <div class="top-nav-item" data-nav="create">
                     <div class="icon">✨</div>
                     <div class="text">Create</div>
@@ -718,10 +720,12 @@
                     <div class="icon">🔍</div>
                     <div class="text active">Explore</div>
                 </div>
+                <!-- Chat功能暂时隐藏，后续开发
                 <div class="nav-item">
                     <div class="icon">💬</div>
                     <div class="text">Chat</div>
                 </div>
+                -->
                 <div class="nav-item">
                     <div class="icon">✨</div>
                     <div class="text">Create</div>
@@ -1081,11 +1085,13 @@
                 return;
             }
             
-            // Handle Chat navigation
+            // Handle Chat navigation - 暂时隐藏，后续开发
+            /*
             if (navType === 'chat') {
                 window.location.href = './chat.html';
                 return;
             }
+            */
             
             // Handle Create navigation - redirect to create.html
             if (navType === 'create') {
@@ -1238,10 +1244,13 @@
                     return; // Current page
                 }
                 
+                // Chat功能暂时隐藏，后续开发
+                /*
                 if (text === 'Chat') {
                     window.location.href = './chat.html';
                     return;
                 }
+                */
                 
                 if (text === 'Create') {
                     window.location.href = './create.html';
@@ -1270,10 +1279,13 @@
                     return; // Current page
                 }
                 
+                // Chat功能暂时隐藏，后续开发
+                /*
                 if (navType === 'chat') {
                     window.location.href = './chat.html';
                     return;
                 }
+                */
                 
                 if (navType === 'create') {
                     window.location.href = './create.html';
@@ -1318,7 +1330,7 @@
                 const character = characterData[name];
                 
                 if (character) {
-                    // Create URL parameters with character data for Chat page
+                    // Create URL parameters with character data for Generate page
                     const params = new URLSearchParams({
                         name: name,
                         image: character.image,
@@ -1329,8 +1341,8 @@
                         greeting: character.greeting
                     });
                     
-                    // Navigate to Chat page with character pre-selected
-                    window.location.href = `./chat.html?${params.toString()}`;
+                    // Navigate to Generate page with character pre-selected
+                    window.location.href = `./generate.html?${params.toString()}`;
                 } else {
                     alert(`Character data not found for ${name}`);
                 }

@@ -1792,10 +1792,12 @@
                     <div class="icon">🔍</div>
                     <div class="text">Explore</div>
                 </div>
+                <!-- Chat功能暂时隐藏，后续开发
                 <div class="top-nav-item" data-nav="chat">
                     <div class="icon">💬</div>
                     <div class="text">Chat</div>
                 </div>
+                -->
                 <div class="top-nav-item" data-nav="create">
                     <div class="icon">✨</div>
                     <div class="text">Create</div>
@@ -1830,10 +1832,12 @@
                     <div class="icon">🔍</div>
                     <div class="text">Explore</div>
                 </div>
+                <!-- Chat功能暂时隐藏，后续开发
                 <div class="nav-item" onclick="navigateTo('chat')">
                     <div class="icon">💬</div>
                     <div class="text">Chat</div>
                 </div>
+                -->
                 <div class="nav-item" onclick="navigateTo('create')">
                     <div class="icon">✨</div>
                     <div class="text">Create</div>
@@ -2628,7 +2632,7 @@
         function navigateTo(page) {
             const pages = {
                 'explore': './index.html',
-                'chat': './chat.html',
+                // 'chat': './chat.html', // Chat功能暂时隐藏，后续开发
                 'create': './create.html',
                 'generate': './generate.html',
                 'dashboard': './dashboard.html'
@@ -3579,6 +3583,50 @@
             const urlParams = new URLSearchParams(window.location.search);
             const characterParam = urlParams.get('character');
             const mode = urlParams.get('mode');
+            
+            // Handle parameters from index.html (Explore page)
+            const name = urlParams.get('name');
+            const image = urlParams.get('image');
+            const age = urlParams.get('age');
+            const role = urlParams.get('role');
+            const tags = urlParams.get('tags');
+            const status = urlParams.get('status');
+            const greeting = urlParams.get('greeting');
+            
+            if (name && image) {
+                // Handle character data from index.html
+                const characterName = name;
+                const characterData = {
+                    name: characterName,
+                    image: image,
+                    age: age,
+                    role: role,
+                    tags: tags ? tags.split(',') : [],
+                    status: status,
+                    greeting: greeting
+                };
+                
+                // Check if character already exists in charactersData
+                if (!charactersData[characterName]) {
+                    // Add to charactersData if not exists
+                    charactersData[characterName] = {
+                        image: image,
+                        age: age,
+                        role: role,
+                        tags: tags ? tags.split(',') : [],
+                        status: status,
+                        id: characterName.toLowerCase().replace(/\s+/g, '_')
+                    };
+                }
+                
+                // Auto-select the character
+                selectCharacterFromModal(characterName, charactersData[characterName]);
+                
+                // Clean up URL by removing the parameters
+                const newUrl = window.location.pathname;
+                window.history.replaceState({}, document.title, newUrl);
+                return;
+            }
             
             if (characterParam) {
                 try {

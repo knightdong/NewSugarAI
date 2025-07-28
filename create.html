@@ -1424,10 +1424,12 @@
                     <div class="icon">🔍</div>
                     <div class="text">Explore</div>
                 </div>
+                <!-- Chat功能暂时隐藏，后续开发
                 <div class="top-nav-item" data-nav="chat">
                     <div class="icon">💬</div>
                     <div class="text">Chat</div>
                 </div>
+                -->
                 <div class="top-nav-item active" data-nav="create">
                     <div class="icon">✨</div>
                     <div class="text">Create</div>
@@ -1462,10 +1464,12 @@
                     <div class="icon">🔍</div>
                     <div class="text">Explore</div>
                 </div>
+                <!-- Chat功能暂时隐藏，后续开发
                 <div class="nav-item">
                     <div class="icon">💬</div>
                     <div class="text">Chat</div>
                 </div>
+                -->
                 <div class="nav-item active">
                     <div class="icon">✨</div>
                     <div class="text active">Create</div>
@@ -1589,10 +1593,12 @@
             
             <!-- 底部按钮区域 -->
             <div class="result-actions">
+                <!-- Chat功能暂时隐藏，后续开发
                 <button class="result-btn secondary" onclick="chatWithCharacter()">
                     <span class="btn-icon">💬</span>
                     Chat with Her
                 </button>
+                -->
                 <button class="result-btn primary" onclick="generateCharacterImage()">
                     <span class="btn-icon">🎨</span>
                     Generate Image
@@ -2575,7 +2581,8 @@
             return backgroundMap[background] || 'exploring new places';
         }
 
-        // 与角色聊天
+        // 与角色聊天 - 暂时隐藏，后续开发
+        /*
         function chatWithCharacter() {
             // 创建角色数据，包含当前生成的图片
             const characterDataWithImage = {
@@ -2596,6 +2603,7 @@
             
             window.location.href = `chat.html?${params.toString()}`;
         }
+        */
 
         // 创建另一个角色
         function createAnother() {
@@ -2648,8 +2656,11 @@
         function handleNavigation(navType) {
             if (navType === 'explore') {
                 window.location.href = './index.html';
+            // Chat功能暂时隐藏，后续开发
+            /*
             } else if (navType === 'chat') {
                 window.location.href = './chat.html';
+            */
             } else if (navType === 'dashboard') {
                 window.location.href = './dashboard.html';
             } else if (navType === 'create') {

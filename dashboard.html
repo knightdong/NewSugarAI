@@ -995,10 +995,12 @@
                     <div class="icon">🔍</div>
                     <div class="text">Explore</div>
                 </div>
+                <!-- Chat功能暂时隐藏，后续开发
                 <div class="top-nav-item" data-nav="chat">
                     <div class="icon">💬</div>
                     <div class="text">Chat</div>
                 </div>
+                -->
                 <div class="top-nav-item" data-nav="create">
                     <div class="icon">✨</div>
                     <div class="text">Create</div>
@@ -1033,10 +1035,12 @@
                     <div class="icon">🔍</div>
                     <div class="text">Explore</div>
                 </div>
+                <!-- Chat功能暂时隐藏，后续开发
                 <div class="nav-item">
                     <div class="icon">💬</div>
                     <div class="text">Chat</div>
                 </div>
+                -->
                 <div class="nav-item">
                     <div class="icon">✨</div>
                     <div class="text">Create</div>
@@ -1432,7 +1436,7 @@
                 <!-- 帮助支持标签页 -->
                 <div class="tab-content" id="support" style="padding: 0 40px;">
                     <div class="support-links">
-                        <a href="#" class="support-link">
+                        <a href="#" class="support-link" onclick="showContactSupportModal()">
                             <span class="icon">📞</span>
                             <div class="text">
                                 <div class="title">Contact Support</div>
@@ -1440,7 +1444,7 @@
                             </div>
                         </a>
 
-                        <a href="#" class="support-link">
+                        <a href="#" class="support-link" onclick="showTermsModal()">
                             <span class="icon">📋</span>
                             <div class="text">
                                 <div class="title">Terms of Service</div>
@@ -1448,7 +1452,7 @@
                             </div>
                         </a>
 
-                        <a href="#" class="support-link">
+                        <a href="#" class="support-link" onclick="showPrivacyModal()">
                             <span class="icon">🔒</span>
                             <div class="text">
                                 <div class="title">Privacy Policy</div>
@@ -1456,7 +1460,7 @@
                             </div>
                         </a>
 
-                        <a href="#" class="support-link">
+                        <a href="#" class="support-link" onclick="showFAQModal()">
                             <span class="icon">❓</span>
                             <div class="text">
                                 <div class="title">FAQ</div>
@@ -1464,15 +1468,7 @@
                             </div>
                         </a>
 
-                        <a href="#" class="support-link">
-                            <span class="icon">💬</span>
-                            <div class="text">
-                                <div class="title">Community Forum</div>
-                                <div class="desc">Connect with other users</div>
-                            </div>
-                        </a>
-
-                        <a href="#" class="support-link">
+                        <a href="#" class="support-link" onclick="showUserGuideModal()">
                             <span class="icon">📖</span>
                             <div class="text">
                                 <div class="title">User Guide</div>
@@ -1480,19 +1476,11 @@
                             </div>
                         </a>
 
-                        <a href="#" class="support-link">
+                        <a href="#" class="support-link" onclick="showReportIssueModal()">
                             <span class="icon">🚨</span>
                             <div class="text">
                                 <div class="title">Report Issue</div>
                                 <div class="desc">Report bugs or problems</div>
-                            </div>
-                        </a>
-
-                        <a href="#" class="support-link">
-                            <span class="icon">⭐</span>
-                            <div class="text">
-                                <div class="title">Rate Sugar.AI</div>
-                                <div class="desc">Share your experience</div>
                             </div>
                         </a>
                     </div>
@@ -2033,11 +2021,14 @@
                     return;
                 }
                 
+                // Chat功能暂时隐藏，后续开发
+                /*
                 // Handle Chat navigation
                 if (text === 'Chat') {
                     window.location.href = './chat.html';
                     return;
                 }
+                */
                 
                 // Handle Create navigation - redirect to create.html
                 if (text === 'Create') {
@@ -2110,6 +2101,11 @@
         // 支持链接点击效果
         document.querySelectorAll('.support-link').forEach(link => {
             link.addEventListener('click', function(e) {
+                // 如果链接有onclick属性，不阻止默认行为，让onclick执行
+                if (this.hasAttribute('onclick')) {
+                    return;
+                }
+                
                 e.preventDefault();
                 const title = this.querySelector('.title').textContent;
                 alert(`Open ${title}\n(In production, this would navigate to the appropriate page or open a dialog)`);
@@ -2317,10 +2313,13 @@
                     return;
                 }
                 
+                // Chat功能暂时隐藏，后续开发
+                /*
                 if (text === 'Chat') {
                     window.location.href = './chat.html';
                     return;
                 }
+                */
                 
                 if (text === 'Create') {
                     window.location.href = './create.html';
@@ -2350,5 +2349,305 @@
             </video>
         </div>
     </div>
+
+    <!-- FAQ Modal -->
+    <div class="modal" id="faqModal">
+        <div class="modal-content faq-modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Frequently Asked Questions</h3>
+                <button class="modal-close" onclick="hideFAQModal()">×</button>
+            </div>
+            <div class="modal-body faq-body">
+                <div class="faq-section">
+                    <h4>What exactly is an AI Girlfriend?</h4>
+                    <p>An AI Girlfriend is a virtual companion powered by artificial intelligence that can interact with you through text, images, and videos. She's designed to provide companionship, entertainment, and emotional support in a safe, controlled environment. Think of her as a digital friend who can chat with you, share pictures, and help you explore your creative side through AI-generated content.</p>
+                </div>
+
+                <div class="faq-section">
+                    <h4>How does Sugar.AI work?</h4>
+                    <p>Sugar.AI is an advanced AI platform that lets you create, customize, and interact with virtual AI companions. You can explore pre-made characters, create your own custom AI girlfriend from scratch, and generate personalized images and videos. Our AI technology ensures realistic interactions and high-quality visual content that adapts to your preferences.</p>
+                </div>
+
+                <div class="faq-section">
+                    <h4>Can I customize my AI girlfriend's appearance?</h4>
+                    <p>Absolutely! Sugar.AI offers extensive customization options. You can choose from different ethnicities, hair styles and colors, eye colors, body types, outfits, and backgrounds. Our Create feature allows you to design your perfect AI companion from head to toe, ensuring she matches your ideal type and preferences.</p>
+                </div>
+
+                <div class="faq-section">
+                    <h4>What can I do with my AI girlfriend?</h4>
+                    <p>With Sugar.AI, you can:</p>
+                    <ul>
+                        <li>Generate personalized images of your AI companion in various scenarios</li>
+                        <li>Create custom videos with different themes and settings</li>
+                        <li>Design unique characters with specific personalities and appearances</li>
+                        <li>Explore a variety of pre-made AI characters</li>
+                        <li>Save and manage your generation history</li>
+                    </ul>
+                </div>
+
+                <div class="faq-section">
+                    <h4>How does the Gem system work?</h4>
+                    <p>Gems are our platform's currency used for generating content. Different features cost different amounts of Gems:</p>
+                    <ul>
+                        <li>Image Generation: 15-25 Gems</li>
+                        <li>Video Generation: 35-50 Gems</li>
+                        <li>Character Creation: 50 Gems</li>
+                        <li>Premium features: Varies by feature</li>
+                    </ul>
+                    <p>You can purchase Gems through our secure payment system and use them to unlock premium content and features.</p>
+                </div>
+
+                <div class="faq-section">
+                    <h4>Is my privacy protected?</h4>
+                    <p>Yes, we take your privacy very seriously. All your data is encrypted and stored securely. We don't share your personal information with third parties, and you have full control over your account and generated content. Our platform complies with international privacy standards to ensure your safety and confidentiality.</p>
+                </div>
+
+                <div class="faq-section">
+                    <h4>Can I create multiple AI girlfriends?</h4>
+                    <p>Yes! You can create as many AI companions as you want. Each character can have different personalities, appearances, and styles. This allows you to explore different types of relationships and creative scenarios with various virtual companions.</p>
+                </div>
+
+                <div class="faq-section">
+                    <h4>What makes Sugar.AI different from other platforms?</h4>
+                    <p>Sugar.AI stands out with its:</p>
+                    <ul>
+                        <li>Advanced AI technology for realistic interactions</li>
+                        <li>Extensive customization options</li>
+                        <li>High-quality image and video generation</li>
+                        <li>User-friendly interface</li>
+                        <li>Secure and private platform</li>
+                        <li>Regular updates and new features</li>
+                    </ul>
+                </div>
+
+                <div class="faq-section">
+                    <h4>How do I get started?</h4>
+                    <p>Getting started is easy:</p>
+                    <ol>
+                        <li>Create a free account on Sugar.AI</li>
+                        <li>Explore our pre-made AI characters</li>
+                        <li>Try creating your own custom character</li>
+                        <li>Generate your first images or videos</li>
+                        <li>Purchase Gems to unlock premium features</li>
+                    </ol>
+                </div>
+
+                <div class="faq-section">
+                    <h4>What if I have technical issues?</h4>
+                    <p>If you encounter any problems, you can:</p>
+                    <ul>
+                        <li>Check our User Guide for common solutions</li>
+                        <li>Contact our support team through the Dashboard</li>
+                        <li>Report issues directly from the platform</li>
+                        <li>Check our FAQ for quick answers</li>
+                    </ul>
+                    <p>Our support team is available to help you resolve any issues quickly.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* FAQ Modal Styles */
+        .faq-modal-content {
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .faq-body {
+            padding: 0;
+        }
+
+        .faq-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .faq-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .faq-section h4 {
+            color: #ed7f8c;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .faq-section p {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .faq-section ul, .faq-section ol {
+            color: #ccc;
+            line-height: 1.6;
+            margin: 12px 0;
+            padding-left: 20px;
+        }
+
+        .faq-section li {
+            margin-bottom: 8px;
+        }
+
+        .faq-section ul li {
+            list-style-type: disc;
+        }
+
+        .faq-section ol li {
+            list-style-type: decimal;
+        }
+
+        /* Responsive FAQ Modal */
+        @media (max-width: 768px) {
+            .faq-modal-content {
+                max-width: 95%;
+                max-height: 85vh;
+            }
+
+            .faq-section h4 {
+                font-size: 16px;
+            }
+
+            .faq-section p, .faq-section ul, .faq-section ol {
+                font-size: 14px;
+            }
+        }
+    </style>
+
+    <script>
+        // FAQ Modal Functions
+        function showFAQModal() {
+            document.getElementById('faqModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideFAQModal() {
+            document.getElementById('faqModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close FAQ modal when clicking outside
+        document.getElementById('faqModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideFAQModal();
+            }
+        });
+
+        // Close FAQ modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('faqModal').classList.contains('active')) {
+                hideFAQModal();
+            }
+        });
+
+        // Contact Support Modal Functions
+        function showContactSupportModal() {
+            document.getElementById('contactSupportModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideContactSupportModal() {
+            document.getElementById('contactSupportModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Terms Modal Functions
+        function showTermsModal() {
+            document.getElementById('termsModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideTermsModal() {
+            document.getElementById('termsModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Privacy Modal Functions
+        function showPrivacyModal() {
+            document.getElementById('privacyModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hidePrivacyModal() {
+            document.getElementById('privacyModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // User Guide Modal Functions
+        function showUserGuideModal() {
+            document.getElementById('userGuideModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideUserGuideModal() {
+            document.getElementById('userGuideModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Report Issue Modal Functions
+        function showReportIssueModal() {
+            document.getElementById('reportIssueModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideReportIssueModal() {
+            document.getElementById('reportIssueModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Live Chat Function
+        function startLiveChat() {
+            alert('Live chat feature will be available soon! For now, please email us at support@sugar.ai');
+        }
+
+        // Bug Report Form Handler
+        document.getElementById('bugReportForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                issueType: document.getElementById('issueType').value,
+                issueTitle: document.getElementById('issueTitle').value,
+                issueDescription: document.getElementById('issueDescription').value,
+                browserInfo: document.getElementById('browserInfo').value,
+                userEmail: document.getElementById('userEmail').value,
+                includeScreenshot: document.getElementById('includeScreenshot').checked
+            };
+            
+            // In production, this would send the data to the server
+            console.log('Bug report submitted:', formData);
+            
+            alert('Thank you for your report! We will investigate and get back to you soon.');
+            hideReportIssueModal();
+            
+            // Reset form
+            this.reset();
+        });
+
+        // Close all modals when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+
+        // Close all modals with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal.active').forEach(modal => {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                });
+            }
+        });
+    </script>
 </body>
 </html> 
