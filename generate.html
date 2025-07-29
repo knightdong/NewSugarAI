@@ -18,6 +18,24 @@
             overflow-x: hidden;
         }
 
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f0f0f;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ed7f8c;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d16570;
+        }
+
         .container {
             display: flex;
             height: 100vh;
@@ -1736,14 +1754,14 @@
         }
 
         .result-panel-content::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
         }
         .result-panel-content::-webkit-scrollbar-thumb {
-            background: #222;
-            border-radius: 4px;
+            background: #ed7f8c;
+            border-radius: 3px;
         }
         .result-panel-content::-webkit-scrollbar-track {
-            background: #111;
+            background: #0f0f0f;
         }
 
         @media (max-width: 480px) {
@@ -1894,7 +1912,7 @@
                 <div class="sub-nav-item active" onclick="showSection('text2image')">
                     <span>📷</span> AI Image
                 </div>
-                <div class="sub-nav-item" onclick="showSection('storyboard')">
+                <div class="sub-nav-item" onclick="showSection('storyboard')" style="display: none;">
                     <span>🎬</span> Group Photo
                 </div>
                 <div class="sub-nav-item" onclick="showSection('video')">
@@ -2065,7 +2083,7 @@
             </div>
 
             <!-- Group Photo Section -->
-            <div id="storyboard" class="content-section">
+            <div id="storyboard" class="content-section" style="display: none;">
                 <div class="feature-card">
                     <h2 class="feature-title">Group Photo</h2>
                     <p class="feature-description">Create stunning photos together with your AI character</p>

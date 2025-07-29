@@ -296,6 +296,22 @@
             z-index: 2;
         }
 
+        .private-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(237, 127, 140, 0.9);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            z-index: 3;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
         .character-info h3 {
             color: #ffffff;
             font-size: 20px;
@@ -585,6 +601,13 @@
             .character-info {
                 padding: 12px 16px;
             }
+            
+            .private-badge {
+                top: 8px;
+                right: 8px;
+                padding: 3px 6px;
+                font-size: 10px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -664,6 +687,13 @@
             
             .character-tags {
                 gap: 4px;
+            }
+            
+            .private-badge {
+                top: 6px;
+                right: 6px;
+                padding: 2px 5px;
+                font-size: 9px;
             }
         }
     </style>
@@ -781,7 +811,27 @@
             
                 <!-- Character Grid with SoulFun.ai inspired proportions -->
                 <div class="character-grid">
-                    <!-- Character 1 - Using your pic_1.jpeg -->
+                    <!-- Custom Character 1 - Private -->
+                    <div class="character-card has-video">
+                        <div class="private-badge">Private</div>
+                        <div class="character-image" style="background: linear-gradient(135deg, #9c27b0, #673ab7); background-image: url('assets/pic_2.jpeg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+                        </div>
+                        <video class="character-video" muted loop>
+                            <source src="assets/video_2.mp4" type="video/mp4">
+                        </video>
+                        <div class="character-info">
+                            <h3>Luna Starlight</h3>
+                            <div class="character-meta">
+                                <span class="character-age">23 years old</span>
+                                <span class="character-role"></span>
+                            </div>
+                            <div class="character-tags">
+                                <span class="character-tag">Custom</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Character 2 - Using your pic_1.jpeg -->
                     <div class="character-card has-video">
                         <div class="character-image" style="background: linear-gradient(135deg, #ed7f8c, #d16570); background-image: url('assets/pic_1.jpeg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
                         </div>
@@ -1152,6 +1202,14 @@
 
         // Character data for navigation
         const characterData = {
+            'Luna Starlight': {
+                image: 'assets/pic_2.jpeg',
+                age: '23 years old',
+                role: '',
+                tags: ['Custom'],
+                status: 'Online',
+                greeting: "Hello there! I'm Luna, your custom AI companion. I'm here to bring magic and enchantment to your world. What adventure shall we embark on together?"
+            },
             'Morganna Evernight': {
                 image: 'assets/pic_1.jpeg',
                 age: '28 years old',
@@ -1330,21 +1388,24 @@
                 const character = characterData[name];
                 
                 if (character) {
-                    // Create URL parameters with character data for Generate page
-                    const params = new URLSearchParams({
-                        name: name,
-                        image: character.image,
-                        age: character.age,
-                        role: character.role,
-                        tags: character.tags.join(','),
-                        status: character.status,
-                        greeting: character.greeting
-                    });
-                    
-                    // Navigate to Generate page with character pre-selected
-                    window.location.href = `./generate.html?${params.toString()}`;
-                } else {
-                    alert(`Character data not found for ${name}`);
+                    // Check if it's a custom character (has only 'Custom' tag)
+                    if (character.tags.length === 1 && character.tags[0] === 'Custom') {
+                        // Custom character - go directly to Generate page
+                        const params = new URLSearchParams({
+                            name: character.name,
+                            image: character.image,
+                            age: character.age,
+                            role: character.role,
+                            tags: character.tags.join(','),
+                            status: character.status,
+                            greeting: character.greeting,
+                            type: 'image'
+                        });
+                        window.location.href = `./generate.html?${params.toString()}`;
+                    } else {
+                        // System character - go to character detail page
+                        window.location.href = `./character-detail.html?name=${encodeURIComponent(name)}`;
+                    }
                 }
             });
         });

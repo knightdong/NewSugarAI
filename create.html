@@ -546,19 +546,8 @@
 
         .color-option.selected {
             border-color: #ed7f8c;
-            box-shadow: 0 0 0 3px rgba(237, 127, 140, 0.3);
-        }
-
-        .color-option.selected::after {
-            content: '✓';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 20px;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            box-shadow: 0 0 0 3px rgba(237, 127, 140, 0.3), 0 0 20px rgba(237, 127, 140, 0.5), 0 0 40px rgba(237, 127, 140, 0.3);
+            transform: scale(1.05);
         }
 
         /* 滑块控制器 */
@@ -1398,7 +1387,7 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: #1a1a1a;
+            background: #0f0f0f;
         }
 
         ::-webkit-scrollbar-thumb {
@@ -1947,12 +1936,12 @@
             ];
             
             const eyeColors = [
-                { id: 'black', color: '#2C2C2C', name: 'Black' },
-                { id: 'brown', color: '#8B7355', name: 'Brown' },
-                { id: 'light_blue', color: '#A8C6DF', name: 'Light Blue' },
-                { id: 'light_green', color: '#A8D5BA', name: 'Light Green' },
-                { id: 'light_yellow', color: '#D4C4A8', name: 'Light Yellow' },
-                { id: 'gray', color: '#B8B8B8', name: 'Gray' }
+                { id: 'black', image: 'assets/eye colors/black.avif', name: 'Black' },
+                { id: 'brown', image: 'assets/eye colors/brown.avif', name: 'Brown' },
+                { id: 'blue', image: 'assets/eye colors/blue.avif', name: 'Blue' },
+                { id: 'green', image: 'assets/eye colors/green.avif', name: 'Green' },
+                { id: 'purple', image: 'assets/eye colors/purple.avif', name: 'Purple' },
+                { id: 'white', image: 'assets/eye colors/white.avif', name: 'White' }
             ];
             
             // 发色
@@ -1974,7 +1963,7 @@
             eyeColors.forEach(color => {
                 const selected = characterData.eyeColor === color.id ? 'selected' : '';
                 content += `
-                    <div class="color-option ${selected}" style="background-color: ${color.color}" 
+                    <div class="color-option ${selected}" style="background-image: url('${color.image}'); background-size: cover; background-position: center;" 
                          onclick="selectEyeColor('${color.id}')" title="${color.name}">
                     </div>
                 `;
@@ -2106,10 +2095,10 @@
                     eyeColor: { 
                         black: 'Black', 
                         brown: 'Brown', 
-                        light_blue: 'Light Blue', 
-                        light_green: 'Light Green', 
-                        light_yellow: 'Light Yellow', 
-                        gray: 'Gray'
+                        blue: 'Blue', 
+                        green: 'Green', 
+                        purple: 'Purple', 
+                        white: 'White'
                     },
                     bodyType: { 
                         petite: 'Petite', 
@@ -2477,7 +2466,7 @@
                 red_mahogany: 'Red Mahogany',
                 rose_red: 'Rose Red'
             };
-            const eyeColorMap = { black: 'Black', brown: 'Brown', light_blue: 'Light Blue', light_green: 'Light Green', light_yellow: 'Light Yellow', gray: 'Gray' };
+            const eyeColorMap = { black: 'Black', brown: 'Brown', blue: 'Blue', green: 'Green', purple: 'Purple', white: 'White' };
             const bodyTypeMap = { petite: 'Petite', slim: 'Slim', athletic: 'Athletic', curvy: 'Curvy', plus_size: 'Plus Size' };
             const outfitMap = { casual: 'Casual', elegant: 'Elegant', business: 'Business', sporty: 'Sporty', sexy: 'Sexy', vintage: 'Vintage', gothic: 'Gothic', cute: 'Cute', punk: 'Punk', bohemian: 'Bohemian', streetwear: 'Streetwear', loungewear: 'Loungewear' };
             const backgroundMap = { beach: 'Beach', city: 'City', forest: 'Forest', office: 'Office', home: 'Home', cafe: 'Cafe', gym: 'Gym', school: 'School', party: 'Party', garden: 'Garden', mountain: 'Mountain', nightclub: 'Nightclub' };
@@ -2719,7 +2708,7 @@
                         jet_black: 'jet black hair', natural_dark_brown: 'natural dark brown hair', soft_mahogany_brown: 'soft mahogany brown hair', golden_blonde: 'golden blonde hair', platinum_blonde: 'platinum blonde hair', strawberry_blonde: 'strawberry blonde hair', red_mahogany: 'red mahogany hair', rose_red: 'rose red hair'
                     },
                     eyeColor: {
-                        black: 'black eyes', brown: 'brown eyes', light_blue: 'light blue eyes', light_green: 'light green eyes', light_yellow: 'light yellow eyes', gray: 'gray eyes'
+                        black: 'black eyes', brown: 'brown eyes', blue: 'blue eyes', green: 'green eyes', purple: 'purple eyes', white: 'white eyes'
                     },
                     bodyType: { petite: 'petite', slim: 'slim', average: 'average', curvy: 'curvy', voluptuous: 'voluptuous', athletic: 'athletic', plus_size: 'plus size', tall_slim: 'tall and slim' },
                     outfit: { casual: 'casual outfit', elegant: 'elegant dress', business: 'business suit', sporty: 'sporty wear', sexy: 'sexy outfit', vintage: 'vintage style', gothic: 'gothic style', cute: 'cute clothes', punk: 'punk style', bohemian: 'bohemian style', streetwear: 'streetwear', loungewear: 'loungewear' },
