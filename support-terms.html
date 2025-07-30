@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Sugar.AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* 左侧导航栏 */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            border-right: 1px solid #333;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            padding: 30px 25px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+        }
+
+        .logo h1 {
+            color: #ed7f8c;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #999;
+            font-size: 12px;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 18px 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: linear-gradient(90deg, rgba(237, 127, 140, 0.1) 0%, transparent 100%);
+            border-left-color: #ed7f8c;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(237, 127, 140, 0.15) 0%, transparent 100%);
+            border-left-color: #ed7f8c;
+        }
+
+        .nav-item .icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            color: #ed7f8c;
+            font-size: 20px;
+        }
+
+        .nav-item .text {
+            font-size: 16px;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .nav-item .text.active {
+            color: #ed7f8c;
+        }
+
+        /* 用户信息区域 */
+        .user-section {
+            position: absolute;
+            bottom: 20px;
+            left: 25px;
+            right: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(237, 127, 140, 0.1) 0%, rgba(237, 127, 140, 0.05) 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(237, 127, 140, 0.2);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .user-details h4 {
+            color: #ffffff;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .user-details p {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .gem-balance {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        .gem-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .gem-icon {
+            color: #ed7f8c;
+            margin-right: 6px;
+        }
+
+        .gem-count {
+            color: #ed7f8c;
+            font-weight: bold;
+        }
+
+        /* 主内容区域 */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            background: #0a0a0a;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .content-header {
+            padding: 40px 40px 20px 40px;
+            background: linear-gradient(135deg, rgba(237, 127, 140, 0.05) 0%, transparent 100%);
+        }
+
+        .content-title {
+            color: #ed7f8c;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .content-subtitle {
+            color: #999;
+            font-size: 16px;
+        }
+
+        .content-body {
+            padding: 40px;
+            height: calc(100vh - 0px);
+            overflow-y: auto;
+            display: block;
+            box-sizing: border-box;
+            padding-bottom: 200px;
+        }
+
+        /* 面包屑导航 */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .breadcrumb a {
+            color: #ed7f8c;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: #d16570;
+        }
+
+        .breadcrumb .separator {
+            margin: 0 10px;
+        }
+
+        /* 条款内容 */
+        .terms-content {
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+            border-radius: 16px;
+            padding: 40px;
+            border: 1px solid #333;
+            line-height: 1.8;
+        }
+
+        .terms-section {
+            margin-bottom: 40px;
+        }
+
+        .terms-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .terms-section h3 {
+            color: #ed7f8c;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .terms-section h3 .number {
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 600;
+            margin-right: 15px;
+        }
+
+        .terms-section p {
+            color: #ccc;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .terms-section ul {
+            color: #ccc;
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+
+        .terms-section li {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .terms-section strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .terms-section a {
+            color: #ed7f8c;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .terms-section a:hover {
+            color: #d16570;
+        }
+
+        /* 重要提示 */
+        .important-notice {
+            background: linear-gradient(135deg, rgba(237, 127, 140, 0.1), rgba(209, 101, 112, 0.05));
+            border: 2px solid rgba(237, 127, 140, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .important-notice h4 {
+            color: #ed7f8c;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .important-notice h4 .icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .important-notice p {
+            color: #ccc;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f0f0f;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ed7f8c;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d16570;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .content-header {
+                padding: 20px 20px 10px 20px;
+            }
+            
+            .content-body {
+                padding: 20px;
+            }
+            
+            .terms-content {
+                padding: 25px;
+            }
+            
+            .terms-section h3 {
+                font-size: 20px;
+            }
+            
+            .terms-section p,
+            .terms-section li {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 左侧导航栏 -->
+        <div class="sidebar">
+            <div class="logo" onclick="window.location.href='./index.html'">
+                <h1>Sugar.AI</h1>
+                <p>AI Girlfriend Platform</p>
+            </div>
+            
+            <nav class="nav-menu">
+                <div class="nav-item" onclick="window.location.href='./index.html'">
+                    <div class="icon">🔍</div>
+                    <div class="text">Explore</div>
+                </div>
+                <div class="nav-item" onclick="window.location.href='./create.html'">
+                    <div class="icon">✨</div>
+                    <div class="text">Create</div>
+                </div>
+                <div class="nav-item" onclick="window.location.href='./generate.html'">
+                    <div class="icon">🎨</div>
+                    <div class="text">Generate</div>
+                </div>
+                <div class="nav-item" onclick="window.location.href='./dashboard.html'">
+                    <div class="icon">⚙️</div>
+                    <div class="text">Dashboard</div>
+                </div>
+            </nav>
+
+            <div class="user-section">
+                <div class="user-info">
+                    <div class="user-avatar">U</div>
+                    <div class="user-details">
+                        <h4>Username</h4>
+                        <p>Premium Member</p>
+                    </div>
+                </div>
+                <div class="gem-balance">
+                    <div class="gem-info">
+                        <span class="gem-icon">💎</span>
+                        <span class="gem-count">1,250</span>
+                    </div>
+                    <button style="background: #ed7f8c; border: none; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer;" onclick="window.location.href='./purchase.html'">Top Up</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="main-content">
+            <div class="content-header">
+                <div class="breadcrumb">
+                    <a href="./dashboard.html">Dashboard</a>
+                    <span class="separator">/</span>
+                    <a href="./dashboard.html" onclick="showSupportTab()">Help & Support</a>
+                    <span class="separator">/</span>
+                    <span>Terms of Service</span>
+                </div>
+                <h1 class="content-title">Terms of Service</h1>
+                <p class="content-subtitle">Please read these terms carefully before using Sugar.AI</p>
+            </div>
+            
+            <div class="content-body">
+                <div class="important-notice">
+                    <h4>
+                        <span class="icon">⚠️</span>
+                        Important Notice
+                    </h4>
+                    <p>By accessing and using Sugar.AI, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.</p>
+                </div>
+
+                <div class="terms-content">
+                    <div class="terms-section">
+                        <h3>
+                            <span class="number">1</span>
+                            Acceptance of Terms
+                        </h3>
+                        <p>By accessing and using Sugar.AI, you accept and agree to be bound by the terms and provision of this agreement. These terms apply to all visitors, users, and others who access or use the service.</p>
+                        <p>If you disagree with any part of these terms, then you may not access the service. The terms and conditions set out in this agreement shall apply to all users of the site, including without limitation all users such as browsers, vendors, customers, merchants, and/or contributors of content.</p>
+                    </div>
+
+                    <div class="terms-section">
+                        <h3>
+                            <span class="number">2</span>
+                            Use License
+                        </h3>
+                        <p>Permission is granted to temporarily download one copy of the materials (information or software) on Sugar.AI's website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:</p>
+                        <ul>
+                            <li>Modify or copy the materials</li>
+                            <li>Use the materials for any commercial purpose or for any public display (commercial or non-commercial)</li>
+                            <li>Attempt to decompile or reverse engineer any software contained on Sugar.AI's website</li>
+                            <li>Remove any copyright or other proprietary notations from the materials</li>
+                            <li>Transfer the materials to another person or "mirror" the materials on any other server</li>
+                        </ul>
+                        <p>This license shall automatically terminate if you violate any of these restrictions and may be terminated by Sugar.AI at any time. Upon terminating your viewing of these materials or upon the termination of this license, you must destroy any downloaded materials in your possession whether in electronic or printed format.</p>
+                    </div>
+
+                    <div class="terms-section">
+                        <h3>
+                            <span class="number">3</span>
+                            Disclaimer
+                        </h3>
+                        <p>The materials on Sugar.AI's website are provided on an 'as is' basis. Sugar.AI makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
+                        <p>Further, Sugar.AI does not warrant or make any representations concerning the accuracy, likely results, or reliability of the use of the materials on its website or otherwise relating to such materials or on any sites linked to this site.</p>
+                    </div>
+
+                    <div class="terms-section">
+                        <h3>
+                            <span class="number">4</span>
+                            Limitations
+                        </h3>
+                        <p>In no event shall Sugar.AI or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on Sugar.AI's website, even if Sugar.AI or a Sugar.AI authorized representative has been notified orally or in writing of the possibility of such damage.</p>
+                        <p>Because some jurisdictions do not allow limitations on implied warranties, or limitations of liability for consequential or incidental damages, these limitations may not apply to you.</p>
+                    </div>
+
+                    <div class="terms-section">
+                        <h3>
+                            <span class="number">5</span>
+                            Revisions and Errata
+                        </h3>
+                        <p>The materials appearing on Sugar.AI's website could include technical, typographical, or photographic errors. Sugar.AI does not warrant that any of the materials on its website are accurate, complete or current. Sugar.AI may make changes to the materials contained on its website at any time without notice.</p>
+                        <p>However, Sugar.AI does not make any commitment to update the materials.</p>
+                    </div>
+
+                    <div class="terms-section">
+                        <h3>
+                            <span class="number">6</span>
+                            Links
+                        </h3>
+                        <p>Sugar.AI has not reviewed all of the sites linked to its website and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by Sugar.AI of the site. Use of any such linked website is at the user's own risk.</p>
+                    </div>
+
+                    <div class="terms-section">
+                        <h3>
+                            <span class="number">7</span>
+                            Site Terms of Use Modifications
+                        </h3>
+                        <p>Sugar.AI may revise these terms of use for its website at any time without notice. By using this website you are agreeing to be bound by the then current version of these Terms and Conditions of Use.</p>
+                        <p>We encourage users to frequently check this page for any changes to stay informed about how we are helping to protect the personal information we collect.</p>
+                    </div>
+
+                    <div class="terms-section">
+                        <h3>
+                            <span class="number">8</span>
+                            Governing Law
+                        </h3>
+                        <p>These terms and conditions are governed by and construed in accordance with the laws and you irrevocably submit to the exclusive jurisdiction of the courts in that state or location.</p>
+                        <p>Any disputes arising from the use of this website shall be resolved through binding arbitration in accordance with the rules of the American Arbitration Association.</p>
+                    </div>
+
+                    <div class="terms-section">
+                        <h3>
+                            <span class="number">9</span>
+                            Contact Information
+                        </h3>
+                        <p>If you have any questions about these Terms of Service, please contact us at:</p>
+                        <ul>
+                            <li><strong>Email:</strong> <a href="mailto:legal@sugar.ai">legal@sugar.ai</a></li>
+                            <li><strong>Support:</strong> <a href="mailto:support@sugar.ai">support@sugar.ai</a></li>
+                            <li><strong>Address:</strong> Sugar.AI Legal Department, 123 AI Street, Tech City, TC 12345</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSupportTab() {
+            // Store a flag in sessionStorage to indicate we want to show the support tab
+            sessionStorage.setItem('showSupportTab', 'true');
+        }
+
+        // Navigation functionality
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const text = this.querySelector('.text').textContent;
+                
+                if (text === 'Explore') {
+                    window.location.href = './index.html';
+                } else if (text === 'Create') {
+                    window.location.href = './create.html';
+                } else if (text === 'Generate') {
+                    window.location.href = './generate.html';
+                } else if (text === 'Dashboard') {
+                    window.location.href = './dashboard.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

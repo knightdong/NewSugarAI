@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Issue - Sugar.AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* 左侧导航栏 */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            border-right: 1px solid #333;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            padding: 30px 25px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+        }
+
+        .logo h1 {
+            color: #ed7f8c;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #999;
+            font-size: 12px;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 18px 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: linear-gradient(90deg, rgba(237, 127, 140, 0.1) 0%, transparent 100%);
+            border-left-color: #ed7f8c;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(237, 127, 140, 0.15) 0%, transparent 100%);
+            border-left-color: #ed7f8c;
+        }
+
+        .nav-item .icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            color: #ed7f8c;
+            font-size: 20px;
+        }
+
+        .nav-item .text {
+            font-size: 16px;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .nav-item .text.active {
+            color: #ed7f8c;
+        }
+
+        /* 用户信息区域 */
+        .user-section {
+            position: absolute;
+            bottom: 20px;
+            left: 25px;
+            right: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(237, 127, 140, 0.1) 0%, rgba(237, 127, 140, 0.05) 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(237, 127, 140, 0.2);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .user-details h4 {
+            color: #ffffff;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .user-details p {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .gem-balance {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        .gem-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .gem-icon {
+            color: #ed7f8c;
+            margin-right: 6px;
+        }
+
+        .gem-count {
+            color: #ed7f8c;
+            font-weight: bold;
+        }
+
+        /* 主内容区域 */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            background: #0a0a0a;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .content-header {
+            padding: 40px 40px 20px 40px;
+            background: linear-gradient(135deg, rgba(237, 127, 140, 0.05) 0%, transparent 100%);
+        }
+
+        .content-title {
+            color: #ed7f8c;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .content-subtitle {
+            color: #999;
+            font-size: 16px;
+        }
+
+        .content-body {
+            padding: 40px;
+            height: calc(100vh - 0px);
+            overflow-y: auto;
+            display: block;
+            box-sizing: border-box;
+            padding-bottom: 200px;
+        }
+
+        /* 面包屑导航 */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .breadcrumb a {
+            color: #ed7f8c;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: #d16570;
+        }
+
+        .breadcrumb .separator {
+            margin: 0 10px;
+        }
+
+        /* 表单内容 */
+        .report-content {
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+            border-radius: 16px;
+            padding: 40px;
+            border: 1px solid #333;
+        }
+
+        .form-intro {
+            margin-bottom: 30px;
+        }
+
+        .form-intro h3 {
+            color: #ed7f8c;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .form-intro p {
+            color: #ccc;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #ccc;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        /* Dropdown specific styling */
+        .form-group select {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .form-group select option {
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 8px 12px;
+        }
+
+        .form-group select option:hover {
+            background: #ed7f8c;
+            color: #ffffff;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ed7f8c;
+            background: rgba(237, 127, 140, 0.05);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+        }
+
+        .form-group label[for*="includeScreenshot"] {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .form-group.required label::after {
+            content: " *";
+            color: #ed7f8c;
+        }
+
+        /* 按钮样式 */
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ed7f8c, #d16570);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(237, 127, 140, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ccc;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(237, 127, 140, 0.1);
+            color: #ed7f8c;
+            border-color: #ed7f8c;
+        }
+
+        /* 提示信息 */
+        .info-box {
+            background: linear-gradient(135deg, rgba(237, 127, 140, 0.1), rgba(209, 101, 112, 0.05));
+            border: 2px solid rgba(237, 127, 140, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .info-box h4 {
+            color: #ed7f8c;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .info-box h4 .icon {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        .info-box p {
+            color: #ccc;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .info-box ul {
+            color: #ccc;
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .info-box li {
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f0f0f;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ed7f8c;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d16570;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .content-header {
+                padding: 20px 20px 10px 20px;
+            }
+            
+            .content-body {
+                padding: 20px;
+            }
+            
+            .report-content {
+                padding: 25px;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                font-size: 16px; /* Prevent zoom on iOS */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 左侧导航栏 -->
+        <div class="sidebar">
+            <div class="logo" onclick="window.location.href='./index.html'">
+                <h1>Sugar.AI</h1>
+                <p>AI Girlfriend Platform</p>
+            </div>
+            
+            <nav class="nav-menu">
+                <div class="nav-item" onclick="window.location.href='./index.html'">
+                    <div class="icon">🔍</div>
+                    <div class="text">Explore</div>
+                </div>
+                <div class="nav-item" onclick="window.location.href='./create.html'">
+                    <div class="icon">✨</div>
+                    <div class="text">Create</div>
+                </div>
+                <div class="nav-item" onclick="window.location.href='./generate.html'">
+                    <div class="icon">🎨</div>
+                    <div class="text">Generate</div>
+                </div>
+                <div class="nav-item" onclick="window.location.href='./dashboard.html'">
+                    <div class="icon">⚙️</div>
+                    <div class="text">Dashboard</div>
+                </div>
+            </nav>
+
+            <div class="user-section">
+                <div class="user-info">
+                    <div class="user-avatar">U</div>
+                    <div class="user-details">
+                        <h4>Username</h4>
+                        <p>Premium Member</p>
+                    </div>
+                </div>
+                <div class="gem-balance">
+                    <div class="gem-info">
+                        <span class="gem-icon">💎</span>
+                        <span class="gem-count">1,250</span>
+                    </div>
+                    <button style="background: #ed7f8c; border: none; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer;" onclick="window.location.href='./purchase.html'">Top Up</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="main-content">
+            <div class="content-header">
+                <div class="breadcrumb">
+                    <a href="./dashboard.html">Dashboard</a>
+                    <span class="separator">/</span>
+                    <a href="./dashboard.html" onclick="showSupportTab()">Help & Support</a>
+                    <span class="separator">/</span>
+                    <span>Report Issue</span>
+                </div>
+                <h1 class="content-title">Report Issue</h1>
+                <p class="content-subtitle">Help us improve Sugar.AI by reporting any problems you encounter</p>
+            </div>
+            
+            <div class="content-body">
+                <div class="info-box">
+                    <h4>
+                        <span class="icon">💡</span>
+                        Before Reporting
+                    </h4>
+                    <p>Before submitting a report, please check our <a href="./support-faq.html" style="color: #FFD700;">FAQ</a> and <a href="./support-guide.html" style="color: #FFD700;">User Guide</a> to see if your issue has already been addressed.</p>
+                    <ul>
+                        <li>Check if your issue is listed in our FAQ</li>
+                        <li>Ensure you have a stable internet connection</li>
+                        <li>Try refreshing the page or clearing your browser cache</li>
+                        <li>Make sure you have sufficient Gems for paid features</li>
+                    </ul>
+                </div>
+
+                <div class="report-content">
+                    <div class="form-intro">
+                        <h3>Issue Report Form</h3>
+                        <p>Please provide as much detail as possible to help us understand and resolve your issue quickly. All fields marked with * are required.</p>
+                    </div>
+
+                    <form id="issueReportForm">
+                        <div class="form-group required">
+                            <label for="issueType">Issue Type</label>
+                            <select id="issueType" required>
+                                <option value="">Select issue type</option>
+                                <option value="technical">Technical Problem</option>
+                                <option value="billing">Billing Issue</option>
+                                <option value="content">Content Generation Problem</option>
+                                <option value="account">Account Issue</option>
+                                <option value="performance">Performance Issue</option>
+                                <option value="security">Security Concern</option>
+                                <option value="feature">Feature Request</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group required">
+                            <label for="issueTitle">Issue Title</label>
+                            <input type="text" id="issueTitle" placeholder="Brief description of the issue" required>
+                        </div>
+
+                        <div class="form-group required">
+                            <label for="issueDescription">Detailed Description</label>
+                            <textarea id="issueDescription" rows="6" placeholder="Please provide detailed information about the issue, including steps to reproduce, expected behavior, and actual behavior..." required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="issueSeverity">Severity Level</label>
+                            <select id="issueSeverity">
+                                <option value="low">Low - Minor inconvenience</option>
+                                <option value="medium" selected>Medium - Affects functionality</option>
+                                <option value="high">High - Major functionality broken</option>
+                                <option value="critical">Critical - Cannot use the service</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group required">
+                            <label for="browserInfo">Browser Information</label>
+                            <input type="text" id="browserInfo" placeholder="e.g., Chrome 120.0, Windows 10" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deviceInfo">Device Information</label>
+                            <input type="text" id="deviceInfo" placeholder="e.g., iPhone 15, Android Samsung Galaxy S23">
+                        </div>
+
+                        <div class="form-group required">
+                            <label for="userEmail">Your Email</label>
+                            <input type="email" id="userEmail" placeholder="your@email.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="userAccount">Account Username (if applicable)</label>
+                            <input type="text" id="userAccount" placeholder="Your Sugar.AI username">
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="includeScreenshot">
+                                Include screenshot (if applicable)
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="allowContact">
+                                Allow us to contact you for follow-up questions
+                            </label>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="window.location.href='./dashboard.html'">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Submit Report</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Form submission handler
+        document.getElementById('issueReportForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect form data
+            const formData = {
+                issueType: document.getElementById('issueType').value,
+                issueTitle: document.getElementById('issueTitle').value,
+                issueDescription: document.getElementById('issueDescription').value,
+                issueSeverity: document.getElementById('issueSeverity').value,
+                browserInfo: document.getElementById('browserInfo').value,
+                deviceInfo: document.getElementById('deviceInfo').value,
+                userEmail: document.getElementById('userEmail').value,
+                userAccount: document.getElementById('userAccount').value,
+                includeScreenshot: document.getElementById('includeScreenshot').checked,
+                allowContact: document.getElementById('allowContact').checked,
+                timestamp: new Date().toISOString()
+            };
+            
+            // In production, this would send the data to the server
+            console.log('Issue report submitted:', formData);
+            
+            // Show success message
+            alert('Thank you for your report! We will investigate and get back to you soon. You will receive a confirmation email shortly.');
+            
+            // Reset form
+            this.reset();
+            
+            // Redirect back to dashboard
+            setTimeout(() => {
+                window.location.href = './dashboard.html';
+            }, 2000);
+        });
+
+        // Auto-fill browser information
+        document.addEventListener('DOMContentLoaded', function() {
+            const browserInfo = document.getElementById('browserInfo');
+            if (browserInfo && !browserInfo.value) {
+                const userAgent = navigator.userAgent;
+                const browser = userAgent.match(/(chrome|firefox|safari|edge|opera)\/?\s*(\d+)/i);
+                const os = userAgent.match(/\((.*?)\)/);
+                
+                if (browser && os) {
+                    browserInfo.value = `${browser[1]} ${browser[2]}, ${os[1]}`;
+                }
+            }
+        });
+
+        function showSupportTab() {
+            // Store a flag in sessionStorage to indicate we want to show the support tab
+            sessionStorage.setItem('showSupportTab', 'true');
+        }
+
+        // Navigation functionality
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const text = this.querySelector('.text').textContent;
+                
+                if (text === 'Explore') {
+                    window.location.href = './index.html';
+                } else if (text === 'Create') {
+                    window.location.href = './create.html';
+                } else if (text === 'Generate') {
+                    window.location.href = './generate.html';
+                } else if (text === 'Dashboard') {
+                    window.location.href = './dashboard.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
