@@ -533,7 +533,6 @@
             height: 70px;
             border-radius: 50%;
             border: 3px solid #444;
-            cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
             margin: 0 auto;
@@ -548,6 +547,25 @@
             border-color: #ed7f8c;
             box-shadow: 0 0 0 3px rgba(237, 127, 140, 0.3), 0 0 20px rgba(237, 127, 140, 0.5), 0 0 40px rgba(237, 127, 140, 0.3);
             transform: scale(1.05);
+        }
+
+        /* 颜色选项包装器 */
+        .color-option-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+        }
+
+        .color-option-label {
+            font-size: 12px;
+            color: #ffffff;
+            text-align: center;
+            font-weight: 500;
+            margin-top: 4px;
         }
 
         /* 滑块控制器 */
@@ -1313,6 +1331,10 @@
                 width: 60px;
                 height: 60px;
             }
+
+            .color-option-label {
+                font-size: 11px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1378,6 +1400,10 @@
             .color-option {
                 width: 50px;
                 height: 50px;
+            }
+
+            .color-option-label {
+                font-size: 10px;
             }
         }
 
@@ -1713,6 +1739,8 @@
             
             initializeProgress();
             loadStep(1);
+            
+
         });
 
         // 初始化进度条
@@ -1950,8 +1978,11 @@
             hairColors.forEach(color => {
                 const selected = characterData.hairColor === color.id ? 'selected' : '';
                 content += `
-                    <div class="color-option ${selected}" style="background-image: url('${color.image}'); background-size: cover; background-position: center;" 
-                         onclick="selectHairColor('${color.id}')" title="${color.name}">
+                    <div class="color-option-wrapper" onclick="selectHairColor('${color.id}')">
+                        <div class="color-option ${selected}" style="background-image: url('${color.image}'); background-size: cover; background-position: center;" 
+                             title="${color.name}">
+                        </div>
+                        <div class="color-option-label">${color.name}</div>
                     </div>
                 `;
             });
@@ -1963,8 +1994,11 @@
             eyeColors.forEach(color => {
                 const selected = characterData.eyeColor === color.id ? 'selected' : '';
                 content += `
-                    <div class="color-option ${selected}" style="background-image: url('${color.image}'); background-size: cover; background-position: center;" 
-                         onclick="selectEyeColor('${color.id}')" title="${color.name}">
+                    <div class="color-option-wrapper" onclick="selectEyeColor('${color.id}')">
+                        <div class="color-option ${selected}" style="background-image: url('${color.image}'); background-size: cover; background-position: center;" 
+                             title="${color.name}">
+                        </div>
+                        <div class="color-option-label">${color.name}</div>
                     </div>
                 `;
             });
@@ -1977,14 +2011,14 @@
         // 获取身体类型选择内容
         function getBodyContent() {
             const bodyTypes = [
-                { id: 'petite', icon: '👩', title: 'Petite', description: 'Small and delicate build' },
-                { id: 'slim', icon: '🧘‍♀️', title: 'Slim', description: 'Lean and athletic figure' },
-                { id: 'average', icon: '👤', title: 'Average', description: 'Balanced proportions' },
-                { id: 'curvy', icon: '💃', title: 'Curvy', description: 'Full hourglass figure' },
-                { id: 'voluptuous', icon: '🌹', title: 'Voluptuous', description: 'Generous curves' },
-                { id: 'athletic', icon: '🏃‍♀️', title: 'Athletic', description: 'Toned and muscular' },
-                { id: 'plus_size', icon: '💕', title: 'Plus Size', description: 'Fuller figure' },
-                { id: 'tall_slim', icon: '🗽', title: 'Tall & Slim', description: 'Tall with lean build' }
+                { id: 'petite', image: 'assets/body types/petite.jpg', title: 'Petite', description: 'Small and delicate build' },
+                { id: 'slim', image: 'assets/body types/slim.jpg', title: 'Slim', description: 'Lean and athletic figure' },
+                { id: 'average', image: 'assets/body types/average.jpg', title: 'Average', description: 'Balanced proportions' },
+                { id: 'curvy', image: 'assets/body types/curvy.jpg', title: 'Curvy', description: 'Full hourglass figure' },
+                { id: 'voluptuous', image: 'assets/body types/voluptuous.jpg', title: 'Voluptuous', description: 'Generous curves' },
+                { id: 'athletic', image: 'assets/body types/athletic.jpg', title: 'Athletic', description: 'Toned and muscular' },
+                { id: 'plus_size', image: 'assets/body types/plus_size.jpg', title: 'Plus Size', description: 'Fuller figure' },
+                { id: 'tall_slim', image: 'assets/body types/tall_slim.jpg', title: 'Tall & Slim', description: 'Tall with lean build' }
             ];
             
             let content = '<div class="options-grid icon-grid">';
@@ -1992,7 +2026,7 @@
                 const selected = characterData.bodyType === bodyType.id ? 'selected' : '';
                 content += `
                     <div class="option-card icon-card ${selected}" onclick="selectBodyType('${bodyType.id}')">
-                        <div class="option-icon">${bodyType.icon}</div>
+                        <div class="option-image" style="background-image: url('${bodyType.image}'); background-size: cover; background-position: center;"></div>
                         <div class="option-title">${bodyType.title}</div>
                         <div class="option-description">${bodyType.description}</div>
                     </div>
@@ -2198,20 +2232,34 @@
 
         function selectHairColor(color) {
             characterData.hairColor = color;
-            // 只移除发色选择器中的选中状态
-            const hairColorContainer = event.target.closest('.color-selector');
+            
+            // 找到当前点击的包装器
+            const wrapper = event.target.closest('.color-option-wrapper');
+            
+            // 移除所有选中状态
+            const hairColorContainer = wrapper.closest('.color-selector');
             hairColorContainer.querySelectorAll('.color-option').forEach(option => option.classList.remove('selected'));
-            event.target.classList.add('selected');
+            
+            // 为当前点击的包装器中的color-option添加选中状态
+            const colorOption = wrapper.querySelector('.color-option');
+            colorOption.classList.add('selected');
         }
 
 
 
         function selectEyeColor(color) {
             characterData.eyeColor = color;
-            // 只移除眼色选择器中的选中状态
-            const eyeColorContainer = event.target.closest('.color-selector');
+            
+            // 找到当前点击的包装器
+            const wrapper = event.target.closest('.color-option-wrapper');
+            
+            // 移除所有选中状态
+            const eyeColorContainer = wrapper.closest('.color-selector');
             eyeColorContainer.querySelectorAll('.color-option').forEach(option => option.classList.remove('selected'));
-            event.target.classList.add('selected');
+            
+            // 为当前点击的包装器中的color-option添加选中状态
+            const colorOption = wrapper.querySelector('.color-option');
+            colorOption.classList.add('selected');
         }
 
         function selectOutfit(outfit) {
